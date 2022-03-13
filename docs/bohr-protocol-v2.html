@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>BOHR Protocol v2.2</title>
+<style type="text/css">
+body {
+	background-color: #d9e6e2;
+	font-family: Verdana, sans-serif;
+	line-height: 1.5;
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+q {
+	font-weight: bold;
+	color: darkblue;
+	quotes: none;
+	font-family: monospace;
+	font-size: 14px;
+}
+
+code, comment, .code-box {
+	font-family: monospace;
+	font-size: 13px;
+}
+
+code {
+	color: blue;
+}
+
+comment {
+	color: #92c79d;
+}
+
+.code-box {
+	background-color: white;
+	border: 1px dashed blue;
+	border-radius: 4px;
+	padding: 8px;
+}
+
+h1 {
+	color: #686866;
+	font-size: 32px;
+	font-weight: normal;
+	margin-top: 64px;
+	margin-bottom: 8px;
+}
+
+h2 {
+	color: #686866;
+	font-size: 16px;
+	font-weight: normal;
+	margin-top: 32px;
+	margin-bottom: 8px;
+}
+
+h3 {
+	color: #404168;
+	font-size: 14px;
+	font-weight: normal;
+	margin-top: 16px;
+	margin-bottom: 8px;
+}
+
+p, ul {
+	color: black;
+	font-size: 12px;
+	text-align: justify;
+}
+</style>
+</head>
+<body>
+	<h1>
+		<b>BOHR</b> Protocol: OVERVIEW
+	</h1>
+	<p>
+		The <b>BOHR</b> Protocol is a mean of synchronizing, versioning,
+		merging <i>object structures</i> across <i>various devices</i>. By "<i>objects
+			structures</i>", at this point in development, we target:
+	</p>
+	<h2>Target OBJECT_STRUCTURES</h2>
+	<p>By OBJECT_STRUCTURES, at this point in development, we target:</p>
+	<ul>
+		<li><b>JS (Javascript) Components</b>: living on a web browser
+			(For instance similar to React Component), each component being a
+			tiny parts of the global display (like modal box, search bar, badges,
+			button, drop-down lists, slider, etc...) or macro-levels assemblies
+			(form, chart, dashboard, 3d-rendering devices, etc.)</li>
+		<li><b>CAD</b> construction tree OBJECT_STRUCTURE give the
+			logical sequences of operation that generate a specific shape. For
+			instance, it can be like: define a place in space, draw a 2D profile
+			on this plane, extrude this profile by 1m in a specific direction. On
+			one of the face of such extruded volume, draw another 2D profile and
+			extrude-cut through the entire previously generated volume. This
+			construction tree does not necessarily contained the results, but can
+			be limited to the sequence of operations.</li>
+		<li><b>CAD</b> B-REP OBJECT_STRUCTURE are object structures (for
+			instance ISO <b>STEP</b> format, or PARASOLID). In solid modeling and
+			computer-aided design, boundary representation—often abbreviated as
+			BREP is a method for representing shapes using the limits. A solid is
+			represented as a collection of connected surface elements, which
+			define the boundary between interior and exterior points. This data
+			structure is basically able to encode everything object we can
+			produce by industrial means (precise definition, absolute geometry
+			-pure vector format, nearly all possible product shapes like ones
+			found in transportation systems, consumer goods, spatial, process
+			industries, etc.). Note that CAD object structures differs from GlTF
+			since they are crafted to be mathematically accurate, rather than
+			just "look good" (which is the subject of glTF). Note also that BREP
+			does not contain information of the operations that produced this
+			shape (for instance, when saving a shape as .STEP on CAD editor, the
+			construction tree is lost forever, only remains the BREP, which is
+			sufficient for production tasks).</li>
+		<li>Similar to <b>glTF</b> (OpenGL Transmission Format), but not
+			identical. glTF describe a format for saving and transmitting 3D
+			scenes (including geometries, meshes, shaders, textures, morphes,
+			GlMatrix4, etc.). This format is design for one-time shipment of a
+			scene and can be added sync and integration features using BOHR.
+		</li>
+		<li>Physical problem statement, (like CFD configuration) that
+			gathers one or more 2D or 3D geometries (the fluid volume, as a BREP
+			for instance), boundaries conditions, type of materials involved,
+			models setup. This one can be distinct from the results of such
+			simulation.
+		<li>Complex 2D shapes encoded in <b>SVG (Scalable Vector
+				Graphics)</b>. For instance, used in complex chart, circuit display,
+			etc.
+		</li>
+	</ul>
+	<h2>Key concepts</h2>
+	<h3>Objects</h3>
+	<p>
+		<b>OBJECTS</b> are typical standard objects like ones defined in C++,
+		C#, Java, Javascript, Typescript, Python, etc. They basically all a
+		notion of
+		<code>fields</code>
+		, that is named properties (typed or not), and a notion of
+		<code>class</code>
+		which is the object pattern stating the expected properties we will
+		find in the object. Those properties are exactly (and statically
+		compiled) listed in types languages. For untyped language (namely
+		Javascript), class is more blurry concept replaced by
+		<code>Prototype</code>
+		but currently used like JAVA class.
+	</p>
+	<p>BOHR is language agnostic. For the remaining discussion, we'll
+		assume all supported languages match FIELD and CLASS definition as in
+		JAVA (Just need to refrain from using dynamic prototype modification
+		in Javascript).</p>
+
+	<h3>Graphs</h3>
+	<p>
+		<b>GRAPH</b> is simply a collection of OBJECT. For the purposes of
+		BOHR, all OBJECTS MUST have a unique identifier within the scope of
+		GRAPH. Although not strictly enforced, OBJECT identifier attribution
+		SHOULD NOT reuse identifier of OBJECTS removed from the GRAPH. Not
+		specific shape is assumed for this GRAPH. Notably, GRAPH can have more
+		complex that simple tree structure with parent referencing.
+	</p>
+	<p>All GRAPHs are identified by a UID.</p>
+
+	<h3>Lexicon</h3>
+	<p>
+		<b>LEXICON</b> is the description of the OBJECTS types (with their
+		types names, fields names, fields types, and inheritances
+		relationships. Note that Lexicon does not give
+	</p>
+	<p>All GRAPHs are identified by a UID.</p>
+
+
+	<h1>
+		<b>BOHR</b>: Design notes
+	</h1>
+	<h2>Typed vs. non-typed</h2>
+	<p>
+		BOHR Protocol evolved by itself to a <b>STRONGLY TYPED</b> protocol.
+		Main reason is that all targeted platform enforce string typing
+		(though each in a different manner):
+	</p>
+	<ul>
+		<li><i>JAVA</i>: Strongly typed by default</li>
+		<li><i>Javascript</i>: Loose typing, BUT: strongly typed under
+			the hood and IDE are now type-aware in auto-completion tools. So
+			mostly like it was strongly-typed.</li>
+		<li><i>TS</i>: Strongly typed by default</li>
+	</ul>
+	<p>Strong typing also offers the following advantages:</p>
+	<ul>
+		<li><i>more efficient</i>: Data typed not repeated over and over</li>
+		<li><i>more consistent</i>: Prevent wrong datatype when filling
+			objects.</li>
+	</ul>
+	<p>As a consequence, types carries fields description (name, code,
+		and type).</p>
+
+	<h2>Flow-based</h2>
+	<p>Definition of types and field types is not done once and for
+		all. Types declaration (and associated codes) is done in a full-lazy
+		manner, just before their first occurrence in the flow. This ensures
+		that types or type properties that are of no use for a specific flow
+		remained undefined, offering great performance and bandwidth
+		improvements when streaming data. And since the BOHR protocol is
+		almost fully dedicated to network flows, it is of the utmost
+		importance.</p>
+
+
+
+	<h1>
+		<b>BOHR</b>: Protocol KEYWORDS
+	</h1>
+
+
+	<h2>
+		<b>DELTA</b> definition
+	</h2>
+
+	<h3>
+		<b>OPEN_DELTA</b>: (code = 0x22, then CHECK_TAG = "&ltDelta:&gt")
+	</h3>
+	<p>Declare the opening of a delta block.</p>
+
+
+	<h3>
+		<b>CLOSE_DELTA</b>: (code = 0x26, then CHECK_TAG = "&lt/Delta&gt")
+	</h3>
+	<p>
+		Declare the closing of a delta block. Upon recpetion of this code,
+		delta is closed and all subsequent fields/nodes modifications must be
+		applied and
+		<code>postDeltaProcess()</code>
+		methods must be called on each modified nodes.
+	</p>
+
+
+	<h2>
+		<b>ACTIONS</b> definition
+	</h2>
+
+	<h3>
+		<b>REDEFINE_ROOT</b>: (code = 0x41)
+	</h3>
+	<p>Change the root of the current to the shell.</p>
+
+
+	<h2>
+		<b>TYPE</b> handling
+	</h2>
+
+	<h3>
+		<b>DECLARE_TYPE</b>: (code = 0x62)
+	</h3>
+	<p>
+		Define a new type and start a declare <b>section</b>. Following
+		encoding required:
+	</p>
+	<div class="code-box">
+		<div>
+			<b>byte[0]</b>: DECLARE_TYPE code
+		</div>
+		<div>
+			<b>byte[1]</b>: properties (8 booleans)
+		</div>
+		<div>
+			<b>NEXT bytes</b>: UTF8_L8STRING encoded name
+		</div>
+		<div>
+			<b>NEXT bytes</b>: UInt16 code associated with the defined type.
+		</div>
+		<div>
+			<b>NEXT bytes</b>: UInt16 code associated with the inherited type.
+		</div>
+	</div>
+	<p>Prototype chaining is done using the square rule:</p>
+	<ul>
+		<li>When a type A is first declared and inherits B, all fields
+			previously declared in B are copied to A</li>
+		<li>When a field definition is added to a type A, C inherits of
+			which, this fields is copied to C (and basically all sub-types).</li>
+	</ul>
+	<p>This way, all type have a proper copy of all relevant fields
+		readily available, without having to crawl for ancestors.</p>
+
+
+	<h3>
+		<b>UPDATE_TYPE</b>: (code = 0x64)
+	</h3>
+	<p>
+		Update a new type and start a declare <b>section</b>. Following
+		encoding required:
+	</p>
+	<div class="code-box">
+		<div>
+			<b>byte[0]</b>: DECLARE_TYPE code
+		</div>
+	</div>
+
+	<h3>
+		<b>DECLARE_FIELD</b>: (code = 0x72)
+	</h3>
+	<p>Define a new field. Following encoding required:</p>
+	<div class="code-box">
+		<div>
+			<b>byte[0]</b>: DECLARE_FIELD code
+		</div>
+		<div>
+			<b>byte[1]</b>: properties (8 booleans)
+		</div>
+		<div>
+			<b>NEXT bytes</b>: UTF8_L8STRING encoded name
+		</div>
+		<div>
+			<b>NEXT bytes</b>: UInt8 code associated with the defined type.
+		</div>
+		<div>
+			<b>NEXT bytes</b>: UInt16 code associated with the target type.
+		</div>
+	</div>
+
+	<h3>
+		<b>CLOSE_TYPE</b>: (code = 0x68)
+	</h3>
+	<p>Close a type definition section initiated by an DECLARE_TYPE or
+		an UPDATE_TYPE.</p>
+
+
+	<h2>
+		<b>NODE</b> handling
+	</h2>
+
+	<h3>
+		<b>CREATE_NODE</b>: (code = 0x82)
+	</h3>
+	<p>Create a new node and open a node definition section.</p>
+
+	/** * */ : , /** * */ : , /** * */ DECLARE_TYPE_AND_: 0x22, /** * */
+	CREATE_NODE: 0x23, /** * */ UPDATE_NODE: 0x24, /** * */ DELETE_NODE:
+	0x28, /** * */ DEFINE_FIELD_AND_SET_FIELD_VALUE: 0x36, /** * */
+	SET_FIELD_VALUE: 0x37, /** * */ CLOSE_NODE: 0x42,
+
+
+	<h3>
+		<b>UPDATE_NODE</b>: (code = 0x84)
+	</h3>
+	<p>Create a new node and open a node definition section.</p>
+
+
+	<h3>
+		<b>CLOSE_NODE</b>: (code = 0x88)
+	</h3>
+	<p>Close a type definition section initiated by an CREATE_NODE or
+		an UPDATE_NODE.</p>
+
+
+	<h1>
+		<b>BOHR</b>: FIELD TYPES DECLARATORS
+	</h1>
+
+	<!-- SYSTEM -->
+	<h2>
+		<b>SYSTEM</b>: (code-range: 0x0*)
+	</h2>
+	<p>Currently no field types describe in this code range, but
+		reserved for later employs.</p>
+
+
+	<!-- SYSTEM Structures -->
+	<h2>
+		<b>SYSTEM Structures</b>: (code-range: 0x1*)
+	</h2>
+
+	<h3>
+		<b>TUPLE</b>: (code = 0x12)
+	</h3>
+	<p>
+		TUPLEs are basically short arrays with specific fixed hard-coded
+		length. They are mainly used for linear algebra: MathVector{2,3,4}d,
+		MathSquareMatrix{2,3,4}d, MathAffine{2,3,4}d for which length never
+		exceed 20 elements, and for which high efficiency is required. The
+		array structure length is encoded on 8 bits (UInt8). A next byte
+		describing the type of data stored in the array is <b>MANDATORY</b>.
+		Encoding example follows:
+	</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for a type of data stored within the array (one
+			of UInt{8, 16, 32, 64}, Int{8, 16, 32, 64}, String, Float{32,64})
+		</div>
+		<div>
+			<b>bytes[2]</b>: length encoded in 8-bits
+		</div>
+		<div>
+			<b>bytes[3...3+4*length-1]</b>: (let's say we chose Float32 as data
+			stored) contiguous block of 4*length bytes encoding the array length
+			(4 bytes per float, length times floats).
+		</div>
+	</div>
+	<p>Valid for encoding ARRAY for the following field signatures:</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+		<li>String</li>
+		<li>etc...</li>
+	</ul>
+
+	<h3>
+		<b>ARRAY</b>: (code = 0x14)
+	</h3>
+	<p>Array structure whose length is varying (and within [0, ...,
+		(2^31-1)], encoded as Uint32). Encoding is as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for a type of data stored within the array (one
+			of UInt{8, 16, 32, 64}, Int{8, 16, 32, 64}, String, Float{32,64})
+		</div>
+		<div>
+			<b>bytes[3,4]</b>: (let's say we chose UInt16 as length encoding) two
+			bytes encode length
+		</div>
+		<div>
+			<b>bytes[5...5+4*length-1]</b>: (let's say we chose Float32 as data
+			stored) contiguous block of 4*length bytes encoding the array length
+			(4 bytes per float, length times floats).
+		</div>
+	</div>
+	<p>
+		Valid for encoding
+		<code>Array</code>
+		for the following field signatures:
+	</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+		<li>String</li>
+	</ul>
+	<p>
+		<b>NOTE</b>: Array of length UInt64 are syntaxically valid but are
+		discouraged for the following reasons:
+	</p>
+	<ul>
+		<li>Not supported on pretty much ALL environments: GPU, Java,
+			Javascript, ...</li>
+		<li>Array larger than 2^31 - 1 ~ 2e9 is bad coding (especially
+			for networks). Use chunks instead.</li>
+	</ul>
+
+	<h3>
+		<b>HASH_MAP</b>: (code = 0x16)
+	</h3>
+	<p>Length encoded as an UInt32 (32bits, 4 bytes) - sufficiently
+		efficient for MAP which are thought as always being large structures.
+		Valid for for the following field signatures:</p>
+	<ul>
+		<li>Map&#60Unsigned integers, *&#62</li>
+		<li>Map&#60Integers, *&#62</li>
+		<li>Map&#60String, *&#62</li>
+	</ul>
+
+	<h3>
+		<b>TREE_MAP</b>: (code = 0x17)
+	</h3>
+	<p>
+		Valid for encoding
+		<code>Array</code>
+		for the following field signatures:
+	</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+	</ul>
+
+	<!-- BYTE -->
+	<h2>
+		<b>BYTE</b> Field Types: (code-range: 0x2*)
+	</h2>
+
+	<h3>
+		<b>BYTE</b>: (code = 0x22)
+	</h3>
+	<p>
+		Valid for encoding
+		<code>byte</code>
+		.
+	</p>
+
+
+	<!-- BOOLEAN -->
+	<h2>
+		<b>BOOLEAN</b> Field Types: (code-range: 0x3*)
+	</h2>
+
+	<h3>
+		<b>BOOL8</b>: Boolean field(code = 0x32)
+	</h3>
+	<p>Special encoding (on 8bits) of boolean value, with following
+		preset values:</p>
+	<ul>
+		<li><b>FALSE</b>: (code = 0x37)</li>
+		<li><b>TRUE</b>: (code = 0x51)</li>
+	</ul>
+	<p>Environments mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a plain <code>boolean</code>, for both
+			encoding and decoding.
+		<li><i>Javascript/Typescript</i>: mapped to a <code>Boolean</code>
+			when decoding, same thing when encoding.</li>
+	</ul>
+
+	<h3>
+		<b>BOOL8_BIT_ARRAY</b>: Boolean field(code = 0x33)
+	</h3>
+	<p>Special encoding (on 8bits) of a boolean array value, with
+		following preset values:</p>
+	<ul>
+		<li><b>FALSE</b>: bit = 0</li>
+		<li><b>TRUE</b>: bit = 1</li>
+	</ul>
+	<p>Environments mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a plain <code>boolean[8]</code>, for
+			both encoding and decoding.
+		<li><i>Javascript/Typescript</i>: mapped to a <code>Boolean[8]</code>
+			when decoding, same thing when encoding.</li>
+	</ul>
+
+	<h3>
+		<b>BOOL64</b>: Bool64 (code = 0x38)
+	</h3>
+	<p>
+		Special encoding (on 64bits) of the
+		<code>Bool64</code>
+		boolean array value
+	</p>
+
+
+	<!-- UNSIGNED INTEGER -->
+	<h2>
+		<b>UNSIGNED INTEGER</b> Field Types: (code-range: 0x4*)
+	</h2>
+
+	<h3>
+		<b>UINT8</b>: 8-bits Unsigned Integer (code = 0x41)
+	</h3>
+	<p>
+		Field value is encoded with an 8-bits Unsigned Integer. Used for cases
+		where integer range is known. Typical cases are <b>Enumerables</b>
+		ordinal codes (which mostly fall into the [0x00, ..., 0xff] range),
+		state flags). Environments mapping as follows:
+	</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>int</code> when decoding for
+			the sake of simplicity, same thing when encoding.
+		<li><i>Javascript</i>: mapped to a <code>Number</code> when
+			decoding, same thing when encoding. Note that <code>Number</code> can
+			only use 53 bits as an unsigned integer. So no limits on unsigned
+			integers.</li>
+	</ul>
+	<h3>
+		<b>UINT16</b>: 16-bits Unsigned Integer (code = 0x42)
+	</h3>
+	<p>
+		Field value is encoded with an 8-bits Unsigned Integer. Used for cases
+		where integer range is known. Typical cases are <b>Enumerables</b>
+		ordinal codes (which mostly fall into the [0x00, ..., 0xff] range),
+		state flags). Environments mapping as follows:
+	</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>short</code> when decoding,
+			same thing when encoding. Note that <code>short</code> can only use
+			15 bits as an unsigned integer. So any integer greater that 2^15-1
+			will result in a error since last bit is used by JAVA for sign.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>UINT32</b>: 32-bits Unsigned Integer (code = 0x44)
+	</h3>
+	<p>Encoding field value on 32-bits Unsigned Integer. Use when need
+		general unsigned integer. Environments mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>int</code> when decoding, same
+			thing when encoding. Note that <code>int</code> can only use 31 bits
+			as an unsigned integer. So any integer greater that 2^31-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>UINT64</b>: 64-bits Unsigned Integer (code = 0x48)
+	</h3>
+	<p>Encoding on 64-bits for Unsigned Integer. Environments mapping
+		as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>long</code> when decoding,
+			same thing when encoding. Note that <code>long</code> can only use 63
+			bits as an unsigned integer. So any integer greater that 2^63-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing * when encoding. Note that <code>Number</code> can only
+			use 53 bits as an * unsigned integer. So any integer greater that
+			2^53-1 will result in a error since used by JAVA for signed integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>TUPLE of UINT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for tuple type: One of { UInt8, UInt16, UInt32,
+			UInt64 }
+		</div>
+		<div>
+			<b>bytes[2]</b>: fixed-size of TUPLE (within the [0x00, ..., 0xff]
+			range, encoded as UInt8)
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			of fixed-size, when decoding (UInt8[] would logically been mapped to
+			a <code>short[]</code>, but easier to code with <code>int[]</code>),
+			same thing when encoding. UInt8, UInt16, UInt32 mapped to <code>int[]</code>,
+			UInt64 mapped to <code>long[]</code>.</li>
+		<li><i>Javascript</i>: mapped to a simple <code>Array</code>
+			Javascript object.</li>
+	</ul>
+
+
+	<h3>
+		<b>ARRAY of UINT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for stored type: One of { UInt8, UInt16,
+			UInt32, UInt64 }
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for length encoding (One of { UInt8, UInt16,
+			UInt32, UInt64 })
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Uint{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>. Two reasons for that:
+			<ul>
+				<li>First <code>TypedArray</code>s are byte-buffered structures
+					which bring significant speed and memory footprint improvement
+					compared to <code>Array</code>.
+				</li>
+				<li>second <code>TypedArray</code>s are actually mandatory for
+					3D (WebGL for instance).
+				</li>
+			</ul></li>
+	</ul>
+
+	<h3>
+		<b>MAP of * indexed by UINT{8, 16, 32, 64}</b>: (3-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for one of L{8, 16, 32}ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for one of UInt{8, 16, 32, 64}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Uint{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>. Two reasons for that:
+			<ul>
+				<li>First <code>TypedArray</code>s are byte-buffered structures
+					which bring significant speed and memory footprint improvement
+					compared to <code>Array</code>.
+				</li>
+				<li>second <code>TypedArray</code>s are actually mandatory for
+					3D (WebGL for instance).
+				</li>
+			</ul>
+	</ul>
+
+	<!-- SIGNED INTEGER -->
+	<h2>
+		<b>(SIGNED) INTEGER</b> values: (code-range: 0x5*)
+	</h2>
+
+	<h3>
+		<b>INT8</b>: 8-bits Integer (code = 0x51)
+	</h3>
+	<p>Field value encoding based on 8-bits Integer. Environments
+		mappings as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>int</code> when decoding for
+			the sake of simplicity, same thing when encoding.
+		<li><i>Javascript</i>: mapped to a <code>Number</code> when
+			decoding, same thing when encoding. Note that <code>Number</code> can
+			only use 53 bits as an unsigned integer. So no limits on unsigned
+			integers.</li>
+	</ul>
+
+	<h3>
+		<b>INT16</b>: 16-bits Integer (code = 0x52)
+	</h3>
+	<p>Field value encoding based onEncoding on 16-bits Integer.
+		Environments mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>short</code> when decoding,
+			same thing when encoding. Note that <code>short</code> can only use
+			15 bits as an unsigned integer. So any integer greater that 2^15-1
+			will result in a error since last bit is used by JAVA for sign.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>INT32</b>: 32-bits Integer (code = 0x54)
+	</h3>
+	<p>Field value encoding based on 32-bits Unsigned Integer.
+		Environments mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>int</code> when decoding, same
+			thing when encoding. Note that <code>int</code> can only use 31 bits
+			as an unsigned integer. So any integer greater that 2^31-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>INT64</b>: 64-bits Integer (code = 0x58)
+	</h3>
+	<p>Field value encoding based on 64-bits Integer. Environments
+		mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>long</code> when decoding,
+			same thing when encoding. Note that <code>long</code> can only use 63
+			bits as an unsigned integer. So any integer greater that 2^63-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing * when encoding. Note that <code>Number</code> can only
+			use 53 bits as an * unsigned integer. So any integer greater that
+			2^53-1 will result in a error since used by JAVA for signed integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>TUPLE of INT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[0]</b>: code for type stored (here: one of Int{8, 16, 32,
+			64})
+		</div>
+		<div>
+			<b>bytes[2]</b>: length encoded as an UInt8 (max length = 256)
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Int{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>. Reasons for using
+			TypedArrays already stated above.</li>
+	</ul>
+
+
+	<h3>
+		<b>ARRAY of INT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for type of value stored: one of Int{8, 16, 32,
+			64}
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for length encoding: one of UInt{8, 16, 32}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Int{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>.</li>
+	</ul>
+
+
+	<!-- FLOAT -->
+	<h2>
+		<b>FLOAT</b> values: (code-range: 0x6*)
+	</h2>
+
+
+	<h3>
+		<b>FLOAT32</b>: (code = 0x62)
+	</h3>
+	<p>use IEEE industry-wide standard Float encoding on 32bits (4
+		bytes). Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>float</code> or a <code>double</code>
+			according to setter.</li>
+		<li><i>Javascript</i>: mapped to a <code>Number</code>.</li>
+	</ul>
+
+	<h3>
+		<b>FLOAT64</b>: (code = 0x64)
+	</h3>
+	<p>use IEEE industry-wide standard encoding. Environment mapping as
+		follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>float</code>.</li>
+		<li><i>Javascript</i>: mapped to a <code>Number</code>.</li>
+	</ul>
+
+
+	<h3>
+		<b>TUPLE of FLOAT{32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[0]</b>: code for type stored (here: one of Float{32, 64})
+		</div>
+		<div>
+			<b>bytes[2]</b>: hard-coded fixed-length encoded as an UInt8 (max
+			length = 256)
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>float[]</code> or <code>double[]</code>
+			when decoding, same thing when encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Float{32,
+				64}Array</code> special Javascript <code>TypedArray</code>. Reasons for
+			using TypedArrays already stated above.
+	</ul>
+
+
+	<h3>
+		<b>ARRAY of FLOAT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for type of value stored: one of Float{32, 64}
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for length encoding: one of UInt{8, 16, 32}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Int{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>.</li>
+	</ul>
+
+
+	<!-- STRING -->
+	<h2>
+		<b>STRING</b> field values: (code-range: 0x7*)
+	</h2>
+	<p>String are length-encoded (no terminating special char) for
+		performance reasons and buffering capabilities. Here is a small review
+		of String encoding / Charset available at the time of writing:</p>
+	<ul>
+		<li><b>ASCII</b>: [OF-INTEREST] the simplest (and the oldest)
+			format is of importance since coding is mostly ASCII compliant.</li>
+		<li><b>UTF8</b>: [OF-INTEREST] the most clever and most extensive
+			charset available to date. No overhead compared to ASCII on the ASCII
+			charset.</li>
+		<li><b>UTF-16</b>: [NO-INTEREST] Old style 2bytes per char
+			encoding style: 2x overhead for ASCII characters AND considerably
+			smaller charset compared to UTF8.</li>
+	</ul>
+	<p>Simple conclusion: No other format than UTF8 have interest. As a
+		consequence, UTF8 is the only format considered for BOHR.</p>
+	<p>Regarding size, most String usages only require quite small
+		Strings. See review below:</p>
+	<ul>
+		<li><b>Names:</b> (Think username, First name, Last name, pseudo,
+			etc.) A 256 length limit is acceptable</li>
+		<li><b>Password:</b> Human-typed password rarely exceed 128
+			(no-one can exceed this size and memorized it).</li>
+		<li><b>Enumerable-name:</b>Ok for length limited by 256</li>
+	</ul>
+	<p>Therefore, we distinguish STRING and TEXT, whose maximal size
+		are respectively: 2^8=256 and 2^31~4e9</p>
+
+	<h3>
+		<b>STRING_UTF8</b>: (code = 0x72)
+	</h3>
+	<p>Length is encoded with a UInt7x (first position)</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>String</code></li>
+		<li><i>Javascript</i>: mapped to a <code>string</code>.</li>
+	</ul>
+
+	<h3>
+		<b>ARRAY of STRING/TEXT</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for type of value stored: one of {UTF8_String,
+			UTF8_TEXT}
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for length encoding: one of UInt{8, 16, 32}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>String[]</code> object.</li>
+		<li><i>Javascript</i>: mapped to a <code>Int{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>.</li>
+	</ul>
+
+
+	<!-- OBJECT -->
+	<h2>
+		<b>OBJECT</b> field values: (code-range: 0x8*)
+	</h2>
+
+
+	<h3>
+		<b>S8OBJECT</b>: (code = 0x82)
+	</h3>
+	<p>Inside a shell:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>float</code> or a <code>double</code>
+			according to setter.</li>
+		<li><i>Javascript</i>: mapped to a <code>Number</code>.</li>
+	</ul>
+
+	<h3>
+		<b>S8REF</b>: (code = 0x84)
+	</h3>
+	<p>In a different shell:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>float</code>.</li>
+		<li><i>Javascript</i>: mapped to a <code>Number</code>.</li>
+	</ul>
+
+
+	<h3>
+		<b>TUPLE of S8{OBJECT, REF}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[0]</b>: code for type stored (here: one of S8{OBJECT, REF})
+		</div>
+		<div>
+			<b>bytes[2]</b>: hard-coded fixed-length encoded as an UInt8 (max
+			length = 256)
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>float[]</code> or <code>double[]</code>
+			when decoding, same thing when encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Float{32,
+				64}Array</code> special Javascript <code>TypedArray</code>. Reasons for
+			using TypedArrays already stated above.
+	</ul>
+
+	<h3>
+		<b>ARRAY of S8{OBJECT, REF}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for type of value stored: one of S8{OBJECT,
+			REF}
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for length encoding: one of UInt{8, 16, 32}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>Object[]</code> for
+			construction. The setter is responsible for actual casting to the
+			underlying acceptable type (for instance a <code>ConcurrentLinkedQueue</code>,
+			which cannot be encoded in BOHR, since too much environment specific:
+			depends on Thread Model, etc.)</li>
+		<li><i>Javascript</i>: mapped to a <code>Array</code> that is
+			versatile enough to ensure all typical usage.</li>
+	</ul>
+</body>
+</html>

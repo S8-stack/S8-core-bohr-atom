@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SSH for server setup</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1>
+		<b>SSL</b> Server Setup
+	</h1>
+	<p>Setup the server using the followings steps:</p>
+	<h2>
+		<b>[0]</b> Setup SSH key on the server
+	</h2>
+	<p>We'll make the assumption will be using an OVH server (pretty
+		much the same for other suppliers). First move to your local store for
+		the ssh keys (for instance <code>/Users/pc/qx/ssh/qxloop</code>).</p>
+	<div class="code-box">ssh-keygen -b 4096</div>
+	<p>
+		<code>-b 4096</code>
+		means that we want 4096 bit long key
+	</p>
+	<p>This command prompts for passphrase. It also prompts for a filename (choose something meaningful, like qxloop-front).</p>
+	<p>this command generate two files: xx and xx.pub (private and
+		public key). Public key is to be copied on the server admin panel
+		(User account > Services > SSH Key > Create a new key). Don't forget
+		to include this key on any new server OS installation.</p>
+	<h2>
+		<b>[1]</b> Login on the server over SSH
+	</h2>
+	<p>For the following, we assume that:</p>
+	<ul>
+		<li>The (local, i.e. on client/dev machine) location of the <b>private</b>
+			SSH key is <code>~/qx/ssh/ovh-server.ssh</code> , from previsou step.
+		</li>
+		<li>the user name is <code>root</code>. (NOTE: on OVH Server with
+			Ubuntu installed, <code>ubuntu</code> is preferred)
+		</li>
+		<li>The the server address (DNS) is <code>ns352508.ip-46-105-114.eu</code>
+			as advertised by the dedicated servers provider.
+		</li>
+	</ul>
+	<div class="code-box">
+		ssh -i ~/qx/ssh/ovh-server.ssh <i>root</i>@ns352508.ip-46-105-114.eu
+	</div>
+	<p>This command is resolving identity directly from private key
+		(allow to use multiple SSH-key on the same dev machine).</p>
+	<p>NOTE: you'll be prompted to enter pass-phrase (see previous
+		step).</p>
+	<p>NOTE2: you'll be prompted to enter pass-phrase (see previous
+		step).</p>
+	<h2>
+		<b>[2]</b> Install the JVM on the server
+	</h2>
+	<p>Once connected, switch to sudo mode, using:</p>
+	<div class="code-box">sudo -i</div>
+	<p>Then, good thing is to always update your system first before
+		you do anything else. Run the following commands (in sudo mode,
+		remember you're now sudo):</p>
+	<div class="code-box">apt-get update && apt-get upgrade</div>
+	<p>Then install the latest version of JAVA using:</p>
+	<div class="code-box">apt-get install default-jdk</div>
+	<h2>
+		<b>[3]</b> Push codebase & data
+	</h2>
+	<p>Use Filezilla with the private key and previous settings</p>
+</body>
+</html>

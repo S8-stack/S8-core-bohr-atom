@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>SSH for server setup</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<h1>
+		<b>BOHR</b> Protocol Overview
+	</h1>
+	<p>Bohr protocol allows node to node data structure synchronization</p>
+
+	<h1>
+		<b>BOHR</b> Encoding
+	</h1>
+
+	<!-- SYSTEM -->
+	<h2>
+		<b>SYSTEM</b>: (code-range: 0x0*)
+	</h2>
+	<h3>
+		<b>NULL</b>: (code = 0x00)
+	</h3>
+	<p>Null: valid for all arrays and object-type data (String, object)</p>
+	
+	<h3>
+		<b>ZERO</b>: (code = 0x02)
+	</h3>
+	<p>
+		Valid for encoding <b>zero</b> for the following field signatures:
+	</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+	</ul>
+
+	<h3>
+		<b>ONE</b>: (code = 0x03)
+	</h3>
+	<p>
+		Valid for encoding <b>one</b> for the following field signatures:
+	</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+	</ul>
+
+
+	<!-- SYSTEM Structures -->
+	<h2>
+		<b>SYSTEM Structures</b>: (code-range: 0x1*)
+	</h2>
+
+	<h3>
+		<b>EMPTY_ARRAY</b>: (code = 0x11)
+	</h3>
+	<p>
+		Valid for encoding
+		<code>Array</code>
+		for the following field signatures:
+	</p>
+	<ul>
+		<li>Empty arrays of Unsigned integers</li>
+		<li>Empty arrays of Integers</li>
+		<li>Empty arrays of Float</li>
+		<li>Empty arrays of String</li>
+	</ul>
+	<p>Mainly used for pathname mappings: empty->no mappings</p>
+
+	<h3>
+		<b>TUPLE</b>: (code = 0x12)
+	</h3>
+	<p>
+		TUPLEs are basically short arrays. They are mainly used for linear
+		algebra: MathVector{2,3,4}d, MathSquareMatrix{2,3,4}d,
+		MathAffine{2,3,4}d for which length never exceed 20 elements, and for which
+		high efficiency is required. The array structure length is encoded on
+		8 bits (UInt8). A next byte describing the type of data stored in the
+		array is <b>MANDATORY</b>. Encoding example follows:
+	</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for a type of data stored within the array (one
+			of UInt{8, 16, 32, 64}, Int{8, 16, 32, 64}, String, Float{32,64})
+		</div>
+		<div>
+			<b>bytes[2]</b>: length encoded in 8-bits
+		</div>
+		<div>
+			<b>bytes[3...3+4*length-1]</b>: (let's say we chose Float32 as data
+			stored) contiguous block of 4*length bytes encoding the array length
+			(4 bytes per float, length times floats).
+		</div>
+	</div>
+	<p>Valid for encoding ARRAY for the following field signatures:</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+		<li>String</li>
+	</ul>
+
+	<h3>
+		<b>ARRAY</b>: (code = 0x14)
+	</h3>
+	<p>Array structure whose length encoding is described by the next
+		byte (an UNSIGNED_INTEGERS: UInt{8,16,32,64}). Encoding is as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for a length encoding (one of UInt{8, 16, 32})
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for a type of data stored within the array (one
+			of UInt{8, 16, 32, 64}, Int{8, 16, 32, 64}, String, Float{32,64})
+		</div>
+		<div>
+			<b>bytes[3,4]</b>: (let's say we chose UInt16 as length encoding) two
+			bytes encode length
+		</div>
+		<div>
+			<b>bytes[5...5+4*length-1]</b>: (let's say we chose Float32 as data
+			stored) contiguous block of 4*length bytes encoding the array length
+			(4 bytes per float, length times floats).
+		</div>
+	</div>
+	<p>
+		Valid for encoding
+		<code>Array</code>
+		for the following field signatures:
+	</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+		<li>String</li>
+	</ul>
+	<p>
+		<b>NOTE</b>: Array of length UInt64 are syntaxically valid but are
+		discouraged for the following reasons:
+	</p>
+	<ul>
+		<li>Not supported on pretty much ALL environments: GPU, Java,
+			Javascript, ...</li>
+		<li>Array larger than 2^31 - 1 ~ 2e9 is bad coding (especially
+			for networks). Use chunks instead.</li>
+	</ul>
+
+	<h3>
+		<b>HASH_MAP</b>: (code = 0x16)
+	</h3>
+	<p>Length encoded as an UInt32 (32bits, 4 bytes) - sufficiently
+		efficient for MAP which are thought as always being large structures.
+		Valid for for the following field signatures:</p>
+	<ul>
+		<li>Map&#60Unsigned integers, *&#62</li>
+		<li>Map&#60Integers, *&#62</li>
+		<li>Map&#60String, *&#62</li>
+	</ul>
+
+	<h3>
+		<b>TREE_MAP</b>: (code = 0x17)
+	</h3>
+	<p>
+		Valid for encoding
+		<code>Array</code>
+		for the following field signatures:
+	</p>
+	<ul>
+		<li>Unsigned integers</li>
+		<li>Integers</li>
+		<li>Float</li>
+	</ul>
+
+	<!-- BYTE -->
+	<h2>
+		<b>BYTE</b> values: (code-range: 0x2*)
+	</h2>
+
+	<h3>
+		<b>BYTE</b>: (code = 0x22)
+	</h3>
+	<p>
+		Valid for encoding
+		<code>byte</code>
+		.
+	</p>
+
+
+	<!-- BOOLEAN -->
+	<h2>
+		<b>BOOLEAN</b> values: (code-range: 0x3*)
+	</h2>
+
+	<h3>
+		<b>FALSE_BOOL8</b>: (code = 0x32)
+	</h3>
+	<p>
+		Special encoding (on 8bits) of the
+		<code>false</code>
+		boolean value
+	</p>
+
+	<h3>
+		<b>TRUE_BOOL8</b>: (code = 0x33)
+	</h3>
+	<p>
+		Special encoding (on 8bits) of the
+		<code>false</code>
+		boolean value
+	</p>
+
+	<h3>
+		<b>BOOL64</b>: (code = 0x38)
+	</h3>
+	<p>
+		Special encoding (on 64bits) of the
+		<code>Bool64</code>
+		boolean array value
+	</p>
+
+
+	<!-- UNSIGNED INTEGER -->
+	<h2>
+		<b>UNSIGNED INTEGER</b> values: (code-range: 0x4*)
+	</h2>
+
+	<h3>
+		<b>UINT8</b>: 8-bits Unsigned Integer (code = 0x41)
+	</h3>
+	<p>Encoding on 8-bits for Unsigned Integer.Environments mapping as
+		follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>int</code> when decoding for
+			the sake of simplicity, same thing when encoding.
+		<li><i>Javascript</i>: mapped to a <code>Number</code> when
+			decoding, same thing when encoding. Note that <code>Number</code> can
+			only use 53 bits as an unsigned integer. So no limits on unsigned
+			integers.</li>
+	</ul>
+
+	<h3>
+		<b>UINT16</b>: 16-bits Unsigned Integer (code = 0x42)
+	</h3>
+	<p>Encoding on 16-bits for Unsigned Integer. Environments mapping
+		as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>short</code> when decoding,
+			same thing when encoding. Note that <code>short</code> can only use
+			15 bits as an unsigned integer. So any integer greater that 2^15-1
+			will result in a error since last bit is used by JAVA for sign.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>UINT32</b>: 32-bits Unsigned Integer (code = 0x44)
+	</h3>
+	<p>Encoding on 32-bits for Unsigned Integer. Environments mapping
+		as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>int</code> when decoding, same
+			thing when encoding. Note that <code>int</code> can only use 31 bits
+			as an unsigned integer. So any integer greater that 2^31-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>UINT64</b>: 64-bits Unsigned Integer (code = 0x48)
+	</h3>
+	<p>Encoding on 64-bits for Unsigned Integer. Environments mapping
+		as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>long</code> when decoding,
+			same thing when encoding. Note that <code>long</code> can only use 63
+			bits as an unsigned integer. So any integer greater that 2^63-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing * when encoding. Note that <code>Number</code> can only
+			use 53 bits as an * unsigned integer. So any integer greater that
+			2^53-1 will result in a error since used by JAVA for signed integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>TUPLE of UINT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for one of UInt{8, 16, 32, 64}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Uint{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>. Two reasons for that:
+			<ul>
+				<li>First <code>TypedArray</code>s are byte-buffered structures
+					which bring significant speed and memory footprint improvement
+					compared to <code>Array</code>.
+				</li>
+				<li>second <code>TypedArray</code>s are actually mandatory for
+					3D (WebGL for instance).
+				</li>
+			</ul>
+	</ul>
+	
+	
+	<h3>
+		<b>ARRAY of UINT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: length encoding
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for one of UInt{8, 16, 32, 64}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Uint{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>. Two reasons for that:
+			<ul>
+				<li>First <code>TypedArray</code>s are byte-buffered structures
+					which bring significant speed and memory footprint improvement
+					compared to <code>Array</code>.
+				</li>
+				<li>second <code>TypedArray</code>s are actually mandatory for
+					3D (WebGL for instance).
+				</li>
+			</ul>
+	</ul>
+
+
+	<h3>
+		<b>MAP of * indexed by UINT{8, 16, 32, 64}</b>: (3-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for one of L{8, 16, 32}ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: code for one of UInt{8, 16, 32, 64}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Uint{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>. Two reasons for that:
+			<ul>
+				<li>First <code>TypedArray</code>s are byte-buffered structures
+					which bring significant speed and memory footprint improvement
+					compared to <code>Array</code>.
+				</li>
+				<li>second <code>TypedArray</code>s are actually mandatory for
+					3D (WebGL for instance).
+				</li>
+			</ul>
+	</ul>
+
+	* */ public final static int UINT8_ARRAY32 = 0x71; public final static
+	int UINT16_ARRAY32 = 0x72; public final static int UINT32_ARRAY32 =
+	0x74; public final static int UINT64_ARRAY32 = 0x78;
+
+
+	<!-- SIGNED INTEGER -->
+	<h2>
+		<b>(SIGNED) INTEGER</b> values: (code-range: 0x5*)
+	</h2>
+
+	<h3>
+		<b>INT8</b>: 8-bits Integer (code = 0x51)
+	</h3>
+	<p>Encoding on 8-bits for Integer. Environments mapping as
+		follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>int</code> when decoding for
+			the sake of simplicity, same thing when encoding.
+		<li><i>Javascript</i>: mapped to a <code>Number</code> when
+			decoding, same thing when encoding. Note that <code>Number</code> can
+			only use 53 bits as an unsigned integer. So no limits on unsigned
+			integers.</li>
+	</ul>
+
+	<h3>
+		<b>INT16</b>: 16-bits Integer (code = 0x52)
+	</h3>
+	<p>Encoding on 16-bits for Integer. Environments mapping
+		as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>short</code> when decoding,
+			same thing when encoding. Note that <code>short</code> can only use
+			15 bits as an unsigned integer. So any integer greater that 2^15-1
+			will result in a error since last bit is used by JAVA for sign.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>INT32</b>: 32-bits Integer (code = 0x54)
+	</h3>
+	<p>Encoding on 32-bits for Unsigned Integer. Environments mapping
+		as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>int</code> when decoding, same
+			thing when encoding. Note that <code>int</code> can only use 31 bits
+			as an unsigned integer. So any integer greater that 2^31-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing when encoding. Note that <code>Number</code> can only use
+			53 bits as an unsigned integer. So no limits on unsigned integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>INT64</b>: 64-bits Integer (code = 0x58)
+	</h3>
+	<p>Encoding on 64-bits for Integer. Environments mapping
+		as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>long</code> when decoding,
+			same thing when encoding. Note that <code>long</code> can only use 63
+			bits as an unsigned integer. So any integer greater that 2^63-1 will
+			result in a error since used by JAVA for signed integers.</li>
+		<li>Javascript: mapped to a <code>Number</code> when decoding,
+			same thing * when encoding. Note that <code>Number</code> can only
+			use 53 bits as an * unsigned integer. So any integer greater that
+			2^53-1 will result in a error since used by JAVA for signed integers.
+		</li>
+	</ul>
+
+	<h3>
+		<b>TUPLE of INT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for TUPLE
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for one of Int{8, 16, 32, 64}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Int{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>. Reasons for using TypedArrays already stated above.
+	</ul>
+	
+	
+	<h3>
+		<b>ARRAY of INT{8, 16, 32, 64}</b>: (code-combo)
+	</h3>
+	<p>Only valid combinations as follows:</p>
+	<div class="code-box">
+		<div>
+			<b>bytes[0]</b>: code for ARRAY
+		</div>
+		<div>
+			<b>bytes[1]</b>: length encoding
+		</div>
+		<div>
+			<b>bytes[2]</b>: code for one of UInt{8, 16, 32, 64}
+		</div>
+	</div>
+	<p>Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to an <code>{short, int, long}[]</code>
+			when decoding (UInt8[] would logically been mapped to a <code>short[]</code>,
+			but easier to code with <code>int[]</code>), same thing when
+			encoding.</li>
+		<li><i>Javascript</i>: mapped to a <code>Uint{8,16,32}Array</code>
+			special Javascript <code>TypedArray</code>.</li>
+	</ul>
+	
+	
+	<!-- FLOAT -->
+	<h2>
+		<b>FLOAT</b> values: (code-range: 0x6*)
+	</h2>
+	
+	
+	<h3>
+		<b>FLOAT32</b>: (code = 0x62)
+	</h3>
+	<p>use IEEE industry-wide standard encoding. Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>float</code>.</li>
+		<li><i>Javascript</i>: mapped to a <code>Number</code>.</li>
+	</ul>
+	
+	<h3>
+		<b>FLOAT64</b>: (code = 0x64)
+	</h3>
+	<p>use IEEE industry-wide standard encoding. Environment mapping as follows:</p>
+	<ul>
+		<li><i>Java</i>: mapped to a <code>float</code>.</li>
+		<li><i>Javascript</i>: mapped to a <code>Number</code>.</li>
+	</ul>
+	
+	
+		<FLOAT = 0xaX> */ public final static int ZERO_FLOAT = 0xa0;
+		public final static int ONE_FLOAT = 0xa1; public final static int
+		POSITIVE_FLOAT_INFINITY = 0xa2; public final static int
+		NEGATIVE_FLOAT_INFINITY = 0xa3; public final static int FLOAT32 =
+		0xa4; public final static int FLOAT64 = 0xa8; public final static int
+		NOT_A_FLOAT_NUMBER = 0xaf; /* </FLOAT = 0xaX >
+		*/ /*
+		<FLOAT_ARRAY = 0xbX> */ public final static int
+		NULL_FLOAT_ARRAY = 0xb0; public final static int FLOAT32_ARRAY8 =
+		0xb2; /** * for vector{2;3;4}d; matrix{2;3;4}d and affines. */ public
+		final static int FLOAT64_ARRAY8 = 0xb4; /** * For general purpose
+		geometry buffer (vertex attributes for instance) */ public final
+		static int FLOAT32_ARRAY32 = 0xb6; /** * */ public final static int
+		FLOAT64_ARRAY32 = 0xb8; /* </FLOAT_ARRAY = 0xbX >
+		*/ /*
+		<STRING = 0xcX> */ public final static int NULL_STRING =
+		0xc0; public final static int EMPTY_STRING = 0xc1; public final static
+		int UTF8_L8STRING = 0xc2; public final static int UTF8_L16STRING =
+		0xc3; public final static int UTF8_L32STRING = 0xc4; /* </STRING = 0xcX >
+		*/ /*
+		<STRING_ARRAY = 0xdX> */ public final static int
+		NULL_STRING_ARRAY = 0xd0; public final static int UTF8_STRING_ARRAY8 =
+		0xd2; public final static int UTF8_STRING_ARRAY16 = 0xd3; public final
+		static int UTF8_STRING_ARRAY32 = 0xd4; /* </STRING_ARRAY = 0xdX >
+		*/ /*
+		<OBJECT = 0xeX> */ public final static int NULL_OBJECT =
+			0xe1; public final static int OBJECT_ID8 = 0xe1; public final static
+			int OBJECT_ID16 = 0xe2; public final static int OBJECT_ID24 = 0xe3;
+			public final static int OBJECT_ID32 = 0xe4; public final static int
+			OBJECT_ID40 = 0xe5; public final static int OBJECT_ID48 = 0xe6;
+			public final static int OBJECT_ID56 = 0xe7; public final static int
+			OBJECT_ID64 = 0xe8; /* </OBJECT = 0xeX >
+		*/ /*
+		<OBJECT_ARRAY = 0xfX> */ public final static int
+		NULL_OBJECT_ARRAY = 0xf0; public final static int OBJECT_ID_ARRAY8 =
+		0xf1; public final static int OBJECT_ID_ARRAY16 = 0xf2; public final
+		static int OBJECT_ID_ARRAY32 = 0xf4; /* </OBJECT_ARRAY = 0xfX >
+		*/
+</body>
+</html>
