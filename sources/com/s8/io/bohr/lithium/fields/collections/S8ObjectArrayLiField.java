@@ -28,10 +28,14 @@ import com.s8.io.bytes.alpha.ByteOutflow;
 import com.s8.io.bytes.alpha.MemoryFootprint;
 
 
+
 /**
  * 
- * @author pc
- *
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class S8ObjectArrayLiField extends CollectionLiField {
 

@@ -3,6 +3,17 @@ package com.s8.io.bohr.demos.repo2;
 import com.s8.io.bohr.atom.S8Field;
 import com.s8.io.bohr.atom.S8ObjectType;
 
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ *
+ */
 @S8ObjectType(name = "my-com-meeting-room#0002")
 public class MyCommercialMeetingRoom extends MyCommercialFloorElement {
 

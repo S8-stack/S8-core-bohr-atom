@@ -11,9 +11,10 @@ import com.s8.io.bohr.neodymium.fields.NdFieldFactory;
 import com.s8.io.bohr.neodymium.type.NdTypeBuilder;
 
 /**
- * 
- * @author pierreconvert
  *
+ *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
  */
 public class NdCodebaseBuilder {
 	

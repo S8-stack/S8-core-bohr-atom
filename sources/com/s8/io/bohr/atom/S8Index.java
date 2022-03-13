@@ -8,8 +8,10 @@ import com.s8.io.bytes.alpha.ByteOutflow;
 
 /**
  * 
- * @author pierreconvert
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public final class S8Index {
 	

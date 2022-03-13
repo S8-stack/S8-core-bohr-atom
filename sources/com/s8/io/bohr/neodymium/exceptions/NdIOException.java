@@ -4,6 +4,14 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+
+/**
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public class NdIOException extends IOException {
 	
 

@@ -2,6 +2,14 @@ package com.s8.io.bohr.atom;
 
 import java.nio.charset.StandardCharsets;
 
+
+/**
+ * 
+ * @author Pierre Convert
+ * Copyright (c) 2022, Pierre Convert. All rights reserved.
+ * 
+ * 
+ */
 public abstract class S8Branch {
 	
 

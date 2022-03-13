@@ -6,10 +6,11 @@ import com.s8.io.bohr.atom.S8ObjectType;
 
 /**
  * 
- * @author pierreconvert
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
-
 @S8ObjectType(name = "item-stock")
 public class MyItemStock extends S8Object {
 

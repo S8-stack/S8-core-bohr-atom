@@ -14,9 +14,9 @@ import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 /**
  * 
  * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
- * @author pc
- *
  */
 public class MethodNdHandler implements NdHandler {
 

@@ -29,8 +29,11 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * <li>Compiled type resolution, stored in S8Vertex extension (like LiVertex) (S8Object)</li>
  * </ul>
  * <p>This is the building block for using sweep on graph</p>
- * @author pierreconvert
  *
+ *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class NdVertex implements S8Vertex {
 

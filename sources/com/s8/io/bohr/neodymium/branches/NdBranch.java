@@ -46,6 +46,10 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * <li><b>PULL</b>: Read from I/O, .</li>
  * <li><b>
  * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class NdBranch extends S8Branch {
 

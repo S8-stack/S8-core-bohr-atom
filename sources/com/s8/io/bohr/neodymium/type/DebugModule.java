@@ -10,8 +10,10 @@ import com.s8.io.bohr.neodymium.fields.NdField;
 
 /**
  * 
- * @author pierreconvert
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class DebugModule {
 

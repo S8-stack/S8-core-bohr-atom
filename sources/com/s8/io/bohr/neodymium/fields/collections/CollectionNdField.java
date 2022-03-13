@@ -10,6 +10,14 @@ import com.s8.io.bohr.neodymium.handlers.NdHandler;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 
 
+/**
+ * 
+ * 
+ *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public abstract class CollectionNdField extends NdField {
 
 	

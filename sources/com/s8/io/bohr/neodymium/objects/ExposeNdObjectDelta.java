@@ -13,6 +13,15 @@ import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteOutflow;
 import com.s8.io.bytes.alpha.MemoryFootprint;
 
+
+/**
+ * 
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public class ExposeNdObjectDelta extends NdObjectDelta {
 	
 	public List<NdFieldDelta> deltas;

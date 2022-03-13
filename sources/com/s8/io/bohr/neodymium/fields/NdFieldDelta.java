@@ -8,8 +8,10 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
 
 /**
  * <p><code>NdFieldDelta</code> are immutable!</p>
- * @author pierreconvert
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public abstract class NdFieldDelta {
 		

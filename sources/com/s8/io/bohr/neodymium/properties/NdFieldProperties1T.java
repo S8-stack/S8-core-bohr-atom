@@ -3,6 +3,15 @@ package com.s8.io.bohr.neodymium.properties;
 import com.s8.io.bohr.neodymium.fields.EmbeddedTypeNature;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 
+
+/**
+ * 
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ *
+ */
 public class NdFieldProperties1T extends NdFieldProperties {
 
 	private final Class<?> baseType;

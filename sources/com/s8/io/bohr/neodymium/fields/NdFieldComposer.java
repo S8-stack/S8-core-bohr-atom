@@ -6,6 +6,14 @@ import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
+
+/**
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public abstract class NdFieldComposer {
 
 

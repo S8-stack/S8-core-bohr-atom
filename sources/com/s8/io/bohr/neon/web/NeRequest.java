@@ -2,7 +2,7 @@ package com.s8.io.bohr.neon.web;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.neon.BOHR_RequestProtocol;
+import com.s8.io.bytes.alpha.ByteInflow;
 
 
 
@@ -22,14 +22,15 @@ public class NeRequest {
 
 	private Object[] params;
 
-	public NeRequest(NeInflow inflow) throws IOException {
+	public NeRequest(ByteInflow inflow) throws IOException {
 		super();
 
 		// fields
-		parse(inflow);
+		//parse(inflow);
 	}
 
 
+	/*
 	private void parse(NeInflow inflow) throws IOException {
 
 		// method code
@@ -68,7 +69,7 @@ public class NeRequest {
 			}
 		}
 	}
-
+	*/
 
 
 	/**

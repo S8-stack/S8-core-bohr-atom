@@ -7,6 +7,14 @@ import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 
 
+
+/**
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public interface NdHandler {
 
 

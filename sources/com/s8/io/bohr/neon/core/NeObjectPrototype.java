@@ -58,6 +58,15 @@ import com.s8.io.bohr.neon.methods.primitives.UInt32NeMethod;
 import com.s8.io.bohr.neon.methods.primitives.UInt64NeMethod;
 import com.s8.io.bohr.neon.methods.primitives.UInt8NeMethod;
 
+
+
+/**
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ *
+ */
 public class NeObjectPrototype {
 
 

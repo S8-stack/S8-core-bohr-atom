@@ -11,7 +11,10 @@ import com.s8.io.bytes.alpha.ByteOutflow;
 
 /**
  * Can parse from a <code>ByteInflow</code> and compose to a <code>ByteOutflow</code>.
- * @author pc
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
 public interface S8Serializable {

@@ -1,5 +1,15 @@
 package com.s8.io.bohr.atom;
 
+
+
+/**
+ * 
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public class S8ShellStructureException extends Exception {
 
 	/**

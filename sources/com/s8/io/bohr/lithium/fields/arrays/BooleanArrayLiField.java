@@ -24,8 +24,10 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
 /**
  * later aggregate
  * 
- * @author pc
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class BooleanArrayLiField extends PrimitiveArrayLiField {
 

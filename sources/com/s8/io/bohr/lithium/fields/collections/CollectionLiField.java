@@ -10,6 +10,14 @@ import com.s8.io.bohr.lithium.handlers.LiHandler;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 
 
+
+/**
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public abstract class CollectionLiField extends LiField {
 
 	

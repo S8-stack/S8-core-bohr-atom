@@ -4,14 +4,15 @@ import java.io.IOException;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.neon.core.BuildScope;
-import com.s8.io.bohr.neon.web.NeOutflow;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
 /**
  * 
- * @author pierreconvert
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public abstract class NeValue {
 
@@ -58,7 +59,7 @@ public abstract class NeValue {
 	 * @param outflow
 	 * @throws IOException
 	 */
-	public void publishEntry(int index, NeOutflow outflow) throws IOException {
+	public void publishEntry(int index, ByteOutflow outflow) throws IOException {
 		
 		/* has delta */
 		if(hasDelta) {

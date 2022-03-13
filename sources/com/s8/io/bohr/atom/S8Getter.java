@@ -18,8 +18,9 @@ import java.lang.annotation.Target;
  * Note that rights is defined within method body with custom rules
  * </p>
  * 
- * @author pc
- *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.FIELD})

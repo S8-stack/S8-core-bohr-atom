@@ -36,8 +36,10 @@ import com.s8.io.bytes.alpha.ByteInflow;
  * <li>2 -> delta (still valid for 26.11)</li>
  * </ul>
  * 
- * @author pierreconvert
- *
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class NdTypeParser {
 

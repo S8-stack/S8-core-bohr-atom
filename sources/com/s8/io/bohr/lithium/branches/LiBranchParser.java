@@ -18,6 +18,15 @@ import com.s8.io.bohr.lithium.type.LiType;
 import com.s8.io.bohr.lithium.type.LiTypeParser;
 import com.s8.io.bytes.alpha.ByteInflow;
 
+
+/**
+ * 
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ *
+ */
 public class LiBranchParser {
 	
 

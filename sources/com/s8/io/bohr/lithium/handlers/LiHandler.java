@@ -7,6 +7,13 @@ import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 
 
+/**
+ * 
+ *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public interface LiHandler {
 
 

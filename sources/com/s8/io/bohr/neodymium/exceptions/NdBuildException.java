@@ -3,6 +3,15 @@ package com.s8.io.bohr.neodymium.exceptions;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+
+/**
+ * 
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ *
+ */
 public class NdBuildException extends Exception {
 
 	

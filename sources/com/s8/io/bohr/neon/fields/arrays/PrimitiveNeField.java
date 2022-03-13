@@ -6,8 +6,11 @@ import com.s8.io.bohr.neon.fields.NeValue;
 
 /**
  * 
- * @author pierreconvert
  *
+ *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public abstract class PrimitiveNeField extends NeField {
 

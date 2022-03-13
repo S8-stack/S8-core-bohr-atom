@@ -14,9 +14,9 @@ import com.s8.io.bohr.lithium.exceptions.LiIOException;
 /**
  * 
  * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
- * @author pc
- *
  */
 public class MethodLiHandler implements LiHandler {
 

@@ -36,7 +36,10 @@ package com.s8.io.bohr.atom;
  * <li><b>leaves</b>: typical used as leaves of a tree which nodes are <code>S8Object</code></li>
  * </ul>
  * 
- * @author pierreconvert
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 @S8ObjectType(name = "alpha/S8Object", sub= {})
 public class S8Object {

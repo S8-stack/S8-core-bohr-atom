@@ -6,6 +6,13 @@ import java.util.List;
 
 import com.s8.io.bohr.atom.S8Index;
 
+
+/**
+ * 
+ * @author Pierre Convert
+ * Copyright (c) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public abstract class BuildScope {
 	
 

@@ -38,9 +38,9 @@ import java.lang.annotation.Target;
  * <p>
  * Since storage format is not supposed to evolve, then we don't need to attach fix 
  * 
- * 
- * @author pierreconvert
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
 @Retention(RetentionPolicy.RUNTIME)

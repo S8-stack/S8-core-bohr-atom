@@ -8,6 +8,15 @@ import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.fields.EmbeddedTypeNature;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 
+
+/**
+ * 
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public abstract class NdFieldProperties {
 
 	

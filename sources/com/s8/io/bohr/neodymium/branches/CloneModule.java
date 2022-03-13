@@ -7,6 +7,14 @@ import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.neodymium.objects.NdVertex;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 
+
+/**
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public class CloneModule {
 	
 	private final NdBranch branch;

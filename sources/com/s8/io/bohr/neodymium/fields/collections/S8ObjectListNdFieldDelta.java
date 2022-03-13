@@ -17,8 +17,10 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
 
 /**
  * <p> Internal object ONLY</p>
- * @author pc
  *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class S8ObjectListNdFieldDelta<T extends S8Object> extends NdFieldDelta {
 

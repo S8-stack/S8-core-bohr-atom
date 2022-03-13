@@ -9,6 +9,14 @@ import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.objects.NdVertex;
 import com.s8.io.bohr.neodymium.type.NdType;
 
+
+/**
+ * 
+ *
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
+ * 
+ */
 public class DebugModule {
 
 	private final NdBranch shell;

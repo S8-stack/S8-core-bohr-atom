@@ -30,7 +30,10 @@ import com.s8.io.bohr.neodymium.type.NdType;
  * <li>Step<b>#4</b>: (Subsequent uses) When booting, server must generate <code>GphCodebase</code> using <code>GphCodebaseBuilder</code>, then
  * use the <code>GphCodebase.parse()</code> method to retrieve the proper encoding.</li>
  * </ul>
- * @author pc
+ * 
+ * 
+ * @author Pierre Convert
+ * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
 public class NdCodebase {

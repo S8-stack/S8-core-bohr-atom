@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+
 /**
  * 
- * @author pierreconvert
- *
+ * @author Pierre Convert
+ * Copyright (c) 2022, Pierre Convert. All rights reserved.
+ * 
  */
 public class S8BuildException extends IOException {
 
