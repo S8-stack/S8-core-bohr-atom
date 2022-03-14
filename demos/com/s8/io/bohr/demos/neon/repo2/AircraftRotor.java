@@ -18,7 +18,7 @@ public class AircraftRotor extends NeObject {
 	public AircraftRotor(NeBranch branch) {
 		super(branch, "Aircraft-rotor");
 		
-		forFloat64("pitch", p -> {
+		onFloat64("pitch", p -> {
 			setFloat64("pitch^2", p*p);
 			setFloat64("pitch*radius", p*getFloat64("radius"));
 		});

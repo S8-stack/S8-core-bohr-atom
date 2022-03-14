@@ -37,10 +37,17 @@ public class NeBranch extends S8Branch {
 	public long highestTypeCode = 0x02L;
 	
 	
+	
+	public final NeOutbound outbound;
+	
 	public NeBranch(String address, String id) {
 		super(address, id);
 		prototypes = new HashMap<>();
 		this.objects = new HashMap<>();
+		
+		
+		/* outbound */
+		this.outbound = new NeOutbound();
 	}
 
 
@@ -75,7 +82,11 @@ public class NeBranch extends S8Branch {
 	 */
 	S8Index appendObject(NeObject object) {
 		S8Index index = createNewIndex();
+		
 		objects.put(index, object);
+		
+		outbound.pushUnpublished(object);
+		
 		return index;
 	}
 	

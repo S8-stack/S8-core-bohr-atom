@@ -15,6 +15,21 @@ module com.s8.io.bohr {
 	exports com.s8.io.bohr.atom;
 
 
+	/* <neon> */
+	exports com.s8.io.bohr.neon.core;
+	
+	exports com.s8.io.bohr.neon.fields;
+	exports com.s8.io.bohr.neon.fields.primitives;
+	exports com.s8.io.bohr.neon.fields.arrays;
+	exports com.s8.io.bohr.neon.fields.objects;
+	
+	exports com.s8.io.bohr.neon.methods;
+	exports com.s8.io.bohr.neon.methods.primitives;
+	exports com.s8.io.bohr.neon.methods.arrays;
+	exports com.s8.io.bohr.neon.methods.objects;
+
+	/* </neon> */
+	
 	/* <lithium> */
 	exports com.s8.io.bohr.lithium.codebase;
 	exports com.s8.io.bohr.lithium.fields;

@@ -1,9 +1,12 @@
 package com.s8.io.bohr.neon.core;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.neon.fields.NeField;
+import com.s8.io.bohr.neon.fields.NeValue;
 import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeField;
 import com.s8.io.bohr.neon.fields.arrays.Float32ArrayNeField;
 import com.s8.io.bohr.neon.fields.arrays.Float64ArrayNeField;
@@ -57,6 +60,7 @@ import com.s8.io.bohr.neon.methods.primitives.UInt16NeMethod;
 import com.s8.io.bohr.neon.methods.primitives.UInt32NeMethod;
 import com.s8.io.bohr.neon.methods.primitives.UInt64NeMethod;
 import com.s8.io.bohr.neon.methods.primitives.UInt8NeMethod;
+import com.s8.io.bytes.alpha.ByteOutflow;
 
 
 
@@ -70,12 +74,17 @@ import com.s8.io.bohr.neon.methods.primitives.UInt8NeMethod;
 public class NeObjectPrototype {
 
 
+	/**
+	 * The name associated to this object type
+	 */
 	public final String name;
 
 	public final long code;
 
 	private NeField[] fields;
 
+	
+	private boolean isUnpublished;
 
 	private Map<String, NeField> fieldsByName;
 
@@ -97,6 +106,8 @@ public class NeObjectPrototype {
 
 		this.methods = new NeMethod[0];
 		this.methodsByName = new HashMap<>();
+		
+		isUnpublished = true;
 	}
 
 
@@ -1134,5 +1145,54 @@ public class NeObjectPrototype {
 		}
 
 		methodsByName.put(method.name, method);
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param outflow
+	 * @throws IOException
+	 */
+	public void declare(ByteOutflow outflow) throws IOException {
+		
+		if(isUnpublished) {
+			
+			// declare type
+			outflow.putUInt8(BOHR_Keywords.DECLARE_TYPE);
+			
+			/* publish name */
+			outflow.putStringUTF8(name);
+
+			/* publish code */
+			outflow.putUInt7x(code);
+			
+			isUnpublished = false;
+		}
+	}
+	
+	
+	/**
+	 * 
+	 * @param object
+	 * @param outflow
+	 * @throws IOException
+	 */
+	public void publishFields(NeValue[] values, ByteOutflow outflow) throws IOException {
+		
+		
+		int n = fields.length;
+		
+		for(int code =0; code < n; code++) {
+			NeField field = fields[code];
+			if(field != null) {
+				
+				/* declare field (if not already done) */
+				field.declare(outflow);
+			
+				/* publish entry */
+				values[code].publishEntry(code, outflow);
+			}
+		}
 	}
 }

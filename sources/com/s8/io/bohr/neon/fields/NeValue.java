@@ -55,11 +55,11 @@ public abstract class NeValue {
 	/**
 	 * 
 	 * @param type
-	 * @param index
+	 * @param code
 	 * @param outflow
 	 * @throws IOException
 	 */
-	public void publishEntry(int index, ByteOutflow outflow) throws IOException {
+	public void publishEntry(int code, ByteOutflow outflow) throws IOException {
 		
 		/* has delta */
 		if(hasDelta) {
@@ -68,7 +68,7 @@ public abstract class NeValue {
 			outflow.putUInt8(BOHR_Keywords.SET_VALUE);
 
 			// publish field code
-			outflow.putUInt8(index);
+			outflow.putUInt8(code);
 			
 			// publish field value
 			compose(outflow);

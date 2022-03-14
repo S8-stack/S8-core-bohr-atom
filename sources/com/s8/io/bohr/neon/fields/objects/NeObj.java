@@ -87,7 +87,7 @@ public class NeObj<T extends NeObject> extends NeField {
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			S8Index.write(value != null ? value.getIndex() : null, outflow);
+			S8Index.write(value != null ? value._index() : null, outflow);
 		}
 
 		

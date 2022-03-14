@@ -2,6 +2,7 @@ package com.s8.io.bohr.neon.fields;
 
 import java.io.IOException;
 
+import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -16,6 +17,8 @@ public abstract class NeField {
 	
 	
 	public NeObjectPrototype prototype;
+	
+	
 	/**
 	 * 
 	 */
@@ -26,6 +29,7 @@ public abstract class NeField {
 	
 	public final String name;
 	
+	private boolean isUnpublished = true;
 	
 	/**
 	 * 
@@ -67,9 +71,31 @@ public abstract class NeField {
 	/**
 	 * 
 	 * @param front
+	 * @throws IOException 
 	 */
 	//public abstract void sweep(Queue<QtzS8View<?>> front);
 
+	
+	
+	public void declare(ByteOutflow outflow) throws IOException {
+		
+		if(isUnpublished) {
+			
+			/* open declare tag */
+			outflow.putUInt8(BOHR_Keywords.DECLARE_FIELD);
+			
+			/* declare name */
+			outflow.putStringUTF8(name);
+			
+			/* publish encoding */
+			publishEncoding(outflow);
+			
+			/* code */
+			outflow.putUInt8(code);
+			
+			isUnpublished = false;
+		}
+	}
 
 	
 	

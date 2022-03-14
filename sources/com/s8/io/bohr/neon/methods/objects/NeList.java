@@ -99,7 +99,7 @@ public class NeList<T extends NeObject> extends NeField {
 				T item;
 				for(int i = 0; i < n; i++) {
 					item = list.get(i);
-					S8Index.write(item != null ? item.getIndex() : null, outflow);
+					S8Index.write(item != null ? item._index() : null, outflow);
 				}
 			}
 			else {
