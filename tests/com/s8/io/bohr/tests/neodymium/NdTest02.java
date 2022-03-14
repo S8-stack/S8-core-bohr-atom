@@ -31,34 +31,34 @@ public class NdTest02 {
 		initialize(MyBuilding.class, false);
 		
 		
-		NdBranch origin = new NdBranch(codebase, "com.toto.123.098", "master", 0x24);
+		NdBranch originBranch = new NdBranch(codebase, "com.toto.123.098", "master", 0x24);
 		
-		NdBranch working = origin.deepClone();
+		NdBranch workingBranch = originBranch.deepClone();
 		
 	
 		MyBuilding building = MyBuilding.create();
-		working.change(0x25, new S8Object[] { null, building});
+		workingBranch.update(0x25, new S8Object[] { null, building});
 		
 		// test copy
-		NdBranch testCopy = working.deepClone();
-		working.deepCompare(testCopy, writer);
+		NdBranch testCopy = workingBranch.deepClone();
+		workingBranch.deepCompare(testCopy, writer);
 		
 		
-		origin.commit(working);
+		originBranch.commit(workingBranch);
 		LinkedByteOutflow outflow = new LinkedByteOutflow(1024);
-		origin.push(outflow);
+		originBranch.push(outflow);
 		
 		LinkedByteInflow inflow = new LinkedByteInflow(outflow.getHead());
 		
 		
-		NdBranch clone = new NdBranch(codebase, "com.toto.123.098", "master", 0x25);
-		clone.pull(inflow);
+		NdBranch branchClone = new NdBranch(codebase, "com.toto.123.098", "master", 0x25);
+		branchClone.pull(inflow);
 		
-		clone.roll();
+		branchClone.roll();
 		
 		//rBranch.print(new OutputStreamWriter(System.out));
 		
-		clone.deepCompare(origin, writer);
+		branchClone.deepCompare(originBranch, writer);
 		
 		terminate();
 	}

@@ -152,7 +152,7 @@ public class NdBranch extends S8Branch {
 	 * @throws  
 	 * @throws IOException 
 	 */
-	public void change(long version, S8Object[] objects) throws IOException {
+	public void update(long version, S8Object[] objects) throws IOException {
 		
 		if(objects == null) {
 			throw new IOException("Must defined objects");
