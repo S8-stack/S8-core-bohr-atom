@@ -9,7 +9,6 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.atom.S8Field;
 import com.s8.io.bohr.atom.S8Getter;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Setter;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
@@ -169,7 +168,7 @@ public class S8ObjectLiField extends LiField {
 	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws LiIOException {
 		S8Object value = (S8Object) handler.get(origin);
 		if(value!=null) {
-			S8Index index = value.S8_index;
+			String index = value.S8_index;
 
 			scope.appendBinding(new BuildScope.Binding() {
 
@@ -251,9 +250,9 @@ public class S8ObjectLiField extends LiField {
 
 		private Object object;
 
-		private S8Index id;
+		private String id;
 
-		public ObjectBinding(Object object, S8Index id) {
+		public ObjectBinding(Object object, String id) {
 			super();
 			this.object = object;
 			this.id = id;
@@ -287,7 +286,7 @@ public class S8ObjectLiField extends LiField {
 
 		@Override
 		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
-			S8Index id = S8Index.read(inflow);
+			String id = inflow.getStringUTF8();
 			if(id != null) {
 				/* append bindings */
 				scope.appendBinding(new ObjectBinding(object, id));
@@ -341,11 +340,11 @@ public class S8ObjectLiField extends LiField {
 		public void composeValue(S8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			S8Object value = (S8Object) handler.get(object);
 			if(value != null) {
-				S8Index index = scope.append(value);
-				S8Index.write(index, outflow);
+				String index = scope.append(value);
+				outflow.putStringUTF8(index);
 			}
 			else {
-				S8Index.write(null, outflow);	
+				outflow.putStringUTF8(null);
 			}
 		}
 	}

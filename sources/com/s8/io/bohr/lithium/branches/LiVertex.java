@@ -6,7 +6,6 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.atom.S8Vertex;
@@ -112,7 +111,7 @@ public class LiVertex implements S8Vertex {
 	}
 	
 	
-	public S8Index getIndex() {
+	public String getIndex() {
 		return object.S8_index;
 	}
 	

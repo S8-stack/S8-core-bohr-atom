@@ -3,7 +3,6 @@ package com.s8.io.bohr.neon.fields.objects;
 import java.io.IOException;
 
 import com.s8.io.bohr.atom.BOHR_Types;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neon.core.BuildScope;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
@@ -87,7 +86,7 @@ public class NeObj<T extends NeObject> extends NeField {
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			S8Index.write(value != null ? value._index() : null, outflow);
+			outflow.putStringUTF8(value != null ? value._index() : null);
 		}
 
 		
@@ -95,7 +94,7 @@ public class NeObj<T extends NeObject> extends NeField {
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
 			
 			// get index
-			S8Index index = S8Index.read(inflow);
+			String index = inflow.getStringUTF8();
 			
 			if(index != null) {
 				scope.appendBinding(new BuildScope.Binding() {

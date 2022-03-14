@@ -9,7 +9,6 @@ import static com.s8.io.bohr.atom.BOHR_Keywords.UPDATE_NODE;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
@@ -139,7 +138,7 @@ public class LiBranchParser {
 		LiTypeParser typeParser = inbound.getTypeParserByCode(typeCode);
 		
 		/* index */
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 		
 		/* retrieve type */
 		LiType type = typeParser.getType();
@@ -170,7 +169,7 @@ public class LiBranchParser {
 	
 	public void onUpdateNode(ByteInflow inflow) throws IOException {
 		
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 		
 		LiVertex vertex = branch.vertices.get(index);
 		if(vertex == null) {
@@ -191,7 +190,7 @@ public class LiBranchParser {
 	 */
 	public void onExposeNode(ByteInflow inflow) throws IOException {
 		
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 		int slot = inflow.getUInt8();
 
 		LiVertex vertex = branch.vertices.get(index);
@@ -210,7 +209,7 @@ public class LiBranchParser {
 	public void onRemoveNode(ByteInflow inflow) throws IOException {
 
 		
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 		
 		/* remove vertex */
 		branch.vertices.remove(index);

@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.fields.NdFieldParser;
@@ -176,7 +175,7 @@ public class NdBranchParser {
 		
 		NdTypeParser typeParser = inbound.getTypeParserByCode(typeCode);
 		
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 		
 		/* create vertex */
 		NdVertex vertex = new NdVertex(branch, typeParser.getType());
@@ -205,7 +204,7 @@ public class NdBranchParser {
 	private void onUpdateNode(ByteInflow inflow) throws IOException {
 
 		/* index */
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 		
 		/* retrieve vertex */
 		NdVertex vertex = branch.vertices.get(index);
@@ -239,7 +238,7 @@ public class NdBranchParser {
 	private void onExposeNode(ByteInflow inflow) throws IOException {
 		
 		/* index */
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 
 		/* retrieve slot */
 		int slot = inflow.getUInt8();
@@ -255,7 +254,7 @@ public class NdBranchParser {
 	 */
 	private void onRemoveNode(ByteInflow inflow) throws IOException {
 		/* index */
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 
 		delta.appendObjectDelta(new RemoveNdObjectDelta(index));
 	}	

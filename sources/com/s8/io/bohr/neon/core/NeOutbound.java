@@ -15,13 +15,19 @@ import com.s8.io.bytes.alpha.ByteOutflow;
 public class NeOutbound {
 
 
+	/**
+	 * 
+	 */
 	private Queue<NeObject> unpublishedChanges;
 	
+	
+	/**
+	 * 
+	 */
 	public NeOutbound() {
 		super();
 		unpublishedChanges = new LinkedList<NeObject>();
 	}
-	
 	
 	
 	/**
@@ -42,10 +48,12 @@ public class NeOutbound {
 
 
 
-	public void pushUnpublished(NeObject object) {
+	/**
+	 * 
+	 * @param object
+	 */
+	public void notifyChanged(NeObject object) {
 		unpublishedChanges.add(object);
 	}
-	
-	
 	
 }

@@ -1,6 +1,5 @@
 package com.s8.io.bohr.neodymium.fields.objects;
 
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -21,7 +20,7 @@ public class InterfaceNdFieldDelta extends NdFieldDelta {
 
 	public final InterfaceNdField field;
 
-	public final S8Index index;
+	public final String index;
 
 	/**
 	 * 
@@ -29,7 +28,7 @@ public class InterfaceNdFieldDelta extends NdFieldDelta {
 	 * @param field
 	 * @param index
 	 */
-	public InterfaceNdFieldDelta(InterfaceNdField field, S8Index index) {
+	public InterfaceNdFieldDelta(InterfaceNdField field, String index) {
 		super();
 		this.field = field;
 		this.index = index;

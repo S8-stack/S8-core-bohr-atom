@@ -2,7 +2,6 @@ package com.s8.io.bohr.neodymium.objects;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neodymium.branches.NdBranch;
 import com.s8.io.bohr.neodymium.branches.NdOutbound;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
@@ -20,11 +19,11 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  */
 public abstract class NdObjectDelta {
 
-	public final S8Index index;
+	public final String index;
 
 
 
-	public NdObjectDelta(S8Index index) {
+	public NdObjectDelta(String index) {
 		super();
 		this.index = index;
 	}

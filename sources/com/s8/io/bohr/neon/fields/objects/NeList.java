@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.io.bohr.atom.BOHR_Types;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neon.core.BuildScope;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
@@ -99,7 +98,7 @@ public class NeList<T extends NeObject> extends NeField {
 				T item;
 				for(int i = 0; i < n; i++) {
 					item = list.get(i);
-					S8Index.write(item != null ? item._index() : null, outflow);
+					outflow.putStringUTF8(item != null ? item._index() : null);
 				}
 			}
 			else {
@@ -112,15 +111,15 @@ public class NeList<T extends NeObject> extends NeField {
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
 			int n = (int) inflow.getUInt7x();
 			if(n >= 0) {
-				List<S8Index> indices = new ArrayList<S8Index>(n);
-				for(int i = 0; i < n; i++) { indices.add(S8Index.read(inflow)); }
+				List<String> indices = new ArrayList<String>(n);
+				for(int i = 0; i < n; i++) { indices.add(inflow.getStringUTF8()); }
 				
 				scope.appendBinding(new BuildScope.Binding() {
 					
 					@Override
 					public void resolve(BuildScope scope) throws IOException {
 						list = new ArrayList<T>(n);
-						S8Index index;
+						String index;
 						for(int i = 0; i < n; i++) {
 							index = indices.get(i);
 							list.add(index != null ? (T) scope.retrieveObject(indices.get(i)) : null);

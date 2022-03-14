@@ -12,7 +12,6 @@ import java.util.Queue;
 
 import com.s8.io.bohr.atom.S8Field;
 import com.s8.io.bohr.atom.S8Getter;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Setter;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
@@ -180,10 +179,10 @@ public class S8ObjectListLiField<T extends S8Object> extends CollectionLiField {
 
 		private List<T> list;
 
-		private S8Index[] identifiers;
+		private String[] identifiers;
 
 
-		public ListBinding(List<T> list, S8Index[] indices) {
+		public ListBinding(List<T> list, String[] indices) {
 			super();
 			this.list = list;
 			this.identifiers = indices;
@@ -194,7 +193,7 @@ public class S8ObjectListLiField<T extends S8Object> extends CollectionLiField {
 		public void resolve(BuildScope scope) throws LiIOException {
 			int length = identifiers.length;
 			for(int i=0; i<length; i++) {
-				S8Index graphId = identifiers[i];
+				String graphId = identifiers[i];
 
 				if(graphId != null) {
 					// might be null
@@ -263,7 +262,7 @@ public class S8ObjectListLiField<T extends S8Object> extends CollectionLiField {
 			int n = value.size();
 
 			List<T> clonedList = new ArrayList<T>(n);
-			S8Index[] indices = new S8Index[n];
+			String[] indices = new String[n];
 			for(int i=0; i<n; i++) {
 				indices[i] = value.get(i).S8_index;
 			}
@@ -406,7 +405,7 @@ public class S8ObjectListLiField<T extends S8Object> extends CollectionLiField {
 
 		@Override
 		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
-			S8Index[] indices = deserializeIndices(inflow);
+			String[] indices = deserializeIndices(inflow);
 			if(indices != null) {
 				List<T> list = new ArrayList<T>(indices.length);
 				/* append bindings */
@@ -432,13 +431,13 @@ public class S8ObjectListLiField<T extends S8Object> extends CollectionLiField {
 		 * @return
 		 * @throws IOException
 		 */
-		public S8Index[] deserializeIndices(ByteInflow inflow) throws IOException {
+		public String[] deserializeIndices(ByteInflow inflow) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length >= 0) {
 
 				/* <data> */
-				S8Index[] indices = new S8Index[length];
-				for(int index=0; index<length; index++) { indices[index] = S8Index.read(inflow); }
+				String[] indices = new String[length];
+				for(int index=0; index<length; index++) { indices[index] = inflow.getStringUTF8(); }
 				/* </data> */
 
 				/* append bindings */
@@ -502,15 +501,15 @@ public class S8ObjectListLiField<T extends S8Object> extends CollectionLiField {
 					T itemObject = list.get(i);
 					
 					if(itemObject!=null) {
-						S8Index index = itemObject.S8_index;
+						String index = itemObject.S8_index;
 						if(index == null) {
 							index = scope.append(itemObject);
 							itemObject.S8_index = index;
 						}
-						S8Index.write(index, outflow);
+						outflow.putStringUTF8(index);
 					}
 					else {
-						S8Index.write(null, outflow);
+						outflow.putStringUTF8(null);
 					}
 				}
 			}

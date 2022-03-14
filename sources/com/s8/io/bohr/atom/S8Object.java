@@ -60,7 +60,7 @@ public class S8Object {
 	 * commit time.
 	 * </p>
 	 */
-	public S8Index S8_index = null;
+	public String S8_index = null;
 
 
 	/**

@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.branches.NdBranch;
 import com.s8.io.bohr.neodymium.branches.NdOutbound;
@@ -39,7 +38,7 @@ public class UpdateNdObjectDelta extends NdObjectDelta {
 	 * @param type
 	 * @param deltas
 	 */
-	public UpdateNdObjectDelta(S8Index index, NdType type, List<NdFieldDelta> deltas) {
+	public UpdateNdObjectDelta(String index, NdType type, List<NdFieldDelta> deltas) {
 		super(index);
 		
 		this.type = type;
@@ -61,7 +60,7 @@ public class UpdateNdObjectDelta extends NdObjectDelta {
 		outflow.putUInt8(BOHR_Keywords.UPDATE_NODE);
 
 		/* pass index */
-		S8Index.write(index, outflow);
+		outflow.putStringUTF8(index);
 
 		// produce all diffs
 		for(NdFieldDelta delta : deltas) {

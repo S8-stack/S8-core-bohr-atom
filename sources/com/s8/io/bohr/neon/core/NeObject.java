@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neon.fields.NeField;
 import com.s8.io.bohr.neon.fields.NeValue;
 import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeField;
@@ -88,7 +87,7 @@ public abstract class NeObject {
 	/**
 	 * index
 	 */
-	private S8Index index;
+	private String index;
 
 
 
@@ -115,7 +114,7 @@ public abstract class NeObject {
 	 * 
 	 * @return index
 	 */
-	public S8Index _index() {
+	public String _index() {
 
 		if(index == null) {
 
@@ -162,7 +161,7 @@ public abstract class NeObject {
 		if(!hasUnpublishedChanges) {
 
 			/* push toUnpublished */
-			branch.outbound.pushUnpublished(this);
+			branch.outbound.notifyChanged(this);
 			
 			/* has unpublished changes */
 			hasUnpublishedChanges = true;
@@ -174,7 +173,7 @@ public abstract class NeObject {
 	public void publish(ByteOutflow outflow) throws IOException {
 
 		if(hasUnpublishedChanges) {
-			S8Index index = _index();
+			String index = _index();
 
 			/* publish prototype */
 			prototype.declare(outflow);
@@ -188,7 +187,7 @@ public abstract class NeObject {
 				outflow.putUInt7x(prototype.code);
 
 				/* publish index */
-				S8Index.write(index, outflow);
+				outflow.putStringUTF8(index);
 
 				prototype.publishFields(values, outflow);			
 
@@ -200,7 +199,7 @@ public abstract class NeObject {
 				outflow.putUInt8(BOHR_Keywords.CREATE_NODE);
 
 				/* publish index */
-				S8Index.write(index, outflow);
+				outflow.putStringUTF8(index);
 
 				/* fields */
 				prototype.publishFields(values, outflow);
@@ -214,7 +213,7 @@ public abstract class NeObject {
 				outflow.putUInt8(BOHR_Keywords.EXPOSE_NODE);
 
 				/* publish index */
-				S8Index.write(index, outflow);
+				outflow.putStringUTF8(index);
 
 				/* fields */
 				outflow.putUInt8(slot);

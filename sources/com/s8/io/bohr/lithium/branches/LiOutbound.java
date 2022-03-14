@@ -10,7 +10,6 @@ import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
@@ -138,12 +137,12 @@ public class LiOutbound implements PublishScope {
 
 
 	@Override
-	public S8Index append(S8Object object) {
+	public String append(S8Object object) {
 		
 		/* append to branch (-> under the hood, add to unpublished) */
 		
 		/* retrieve object index */
-		S8Index index = object.S8_index;
+		String index = object.S8_index;
 		
 		/* if index is null, assigned a newly generated one */
 		if(index == null) {

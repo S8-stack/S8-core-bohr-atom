@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.io.bohr.atom.BOHR_Types;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
@@ -53,7 +52,7 @@ public class ListNeMethod<T extends NeObject> extends NeMethod {
 		if(length >= 0) {
 			List<T> list =  new ArrayList<T>();
 			for(int i=0; i<length; i++) {
-				S8Index index = S8Index.read(inflow);
+				String index = inflow.getStringUTF8();
 				list.add(index != null ? (T) branch.getVertex(index) : null);
 			}
 			((Lambda<T>) (func.lambda)).operate(list);	

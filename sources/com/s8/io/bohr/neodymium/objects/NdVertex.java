@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Queue;
 
 import com.s8.io.bohr.atom.S8Branch;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.atom.S8Vertex;
@@ -95,7 +94,7 @@ public class NdVertex implements S8Vertex {
 	}
 
 
-	public S8Index getIndex() {
+	public String getIndex() {
 		return object.S8_index;
 	}
 
@@ -167,7 +166,7 @@ public class NdVertex implements S8Vertex {
 	 */
 	public void publishCreate(List<NdObjectDelta> objectDeltas) throws NdIOException {
 		
-		S8Index index = object.S8_index;
+		String index = object.S8_index;
 		
 		List<NdFieldDelta> deltas = new ArrayList<NdFieldDelta>();
 

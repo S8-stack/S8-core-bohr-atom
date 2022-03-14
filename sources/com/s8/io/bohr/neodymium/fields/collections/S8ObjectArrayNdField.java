@@ -7,7 +7,6 @@ import java.util.Queue;
 
 import com.s8.io.bohr.atom.S8Field;
 import com.s8.io.bohr.atom.S8Getter;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Setter;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
@@ -184,7 +183,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 			int n = value.length;
 
 			S8Object[] clonedArray = new S8Object[n];
-			S8Index[] indices = new S8Index[n];
+			String[] indices = new String[n];
 			for(int i=0; i<n; i++) {
 				indices[i] = value[i].S8_index;
 			}
@@ -223,10 +222,10 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 	@Override
 	public NdFieldDelta produceDiff(S8Object object) throws NdIOException {
 		S8Object[] array = (S8Object[]) handler.get(object);
-		S8Index[] indices = null;
+		String[] indices = null;
 		if(array!=null) {
 			int n = array.length;
-			indices = new S8Index[n];
+			indices = new String[n];
 			S8Object item;
 			for(int i=0; i<n; i++) {
 				item = array[i];
@@ -305,10 +304,10 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 		private S8Object[] array;
 
-		private S8Index[] identifiers;
+		private String[] identifiers;
 
 
-		public Binding(S8Object[] array, S8Index[] indices) {
+		public Binding(S8Object[] array, String[] indices) {
 			super();
 			this.array = array;
 			this.identifiers = indices;
@@ -318,7 +317,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 		public void resolve(BuildScope scope) throws NdIOException {
 			int length = identifiers.length;
 			for(int i=0; i<length; i++) {
-				S8Index graphId = identifiers[i];
+				String graphId = identifiers[i];
 				array[i] = scope.retrieveObject(graphId);
 			}
 		}
@@ -344,7 +343,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 		@Override
 		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
-			S8Index[] indices = deserializeIndices(inflow);
+			String[] indices = deserializeIndices(inflow);
 			if(indices != null) {
 				S8Object[] array = new S8Object[indices.length];
 				/* append bindings */
@@ -375,13 +374,13 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 		 * @return
 		 * @throws IOException
 		 */
-		public S8Index[] deserializeIndices(ByteInflow inflow) throws IOException {
+		public String[] deserializeIndices(ByteInflow inflow) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length >= 0) {
 
 				/* <data> */
-				S8Index[] indices = new S8Index[length];
-				for(int index=0; index<length; index++) { indices[index] = S8Index.read(inflow); }
+				String[] indices = new String[length];
+				for(int index=0; index<length; index++) { indices[index] = inflow.getStringUTF8(); }
 				/* </data> */
 
 				/* append bindings */
@@ -437,7 +436,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
 					S8Object itemObject = array[i];
-					S8Index.write(itemObject != null ? itemObject.S8_index : null, outflow);
+					outflow.putStringUTF8(itemObject != null ? itemObject.S8_index : null);
 				}
 			}
 			else {
@@ -453,11 +452,11 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 		}
 
 
-		public void serialize(ByteOutflow outflow, S8Index[] indices) throws IOException {
+		public void serialize(ByteOutflow outflow, String[] indices) throws IOException {
 			if(indices!=null) {
 				int length = indices.length;
 				outflow.putUInt7x(length);
-				for(int i=0; i<length; i++) { S8Index.write(indices[i], outflow); }
+				for(int i=0; i<length; i++) { outflow.putStringUTF8(indices[i]); }
 			}
 			else {
 				// advertise NULL

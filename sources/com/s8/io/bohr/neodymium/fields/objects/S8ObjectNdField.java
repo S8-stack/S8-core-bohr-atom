@@ -9,7 +9,6 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.atom.S8Field;
 import com.s8.io.bohr.atom.S8Getter;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Setter;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
@@ -169,7 +168,7 @@ public class S8ObjectNdField extends NdField {
 	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws NdIOException {
 		S8Object value = (S8Object) handler.get(origin);
 		if(value!=null) {
-			S8Index index = value.S8_index;
+			String index = value.S8_index;
 
 			scope.appendBinding(new BuildScope.Binding() {
 
@@ -211,7 +210,7 @@ public class S8ObjectNdField extends NdField {
 	@Override
 	public S8ObjectNdFieldDelta produceDiff(S8Object object) throws NdIOException {
 		S8Object value = (S8Object) handler.get(object);
-		return new S8ObjectNdFieldDelta(this, value != null ? value.S8_index : S8Index.NULL);
+		return new S8ObjectNdFieldDelta(this, value != null ? value.S8_index : null);
 	}
 
 
@@ -259,9 +258,9 @@ public class S8ObjectNdField extends NdField {
 
 		private Object object;
 
-		private S8Index id;
+		private String id;
 
-		public ObjectBinding(Object object, S8Index id) {
+		public ObjectBinding(Object object, String id) {
 			super();
 			this.object = object;
 			this.id = id;
@@ -293,7 +292,7 @@ public class S8ObjectNdField extends NdField {
 
 		@Override
 		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
-			S8Index id = S8Index.read(inflow);
+			String id = inflow.getStringUTF8();
 			if(id != null) {
 				/* append bindings */
 				scope.appendBinding(new ObjectBinding(object, id));
@@ -312,7 +311,7 @@ public class S8ObjectNdField extends NdField {
 
 		@Override
 		public NdFieldDelta deserializeDelta(ByteInflow inflow) throws IOException {
-			return new S8ObjectNdFieldDelta(S8ObjectNdField.this, S8Index.read(inflow));
+			return new S8ObjectNdFieldDelta(S8ObjectNdField.this, inflow.getStringUTF8());
 		}
 	}
 
@@ -351,12 +350,12 @@ public class S8ObjectNdField extends NdField {
 		@Override
 		public void composeValue(S8Object object, ByteOutflow outflow) throws IOException {
 			S8Object value = (S8Object) handler.get(object);
-			S8Index.write(value != null ? value.S8_index : null, outflow);
+			outflow.putStringUTF8(value != null ? value.S8_index : null);
 		}
 		
 		@Override
 		public void publishValue(NdFieldDelta delta, ByteOutflow outflow) throws IOException {
-			S8Index.write(((S8ObjectNdFieldDelta) delta).index, outflow);
+			outflow.putStringUTF8(((S8ObjectNdFieldDelta) delta).index);
 		}
 	}
 	/* </IO-outflow-section> */

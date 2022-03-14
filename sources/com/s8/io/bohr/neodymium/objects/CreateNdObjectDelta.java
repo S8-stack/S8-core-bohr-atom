@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.branches.NdBranch;
 import com.s8.io.bohr.neodymium.branches.NdOutbound;
@@ -33,7 +32,7 @@ public class CreateNdObjectDelta extends NdObjectDelta {
 
 	
 
-	public CreateNdObjectDelta(S8Index index, NdType type, List<NdFieldDelta> deltas) {
+	public CreateNdObjectDelta(String index, NdType type, List<NdFieldDelta> deltas) {
 		super(index);
 
 		this.type = type;

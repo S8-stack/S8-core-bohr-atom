@@ -11,13 +11,13 @@ import java.util.Map;
 import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
+import com.s8.io.bytes.utilities.base64.Base64Generator;
 
 
 /**
@@ -38,7 +38,7 @@ public class LiBranch extends S8Branch {
 	/**
 	 * The interior mapping
 	 */
-	public final Map<S8Index, LiVertex> vertices;
+	public final Map<String, LiVertex> vertices;
 	
 	
 	
@@ -74,6 +74,8 @@ public class LiBranch extends S8Branch {
 	long timestamp;
 	
 	
+	private final Base64Generator idxGen;
+	
 	private final DebugModule debugModule;
 	
 
@@ -91,16 +93,18 @@ public class LiBranch extends S8Branch {
 		// exposure
 		exposure = new LiVertex[S8Branch.EXPOSURE_RANGE];
 		
-		vertices = new HashMap<S8Index, LiVertex>();
+		vertices = new HashMap<String, LiVertex>();
 		
 		inbound = new LiInbound(this);
 		outbound = new LiOutbound(this);
 		
 		debugModule = new DebugModule(this);
+		
+		idxGen = new Base64Generator(id);
 	}
 	
 
-	public S8Object retrieveObject(S8Index index) {
+	public S8Object retrieveObject(String index) {
 		return vertices.get(index).object;
 	}
 
@@ -109,15 +113,15 @@ public class LiBranch extends S8Branch {
 	 * 
 	 * @return
 	 */
-	public S8Index createNewIndex() {
-		return new S8Index(id, ++highestIndex);
+	public String createNewIndex() {
+		return idxGen.generate(++highestIndex);
 	}
 	
 	
 	public BuildScope createBuildScope() {
 		return new BuildScope() {
 			@Override
-			public S8Object retrieveObject(S8Index index) {
+			public S8Object retrieveObject(String index) {
 				return vertices.get(index).object;
 			}
 		};
@@ -163,7 +167,7 @@ public class LiBranch extends S8Branch {
 		
 		
 		/* retrieve object index */
-		S8Index index = object.S8_index;
+		String index = object.S8_index;
 		
 		/* if index is null, assigned a newly generated one */
 		if(index == null) {

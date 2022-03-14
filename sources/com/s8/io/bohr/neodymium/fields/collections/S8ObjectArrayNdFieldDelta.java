@@ -2,7 +2,6 @@ package com.s8.io.bohr.neodymium.fields.collections;
 
 import java.lang.reflect.Array;
 
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -24,14 +23,14 @@ public class S8ObjectArrayNdFieldDelta extends NdFieldDelta {
 	
 	public final S8ObjectArrayNdField field;
 	
-	public final S8Index[] indices;
+	public final String[] indices;
 
 	/**
 	 * 
 	 * @param field
 	 * @param indices
 	 */
-	public S8ObjectArrayNdFieldDelta(S8ObjectArrayNdField field, S8Index[] indices) {
+	public S8ObjectArrayNdFieldDelta(S8ObjectArrayNdField field, String[] indices) {
 		super();
 		this.field = field;
 		this.indices = indices;

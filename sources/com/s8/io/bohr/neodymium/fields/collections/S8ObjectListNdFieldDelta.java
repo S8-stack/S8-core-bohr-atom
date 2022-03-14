@@ -3,7 +3,6 @@ package com.s8.io.bohr.neodymium.fields.collections;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -27,14 +26,14 @@ public class S8ObjectListNdFieldDelta<T extends S8Object> extends NdFieldDelta {
 	
 	public final S8ObjectListNdField<T> field;
 	
-	public final S8Index[] indices;
+	public final String[] indices;
 
 	/**
 	 * 
 	 * @param field
 	 * @param indices
 	 */
-	public S8ObjectListNdFieldDelta(S8ObjectListNdField<T> field, S8Index[] indices) {
+	public S8ObjectListNdFieldDelta(S8ObjectListNdField<T> field, String[] indices) {
 		super();
 		this.field = field;
 		this.indices = indices;
@@ -57,7 +56,7 @@ public class S8ObjectListNdFieldDelta<T extends S8Object> extends NdFieldDelta {
 				@Override
 				public void resolve(BuildScope scope) throws NdIOException {
 					for(int i=0; i<n; i++) {
-						S8Index itemGphIndex = indices[i];
+						String itemGphIndex = indices[i];
 						if(itemGphIndex != null) {
 							array.add((T) scope.retrieveObject(itemGphIndex));
 						}

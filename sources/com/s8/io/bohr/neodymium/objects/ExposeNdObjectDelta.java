@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neodymium.branches.NdBranch;
 import com.s8.io.bohr.neodymium.branches.NdOutbound;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
@@ -32,7 +31,7 @@ public class ExposeNdObjectDelta extends NdObjectDelta {
 	protected int slot = -1;
 
 
-	public ExposeNdObjectDelta(S8Index index, int slot) {
+	public ExposeNdObjectDelta(String index, int slot) {
 		super(index);
 		this.slot = slot;
 	}
@@ -43,7 +42,7 @@ public class ExposeNdObjectDelta extends NdObjectDelta {
 		outflow.putUInt8(BOHR_Keywords.EXPOSE_NODE);
 
 		/* define index */
-		S8Index.write(index, outflow);
+		outflow.putStringUTF8(index);
 
 		/* define slot */
 		outflow.putUInt8(slot);

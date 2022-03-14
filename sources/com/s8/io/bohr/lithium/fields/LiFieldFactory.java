@@ -16,7 +16,7 @@ import com.s8.io.bohr.lithium.fields.arrays.StringArrayLiField;
 import com.s8.io.bohr.lithium.fields.collections.S8ObjectArrayLiField;
 import com.s8.io.bohr.lithium.fields.collections.S8ObjectListLiField;
 import com.s8.io.bohr.lithium.fields.objects.EnumLiField;
-import com.s8.io.bohr.lithium.fields.objects.InterfaceNdField;
+import com.s8.io.bohr.lithium.fields.objects.InterfaceLiField;
 import com.s8.io.bohr.lithium.fields.objects.S8ObjectLiField;
 import com.s8.io.bohr.lithium.fields.objects.S8RefLiField;
 import com.s8.io.bohr.lithium.fields.objects.S8SerializableLiField;
@@ -86,7 +86,7 @@ public class LiFieldFactory {
 			EnumLiField.PROTOTYPE,
 
 			// wildcard
-			InterfaceNdField.PROTOTYPE
+			InterfaceLiField.PROTOTYPE
 	};
 
 

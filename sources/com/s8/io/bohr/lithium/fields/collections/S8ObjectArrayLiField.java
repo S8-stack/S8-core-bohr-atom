@@ -7,7 +7,6 @@ import java.util.Queue;
 
 import com.s8.io.bohr.atom.S8Field;
 import com.s8.io.bohr.atom.S8Getter;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Setter;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
@@ -186,7 +185,7 @@ public class S8ObjectArrayLiField extends CollectionLiField {
 			int n = value.length;
 
 			S8Object[] clonedArray = new S8Object[n];
-			S8Index[] indices = new S8Index[n];
+			String[] indices = new String[n];
 			for(int i=0; i<n; i++) {
 				indices[i] = value[i].S8_index;
 			}
@@ -290,10 +289,10 @@ public class S8ObjectArrayLiField extends CollectionLiField {
 
 		private S8Object[] array;
 
-		private S8Index[] identifiers;
+		private String[] identifiers;
 
 
-		public Binding(S8Object[] array, S8Index[] indices) {
+		public Binding(S8Object[] array, String[] indices) {
 			super();
 			this.array = array;
 			this.identifiers = indices;
@@ -303,7 +302,7 @@ public class S8ObjectArrayLiField extends CollectionLiField {
 		public void resolve(BuildScope scope) throws LiIOException {
 			int length = identifiers.length;
 			for(int i=0; i<length; i++) {
-				S8Index graphId = identifiers[i];
+				String graphId = identifiers[i];
 				array[i] = scope.retrieveObject(graphId);
 			}
 		}
@@ -328,7 +327,7 @@ public class S8ObjectArrayLiField extends CollectionLiField {
 
 		@Override
 		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
-			S8Index[] indices = deserializeIndices(inflow);
+			String[] indices = deserializeIndices(inflow);
 			if(indices != null) {
 				S8Object[] array = new S8Object[indices.length];
 				/* append bindings */
@@ -355,13 +354,13 @@ public class S8ObjectArrayLiField extends CollectionLiField {
 		 * @return
 		 * @throws IOException
 		 */
-		public S8Index[] deserializeIndices(ByteInflow inflow) throws IOException {
+		public String[] deserializeIndices(ByteInflow inflow) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length >= 0) {
 
 				/* <data> */
-				S8Index[] indices = new S8Index[length];
-				for(int index=0; index<length; index++) { indices[index] = S8Index.read(inflow); }
+				String[] indices = new String[length];
+				for(int index=0; index<length; index++) { indices[index] = inflow.getStringUTF8(); }
 				/* </data> */
 
 				/* append bindings */
@@ -417,17 +416,17 @@ public class S8ObjectArrayLiField extends CollectionLiField {
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
 					S8Object itemObject = array[i];
-					S8Index index;
+					String index;
 					if(itemObject != null) {
 						index = itemObject.S8_index;
 						if(index == null) {
 							index = scope.append(itemObject);
 							itemObject.S8_index = index;
 						}
-						S8Index.write(index, outflow);
+						outflow.putStringUTF8(index);
 					}
 					else {
-						S8Index.write(null, outflow);
+						outflow.putStringUTF8(null);
 					}
 				}
 			}

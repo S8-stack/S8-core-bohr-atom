@@ -9,7 +9,6 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.atom.S8Field;
 import com.s8.io.bohr.atom.S8Getter;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Setter;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
@@ -37,7 +36,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * @author Pierre Convert
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  */
-public class InterfaceNdField extends LiField {
+public class InterfaceLiField extends LiField {
 
 
 
@@ -107,12 +106,12 @@ public class InterfaceNdField extends LiField {
 
 		@Override
 		public LiField build(int ordinal) {
-			return new InterfaceNdField(ordinal, properties, handler);
+			return new InterfaceLiField(ordinal, properties, handler);
 		}
 	}
 
 
-	public InterfaceNdField(int ordinal, LiFieldProperties properties, LiHandler handler) {
+	public InterfaceLiField(int ordinal, LiFieldProperties properties, LiHandler handler) {
 		super(ordinal, properties, handler);
 	}
 
@@ -155,7 +154,7 @@ public class InterfaceNdField extends LiField {
 	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws LiIOException {
 		S8Object value = (S8Object) handler.get(origin);
 		if(value!=null) {
-			S8Index index = value.S8_index;
+			String index = value.S8_index;
 
 			scope.appendBinding(new BuildScope.Binding() {
 
@@ -238,9 +237,9 @@ public class InterfaceNdField extends LiField {
 
 		private Object object;
 
-		private S8Index id;
+		private String id;
 
-		public ObjectBinding(Object object, S8Index id) {
+		public ObjectBinding(Object object, String id) {
 			super();
 			this.object = object;
 			this.id = id;
@@ -269,7 +268,7 @@ public class InterfaceNdField extends LiField {
 
 		@Override
 		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
-			S8Index id = S8Index.read(inflow);
+			String id = inflow.getStringUTF8();
 			if(id != null) {
 				/* append bindings */
 				scope.appendBinding(new ObjectBinding(object, id));
@@ -282,8 +281,8 @@ public class InterfaceNdField extends LiField {
 
 
 		@Override
-		public InterfaceNdField getField() {
-			return InterfaceNdField.this;
+		public InterfaceLiField getField() {
+			return InterfaceLiField.this;
 		}
 	}
 
@@ -313,7 +312,7 @@ public class InterfaceNdField extends LiField {
 
 		@Override
 		public LiField getField() {
-			return InterfaceNdField.this;
+			return InterfaceLiField.this;
 		}
 
 		@Override
@@ -325,15 +324,15 @@ public class InterfaceNdField extends LiField {
 		public void composeValue(S8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			S8Object value = (S8Object) handler.get(object);
 			if(value != null) {
-				S8Index index = value.S8_index;
+				String index = value.S8_index;
 				if(index == null) {
 					index = scope.append(value);
 					value.S8_index = index;
 				}
-				S8Index.write(index, outflow);
+				outflow.putStringUTF8(index);
 			}
 			else {
-				S8Index.write(null, outflow);	
+				outflow.putStringUTF8(null);
 			}
 		}
 	}

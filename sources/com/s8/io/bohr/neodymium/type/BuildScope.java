@@ -3,7 +3,6 @@ package com.s8.io.bohr.neodymium.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 
@@ -40,7 +39,7 @@ public abstract class BuildScope {
 	 * @param index
 	 * @return
 	 */
-	public abstract S8Object retrieveObject(S8Index index);
+	public abstract S8Object retrieveObject(String index);
 	
 	/**
 	 * <p><b>ALWAYS RESOLVE AFTER DESERIALIZATION</b></p>

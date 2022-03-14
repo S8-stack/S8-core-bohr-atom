@@ -3,7 +3,6 @@ package com.s8.io.bohr.lithium.type;
 import java.io.IOException;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiFieldComposer;
@@ -115,7 +114,7 @@ public class LiTypeComposer {
 	 * @param index
 	 * @throws IOException
 	 */
-	public void publish_CREATE_NODE(ByteOutflow outflow, S8Index index) throws IOException {
+	public void publish_CREATE_NODE(ByteOutflow outflow, String index) throws IOException {
 
 		if(isTypeUnpublished) {
 			
@@ -138,7 +137,7 @@ public class LiTypeComposer {
 		outflow.putUInt7x(typeCode);
 
 		/* define index */
-		S8Index.write(index, outflow);
+		outflow.putStringUTF8(index);
 
 	}
 
@@ -151,13 +150,13 @@ public class LiTypeComposer {
 	 * @param index
 	 * @throws IOException
 	 */
-	public void publish_UPDATE_NODE(ByteOutflow outflow, S8Index index) throws IOException {
+	public void publish_UPDATE_NODE(ByteOutflow outflow, String index) throws IOException {
 
 		/* pass flag */
 		outflow.putUInt8(BOHR_Keywords.UPDATE_NODE);
 
 		/* pass index */
-		S8Index.write(index, outflow);
+		outflow.putStringUTF8(index);
 	}
 
 
@@ -169,13 +168,13 @@ public class LiTypeComposer {
 	 * @param slot
 	 * @throws IOException
 	 */
-	public void publish_EXPOSE_NODE(ByteOutflow outflow, S8Index index, int slot) throws IOException {
+	public void publish_EXPOSE_NODE(ByteOutflow outflow, String index, int slot) throws IOException {
 
 		/* UPDATE_AND_EXPOSE_NODE */
 		outflow.putUInt8(BOHR_Keywords.EXPOSE_NODE);
 
 		/* pass index */
-		S8Index.write(index, outflow);
+		outflow.putStringUTF8(index);
 
 		/* pass index */
 		outflow.putUInt8(slot);	

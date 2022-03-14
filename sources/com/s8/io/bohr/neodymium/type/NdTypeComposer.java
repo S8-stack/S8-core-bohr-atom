@@ -3,7 +3,6 @@ package com.s8.io.bohr.neodymium.type;
 import java.io.IOException;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdFieldComposer;
@@ -120,7 +119,7 @@ public class NdTypeComposer {
 	 * @param isExposeUnpublished 
 	 * @throws IOException
 	 */
-	public void publish_CREATE_NODE(ByteOutflow outflow, S8Index index) throws IOException {
+	public void publish_CREATE_NODE(ByteOutflow outflow, String index) throws IOException {
 		
 		/* add type declaration if necessary */
 		if(isTypeUnpublished) {
@@ -142,7 +141,7 @@ public class NdTypeComposer {
 		outflow.putUInt7x(typeCode);
 
 		/* define index */
-		S8Index.write(index, outflow);
+		outflow.putStringUTF8(index);
 	}
 
 

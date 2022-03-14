@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
+import com.s8.io.bytes.utilities.base64.Base64Generator;
 
 /**
  * 
@@ -26,7 +26,7 @@ public class NeBranch extends S8Branch {
 	/**
 	 * 
 	 */
-	final Map<S8Index, NeObject> objects;
+	final Map<String, NeObject> objects;
 
 	
 	/**
@@ -40,6 +40,9 @@ public class NeBranch extends S8Branch {
 	
 	public final NeOutbound outbound;
 	
+	
+	private final Base64Generator idxGen;
+	
 	public NeBranch(String address, String id) {
 		super(address, id);
 		prototypes = new HashMap<>();
@@ -48,6 +51,8 @@ public class NeBranch extends S8Branch {
 		
 		/* outbound */
 		this.outbound = new NeOutbound();
+		
+		idxGen = new Base64Generator(id);
 	}
 
 
@@ -56,8 +61,8 @@ public class NeBranch extends S8Branch {
 	 * 
 	 * @return
 	 */
-	public S8Index createNewIndex() {
-		return new S8Index(id, ++highestObjectId);
+	public String createNewIndex() {
+		return idxGen.generate(++highestObjectId);
 	}
 	
 	@Override
@@ -80,12 +85,13 @@ public class NeBranch extends S8Branch {
 	 * @param vertex
 	 * @return
 	 */
-	S8Index appendObject(NeObject object) {
-		S8Index index = createNewIndex();
+	String appendObject(NeObject object) {
+		
+		String index = createNewIndex();
 		
 		objects.put(index, object);
 		
-		outbound.pushUnpublished(object);
+		outbound.notifyChanged(object);
 		
 		return index;
 	}
@@ -97,7 +103,7 @@ public class NeBranch extends S8Branch {
 	 * @param index
 	 * @return
 	 */
-	public NeObject getVertex(S8Index index) {
+	public NeObject getVertex(String index) {
 		return objects.get(index);
 	}
 

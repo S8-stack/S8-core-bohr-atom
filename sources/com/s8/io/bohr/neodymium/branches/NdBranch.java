@@ -14,7 +14,6 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.neodymium.codebase.NdCodebase;
@@ -24,6 +23,7 @@ import com.s8.io.bohr.neodymium.type.GraphCrawler;
 import com.s8.io.bohr.neodymium.type.NdType;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
+import com.s8.io.bytes.utilities.base64.Base64Generator;
 
 
 
@@ -63,7 +63,7 @@ public class NdBranch extends S8Branch {
 	/**
 	 * The interior mapping
 	 */
-	public final Map<S8Index, NdVertex> vertices;
+	public final Map<String, NdVertex> vertices;
 
 
 	/**
@@ -99,6 +99,9 @@ public class NdBranch extends S8Branch {
 	private final CommitModule commitModule;
 
 	private final DebugModule debugModule;
+	
+	
+	private final Base64Generator idxGen;
 
 
 	/**
@@ -119,7 +122,7 @@ public class NdBranch extends S8Branch {
 		this.version = version;
 
 
-		vertices = new HashMap<S8Index, NdVertex>();
+		vertices = new HashMap<String, NdVertex>();
 
 		deltas  = new LinkedList<NdBranchDelta>();
 
@@ -139,6 +142,8 @@ public class NdBranch extends S8Branch {
 		 * 
 		 */
 		exposure = new NdVertex[0];
+		
+		idxGen = new Base64Generator(id+':');
 	}
 	
 	
@@ -192,7 +197,7 @@ public class NdBranch extends S8Branch {
 					vertex.object = object;
 					object.S8_vertex = vertex;
 
-					S8Index index = object.S8_index;
+					String index = object.S8_index;
 
 					// else, object already known from update branch base
 					if(index == null) {
@@ -250,7 +255,7 @@ public class NdBranch extends S8Branch {
 	}
 
 
-	public S8Object retrieveObject(S8Index index) {
+	public S8Object retrieveObject(String index) {
 		return vertices.get(index).object;
 	}
 
@@ -259,8 +264,8 @@ public class NdBranch extends S8Branch {
 	 * 
 	 * @return
 	 */
-	public S8Index createNewIndex() {
-		return new S8Index(id, ++highestIndex);
+	public String createNewIndex() {
+		return idxGen.generate(++highestIndex);
 	}
 
 	/**
@@ -268,7 +273,7 @@ public class NdBranch extends S8Branch {
 	 * @param index
 	 * @return
 	 */
-	public NdVertex getVertex(S8Index index) {
+	public NdVertex getVertex(String index) {
 		return vertices.get(index);
 	}
 
@@ -369,7 +374,7 @@ public class NdBranch extends S8Branch {
 	public BuildScope createBuildScope() {
 		return new BuildScope() {
 			@Override
-			public S8Object retrieveObject(S8Index index) {
+			public S8Object retrieveObject(String index) {
 				return vertices.get(index).object;
 			}
 		};

@@ -3,7 +3,6 @@ package com.s8.io.bohr.neon.methods.objects;
 import java.io.IOException;
 
 import com.s8.io.bohr.atom.BOHR_Types;
-import com.s8.io.bohr.atom.S8Index;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
@@ -46,7 +45,7 @@ public class ObjNeMethod<T extends NeObject> extends NeMethod {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void run(NeBranch branch, ByteInflow inflow, NeFunc func) throws IOException {
-		S8Index index = S8Index.read(inflow);
+		String index = inflow.getStringUTF8();
 		NeObject arg = index != null ? branch.getVertex(index) : null;
 		((Lambda<T>) (func.lambda)).operate((T) arg);
 	}
