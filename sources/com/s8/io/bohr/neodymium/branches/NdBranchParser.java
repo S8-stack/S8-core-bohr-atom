@@ -1,14 +1,14 @@
 package com.s8.io.bohr.neodymium.branches;
 
-import static com.s8.io.bohr.atom.BOHR_Keywords.CLOSE_JUMP;
-import static com.s8.io.bohr.atom.BOHR_Keywords.CREATE_NODE;
-import static com.s8.io.bohr.atom.BOHR_Keywords.DECLARE_TYPE;
-import static com.s8.io.bohr.atom.BOHR_Keywords.DEFINE_JUMP_COMMENT;
-import static com.s8.io.bohr.atom.BOHR_Keywords.DEFINE_JUMP_TIMESTAMP;
-import static com.s8.io.bohr.atom.BOHR_Keywords.DEFINE_JUMP_VERSION;
-import static com.s8.io.bohr.atom.BOHR_Keywords.EXPOSE_NODE;
-import static com.s8.io.bohr.atom.BOHR_Keywords.REMOVE_NODE;
-import static com.s8.io.bohr.atom.BOHR_Keywords.UPDATE_NODE;
+import static com.s8.io.bohr.BOHR_Keywords.CLOSE_JUMP;
+import static com.s8.io.bohr.BOHR_Keywords.CREATE_NODE;
+import static com.s8.io.bohr.BOHR_Keywords.DECLARE_TYPE;
+import static com.s8.io.bohr.BOHR_Keywords.DEFINE_JUMP_COMMENT;
+import static com.s8.io.bohr.BOHR_Keywords.DEFINE_JUMP_TIMESTAMP;
+import static com.s8.io.bohr.BOHR_Keywords.DEFINE_JUMP_VERSION;
+import static com.s8.io.bohr.BOHR_Keywords.EXPOSE_NODE;
+import static com.s8.io.bohr.BOHR_Keywords.REMOVE_NODE;
+import static com.s8.io.bohr.BOHR_Keywords.UPDATE_NODE;
 
 import java.io.IOException;
 import java.util.ArrayList;

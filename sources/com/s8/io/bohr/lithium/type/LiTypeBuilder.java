@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.s8.io.bohr.atom.S8Field;
-import com.s8.io.bohr.atom.S8Getter;
 import com.s8.io.bohr.atom.S8Object;
-import com.s8.io.bohr.atom.S8ObjectType;
-import com.s8.io.bohr.atom.S8Setter;
+import com.s8.io.bohr.atom.annotations.S8Field;
+import com.s8.io.bohr.atom.annotations.S8Getter;
+import com.s8.io.bohr.atom.annotations.S8ObjectType;
+import com.s8.io.bohr.atom.annotations.S8Setter;
 import com.s8.io.bohr.lithium.codebase.LiCodebaseBuilder;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.fields.LiField;

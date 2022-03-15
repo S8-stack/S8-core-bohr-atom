@@ -3,7 +3,7 @@ package com.s8.io.bohr.neon.core;
 import java.io.IOException;
 import java.util.List;
 
-import com.s8.io.bohr.atom.BOHR_Keywords;
+import com.s8.io.bohr.BOHR_Keywords;
 import com.s8.io.bohr.neon.fields.NeField;
 import com.s8.io.bohr.neon.fields.NeValue;
 import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeField;

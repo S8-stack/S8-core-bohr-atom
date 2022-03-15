@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.s8.io.bohr.atom.S8Field;
+import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.beryllium.fields.lists.StringListBeField;
 import com.s8.io.bohr.beryllium.fields.objects.EnumBeField;
 import com.s8.io.bohr.beryllium.fields.primitives.BooleanBeField;

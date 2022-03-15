@@ -2,7 +2,7 @@ package com.s8.io.bohr.lithium.fields;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.atom.BOHR_Properties;
+import com.s8.io.bohr.BOHR_Properties;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;

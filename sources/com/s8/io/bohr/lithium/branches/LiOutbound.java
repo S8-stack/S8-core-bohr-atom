@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.s8.io.bohr.atom.BOHR_Keywords;
+import com.s8.io.bohr.BOHR_Keywords;
 import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;

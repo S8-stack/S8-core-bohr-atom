@@ -1,8 +1,8 @@
 package com.s8.io.bohr.neodymium.branches;
 
-import static com.s8.io.bohr.atom.BOHR_Keywords.CLOSE_SEQUENCE;
-import static com.s8.io.bohr.atom.BOHR_Keywords.OPEN_JUMP;
-import static com.s8.io.bohr.atom.BOHR_Keywords.OPEN_SEQUENCE;
+import static com.s8.io.bohr.BOHR_Keywords.CLOSE_SEQUENCE;
+import static com.s8.io.bohr.BOHR_Keywords.OPEN_JUMP;
+import static com.s8.io.bohr.BOHR_Keywords.OPEN_SEQUENCE;
 
 import java.io.IOException;
 import java.util.HashMap;

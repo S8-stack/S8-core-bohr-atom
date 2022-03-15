@@ -6,7 +6,7 @@ import java.util.Map;
 import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8Exception;
 import com.s8.io.bohr.atom.S8Object;
-import com.s8.io.bytes.utilities.base64.Base64Generator;
+import com.s8.io.bytes.base64.Base64Generator;
 
 /**
  * 

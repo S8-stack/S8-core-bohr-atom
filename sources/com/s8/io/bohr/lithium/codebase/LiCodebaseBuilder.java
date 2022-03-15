@@ -5,7 +5,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import com.s8.io.bohr.atom.S8BuildException;
-import com.s8.io.bohr.atom.S8ObjectType;
+import com.s8.io.bohr.atom.annotations.S8ObjectType;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.fields.LiFieldFactory;
 import com.s8.io.bohr.lithium.type.LiTypeBuilder;

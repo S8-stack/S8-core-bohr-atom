@@ -3,7 +3,7 @@ package com.s8.io.bohr.neodymium.fields.arrays;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.s8.io.bohr.atom.BOHR_Types;
+import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;

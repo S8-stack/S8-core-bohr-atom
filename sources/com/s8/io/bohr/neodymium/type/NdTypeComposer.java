@@ -2,7 +2,7 @@ package com.s8.io.bohr.neodymium.type;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.atom.BOHR_Keywords;
+import com.s8.io.bohr.BOHR_Keywords;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdFieldComposer;

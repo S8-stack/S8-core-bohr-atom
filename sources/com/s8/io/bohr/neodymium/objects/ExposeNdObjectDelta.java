@@ -3,7 +3,7 @@ package com.s8.io.bohr.neodymium.objects;
 import java.io.IOException;
 import java.util.List;
 
-import com.s8.io.bohr.atom.BOHR_Keywords;
+import com.s8.io.bohr.BOHR_Keywords;
 import com.s8.io.bohr.neodymium.branches.NdBranch;
 import com.s8.io.bohr.neodymium.branches.NdOutbound;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;

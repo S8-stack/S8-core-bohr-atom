@@ -1,4 +1,4 @@
-package com.s8.io.bohr.atom;
+package com.s8.io.bohr.atom.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Field;
-import com.s8.io.bohr.atom.S8Getter;
 import com.s8.io.bohr.atom.S8Object;
-import com.s8.io.bohr.atom.S8Setter;
+import com.s8.io.bohr.atom.annotations.S8Field;
+import com.s8.io.bohr.atom.annotations.S8Getter;
+import com.s8.io.bohr.atom.annotations.S8Setter;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiField;

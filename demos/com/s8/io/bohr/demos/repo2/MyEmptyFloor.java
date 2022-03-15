@@ -1,6 +1,6 @@
 package com.s8.io.bohr.demos.repo2;
 
-import com.s8.io.bohr.atom.S8ObjectType;
+import com.s8.io.bohr.atom.annotations.S8ObjectType;
 
 
 

@@ -4,10 +4,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Field;
-import com.s8.io.bohr.atom.S8Getter;
 import com.s8.io.bohr.atom.S8Object;
-import com.s8.io.bohr.atom.S8Setter;
+import com.s8.io.bohr.atom.annotations.S8Field;
+import com.s8.io.bohr.atom.annotations.S8Getter;
+import com.s8.io.bohr.atom.annotations.S8Setter;
 import com.s8.io.bohr.lithium.fields.LiField;
 import com.s8.io.bohr.lithium.fields.LiFieldBuilder;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;

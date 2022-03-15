@@ -1,7 +1,7 @@
 package com.s8.io.bohr.lithium.branches;
 
-import static com.s8.io.bohr.atom.BOHR_Keywords.FRAME_FOOTER;
-import static  com.s8.io.bohr.atom.BOHR_Keywords.FRAME_HEADER;
+import static com.s8.io.bohr.BOHR_Keywords.FRAME_FOOTER;
+import static com.s8.io.bohr.BOHR_Keywords.FRAME_HEADER;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -17,7 +17,7 @@ import com.s8.io.bohr.lithium.codebase.LiCodebase;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
-import com.s8.io.bytes.utilities.base64.Base64Generator;
+import com.s8.io.bytes.base64.Base64Generator;
 
 
 /**

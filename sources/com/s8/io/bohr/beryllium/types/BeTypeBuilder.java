@@ -3,7 +3,7 @@ package com.s8.io.bohr.beryllium.types;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
-import com.s8.io.bohr.atom.S8RowType;
+import com.s8.io.bohr.atom.annotations.S8RowType;
 import com.s8.io.bohr.beryllium.codebase.BeCodebaseBuilder;
 import com.s8.io.bohr.beryllium.fields.BeField;
 import com.s8.io.bohr.beryllium.fields.BeFieldFactory;

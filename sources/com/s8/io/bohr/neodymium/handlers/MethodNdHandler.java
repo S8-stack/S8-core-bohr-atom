@@ -5,9 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 
-import com.s8.io.bohr.atom.S8Getter;
-import com.s8.io.bohr.atom.S8ObjectType;
-import com.s8.io.bohr.atom.S8Setter;
+import com.s8.io.bohr.atom.annotations.S8Getter;
+import com.s8.io.bohr.atom.annotations.S8ObjectType;
+import com.s8.io.bohr.atom.annotations.S8Setter;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 

@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 
 import com.s8.io.bohr.atom.S8BuildException;
-import com.s8.io.bohr.atom.S8RowType;
+import com.s8.io.bohr.atom.annotations.S8RowType;
 import com.s8.io.bohr.beryllium.BeSerialException;
 import com.s8.io.bohr.beryllium.fields.BeFieldFactory;
 import com.s8.io.bohr.beryllium.types.BeType;

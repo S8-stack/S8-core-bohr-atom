@@ -2,7 +2,7 @@ package com.s8.io.bohr.neon.fields.primitives;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.atom.BOHR_Types;
+import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
 import com.s8.io.bohr.neon.fields.NeValue;

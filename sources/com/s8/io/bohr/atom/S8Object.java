@@ -1,5 +1,7 @@
 package com.s8.io.bohr.atom;
 
+import com.s8.io.bohr.atom.annotations.S8ObjectType;
+
 /**
  * <p>
  * <code>S8Shell</code> represents an enclosure of a graph of S8Object. This
