@@ -1,4 +1,4 @@
-package com.s8.io.bohr.demos.repo3;
+package com.s8.io.bohr.demos.neodymium.repo3;
 
 import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;

@@ -1,4 +1,4 @@
-package com.s8.io.bohr.demos.repo0;
+package com.s8.io.bohr.demos.neodymium.repo0;
 
 public class ByteTest {
 
