@@ -1,4 +1,4 @@
-package com.s8.io.bohr.demos.repo2;
+package com.s8.io.bohr.demos.neodymium.repo2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +21,13 @@ public class MyBuilding extends S8Object {
 
 	public final static long HAS_CHANGED = 0x02;
 	
-	public @S8Field(name = "n-floors", mask = HAS_CHANGED) int nFloors;
+	public @S8Field(name = "n-floors") int nFloors;
 	
-	public @S8Field(name = "lower-ground-floor", mask = HAS_CHANGED) MyFloor lowerGroundFloor;
+	public @S8Field(name = "lower-ground-floor") MyFloor lowerGroundFloor;
 	
-	public @S8Field(name = "ground-floor", mask = HAS_CHANGED) MyFloor groundFloor;
+	public @S8Field(name = "ground-floor") MyFloor groundFloor;
 	
-	public @S8Field(name = "upper-floors", mask = HAS_CHANGED) List<MyFloor> upperGroundFloors;
+	public @S8Field(name = "upper-floors") List<MyFloor> upperGroundFloors;
 	
 	
 	public MyBuilding() {
@@ -59,8 +59,6 @@ public class MyBuilding extends S8Object {
 		
 		lowerGroundFloor.init();
 		upperGroundFloors.forEach(floor -> { if(Math.random()<0.5) { floor.init(); } });
-		
-		advertise(HAS_CHANGED);
 	}
 
 }

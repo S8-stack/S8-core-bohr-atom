@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter;
 
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Object;
-import com.s8.io.bohr.demos.repo2.MyBuilding;
+import com.s8.io.bohr.demos.neodymium.repo2.MyBuilding;
 import com.s8.io.bohr.neodymium.branches.NdBranch;
 import com.s8.io.bohr.neodymium.codebase.NdCodebase;
 import com.s8.io.bohr.neodymium.codebase.NdCodebaseBuilder;

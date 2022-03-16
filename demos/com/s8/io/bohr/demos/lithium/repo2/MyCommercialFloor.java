@@ -1,4 +1,4 @@
-package com.s8.io.bohr.demos.repo2;
+package com.s8.io.bohr.demos.lithium.repo2;
 
 import java.util.ArrayList;
 import java.util.List;

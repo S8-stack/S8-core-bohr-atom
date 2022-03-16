@@ -1,4 +1,4 @@
-package com.s8.io.bohr.demos.repo2;
+package com.s8.io.bohr.demos.neodymium.repo2;
 
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
@@ -17,9 +17,9 @@ import com.s8.io.bohr.atom.annotations.S8ObjectType;
 @S8ObjectType(name = "my-com-meeting-room#0002")
 public class MyCommercialMeetingRoom extends MyCommercialFloorElement {
 
-	public @S8Field(name = "x-table-dimension", mask = HAS_CHANGED) double xTableDimension;
+	public @S8Field(name = "x-table-dimension") double xTableDimension;
 	
-	public @S8Field(name = "y-table-dimension", mask = HAS_CHANGED) double yTableDimension;
+	public @S8Field(name = "y-table-dimension") double yTableDimension;
 	
 	public MyCommercialMeetingRoom() {
 		super();
@@ -51,6 +51,5 @@ public class MyCommercialMeetingRoom extends MyCommercialFloorElement {
 			xTableDimension = Math.random();
 			yTableDimension = Math.random();
 		}
-		advertise(HAS_CHANGED);
 	}
 }
