@@ -61,6 +61,16 @@ module com.s8.io.bohr {
 	exports com.s8.io.bohr.neodymium.fields.collections;
 
 	/* </neodymium> */
+	
+	
+	/* <beryllium> */
+	exports com.s8.io.bohr.beryllium;
+	exports com.s8.io.bohr.beryllium.codebase;
+	exports com.s8.io.bohr.beryllium.fields;
+	exports com.s8.io.bohr.beryllium.syntax;
+	exports com.s8.io.bohr.beryllium.tables;
+	exports com.s8.io.bohr.beryllium.types;
+	
 
 	/**
 	 * 
