@@ -29,27 +29,21 @@ import com.s8.io.bohr.neon.fields.primitives.UInt64NeField;
 import com.s8.io.bohr.neon.fields.primitives.UInt8NeField;
 import com.s8.io.bohr.neon.methods.NeFunc;
 import com.s8.io.bohr.neon.methods.NeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Bool8ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Float32ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Float64ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Int64ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.StringUTF8ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.UInt16ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.UInt32ArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.BooleanArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.DoubleArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.FloatArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.LongArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.StringArrayNeMethod;
 import com.s8.io.bohr.neon.methods.objects.ListNeMethod;
 import com.s8.io.bohr.neon.methods.objects.ObjNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Bool8NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Float32NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Float64NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int16NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int32NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int64NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int8NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.StringUTF8NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt16NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt32NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt64NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt8NeMethod;
+import com.s8.io.bohr.neon.methods.primitives.BooleanNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.DoubleNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.FloatNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.IntegerNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.LongNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.ShortNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.StringNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.VoidNeMethod;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
 
@@ -79,7 +73,7 @@ public abstract class NeObject {
 
 	NeValue[] values;
 
-	private NeFunc[] funcs;
+	NeFunc[] funcs;
 
 	public final NeObjectPrototype prototype;
 
@@ -101,7 +95,7 @@ public abstract class NeObject {
 
 		// branch
 		this.branch = branch;
-		this.prototype = branch.getObjectPrototype(typeName);
+		this.prototype = branch.retrieveObjectPrototype(typeName);
 
 		values = new NeValue[4];
 
@@ -176,7 +170,7 @@ public abstract class NeObject {
 			String index = _index();
 
 			/* publish prototype */
-			prototype.declare(outflow);
+			prototype.publish_DECLARE_TYPE(outflow);
 
 			if(isCreateUnpublished) {
 
@@ -184,7 +178,7 @@ public abstract class NeObject {
 				outflow.putUInt8(BOHR_Keywords.CREATE_NODE);
 
 				/* publish type code */
-				outflow.putUInt7x(prototype.code);
+				outflow.putUInt7x(prototype.outflowCode);
 
 				/* publish index */
 				outflow.putStringUTF8(index);
@@ -269,6 +263,14 @@ public abstract class NeObject {
 		}
 	}
 
+	
+
+	public void onVoid(String name, VoidNeMethod.Lambda lambda) {
+		VoidNeMethod method = prototype.getVoidMethod(name);
+		NeFunc func = getFunc(method);
+		func.lambda = lambda;
+	}
+
 
 
 	/**
@@ -296,8 +298,8 @@ public abstract class NeObject {
 	}
 
 
-	public void onBool8(String name, Bool8NeMethod.Lambda lambda) {
-		Bool8NeMethod method = prototype.getBool8Method(name);
+	public void onBoolean(String name, BooleanNeMethod.Lambda lambda) {
+		BooleanNeMethod method = prototype.getBooleanMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -327,8 +329,8 @@ public abstract class NeObject {
 	}
 
 
-	public void onBool8Array(String name, Bool8ArrayNeMethod.Lambda lambda) {
-		Bool8ArrayNeMethod method = prototype.getBool8ArrayMethod(name);
+	public void onBooleanArray(String name, BooleanArrayNeMethod.Lambda lambda) {
+		BooleanArrayNeMethod method = prototype.getBool8ArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -358,14 +360,6 @@ public abstract class NeObject {
 	}
 
 
-
-	public void onUInt8(String name, UInt8NeMethod.Lambda lambda) {
-		UInt8NeMethod method = prototype.getUInt8Method(name);
-		NeFunc func = getFunc(method);
-		func.lambda = lambda;
-	}
-
-
 	/**
 	 * 
 	 * @param name
@@ -388,13 +382,6 @@ public abstract class NeObject {
 		UInt16NeField field = prototype.getUInt16Field(name);
 		NeValue entry = getEntry(field);
 		return field.get(entry);
-	}
-
-
-	public void onUInt16(String name, UInt16NeMethod.Lambda lambda) {
-		UInt16NeMethod method = prototype.getUInt16Method(name);
-		NeFunc func = getFunc(method);
-		func.lambda = lambda;
 	}
 
 
@@ -424,13 +411,6 @@ public abstract class NeObject {
 	}
 
 
-	public void onUInt16Array(String name, UInt16ArrayNeMethod.Lambda lambda) {
-		UInt16ArrayNeMethod method = prototype.getUInt16ArrayMethod(name);
-		NeFunc func = getFunc(method);
-		func.lambda = lambda;
-	}
-
-
 
 	/**
 	 * 
@@ -454,19 +434,6 @@ public abstract class NeObject {
 		UInt32NeField field = prototype.getUInt32Field(name);
 		NeValue entry = getEntry(field);
 		return field.get(entry);
-	}
-
-
-
-	/**
-	 * 
-	 * @param name
-	 * @param func
-	 */
-	public void onUInt32(String name, UInt32NeMethod.Lambda lambda) {
-		UInt32NeMethod method = prototype.getUInt32Method(name);
-		NeFunc func = getFunc(method);
-		func.lambda = lambda;
 	}
 
 
@@ -499,19 +466,6 @@ public abstract class NeObject {
 	/**
 	 * 
 	 * @param name
-	 * @param func
-	 */
-	public void onUInt32Array(String name, UInt32NeMethod.Lambda lambda) {
-		UInt32ArrayNeMethod method = prototype.getUInt32ArrayMethod(name);
-		NeFunc func = getFunc(method);
-		func.lambda = lambda;
-	}
-
-
-
-	/**
-	 * 
-	 * @param name
 	 * @param value
 	 */
 	public void setUInt64(String name, long value) {
@@ -531,18 +485,6 @@ public abstract class NeObject {
 		UInt64NeField field = prototype.getUInt64Field(name);
 		NeValue entry = getEntry(field);
 		return field.get(entry);
-	}
-
-
-	/**
-	 * 
-	 * @param name
-	 * @param func
-	 */
-	public void onUInt64(String name, UInt64NeMethod.Lambda lambda) {
-		UInt64NeMethod method = prototype.getUInt64Method(name);
-		NeFunc func = getFunc(method);
-		func.lambda = lambda;
 	}
 
 
@@ -571,14 +513,6 @@ public abstract class NeObject {
 	}
 
 
-
-	public void onInt8(String name, Int8NeMethod.Lambda lambda) {
-		Int8NeMethod method = prototype.getInt8Method(name);
-		NeFunc func = getFunc(method);
-		func.lambda = lambda;
-	}
-
-
 	/**
 	 * 
 	 * @param name
@@ -602,8 +536,8 @@ public abstract class NeObject {
 	}
 
 
-	public void onInt16(String name, Int16NeMethod.Lambda lambda) {
-		Int16NeMethod method = prototype.getInt16Method(name);
+	public void onShort(String name, ShortNeMethod.Lambda lambda) {
+		ShortNeMethod method = prototype.getShortMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -639,8 +573,8 @@ public abstract class NeObject {
 	 * @param name
 	 * @param lambda
 	 */
-	public void onInt32(String name, Int32NeMethod.Lambda lambda) {
-		Int32NeMethod method = prototype.getInt32Method(name);
+	public void onInteger(String name, IntegerNeMethod.Lambda lambda) {
+		IntegerNeMethod method = prototype.getIntegerMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -671,8 +605,8 @@ public abstract class NeObject {
 	}
 
 
-	public void onInt64(String name, Int64NeMethod.Lambda lambda) {
-		Int64NeMethod method = prototype.getInt64Method(name);
+	public void onLong(String name, LongNeMethod.Lambda lambda) {
+		LongNeMethod method = prototype.getLongMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -703,8 +637,8 @@ public abstract class NeObject {
 	}
 
 
-	public void onInt64Array(String name, Int64ArrayNeMethod.Lambda lambda) {
-		Int64ArrayNeMethod method = prototype.getInt64ArrayMethod(name);
+	public void onLongArray(String name, LongArrayNeMethod.Lambda lambda) {
+		LongArrayNeMethod method = prototype.getLongArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -735,8 +669,8 @@ public abstract class NeObject {
 	}
 
 
-	public void onFloat32(String name, Float32NeMethod.Lambda lambda) {
-		Float32NeMethod method = prototype.getFloat32Method(name);
+	public void onFloat(String name, FloatNeMethod.Lambda lambda) {
+		FloatNeMethod method = prototype.getFloatMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -768,8 +702,8 @@ public abstract class NeObject {
 	}
 
 
-	public void onFloat32Array(String name, Float32ArrayNeMethod.Lambda lambda) {
-		Float32ArrayNeMethod method = prototype.getFloat32ArrayMethod(name);
+	public void onFloatArray(String name, FloatArrayNeMethod.Lambda lambda) {
+		FloatArrayNeMethod method = prototype.getFloatArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -805,8 +739,8 @@ public abstract class NeObject {
 	 * @param name
 	 * @param func
 	 */
-	public void onFloat64(String name, Float64NeMethod.Lambda lambda) {
-		Float64NeMethod method = prototype.getFloat64Method(name);
+	public void onDouble(String name, DoubleNeMethod.Lambda lambda) {
+		DoubleNeMethod method = prototype.getDoubleMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -842,8 +776,8 @@ public abstract class NeObject {
 	 * @param name
 	 * @param func
 	 */
-	public void onFloat64Array(String name, Float64ArrayNeMethod.Lambda lambda) {
-		Float64ArrayNeMethod method = prototype.getFloat64ArrayMethod(name);
+	public void onDoubleArray(String name, DoubleArrayNeMethod.Lambda lambda) {
+		DoubleArrayNeMethod method = prototype.getDoubleArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -870,8 +804,8 @@ public abstract class NeObject {
 
 
 
-	public void onStringUTF8(String name, StringUTF8NeMethod.Lambda lambda) {
-		StringUTF8NeMethod method = prototype.getStringUTF8NeMethod(name);
+	public void onString(String name, StringNeMethod.Lambda lambda) {
+		StringNeMethod method = prototype.getStringUTF8NeMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -893,8 +827,8 @@ public abstract class NeObject {
 
 
 
-	public void onStringUTF8Array(String name, StringUTF8ArrayNeMethod.Lambda lambda) {
-		StringUTF8ArrayNeMethod method = prototype.getStringUTF8ArrayMethod(name);
+	public void onStringArray(String name, StringArrayNeMethod.Lambda lambda) {
+		StringArrayNeMethod method = prototype.getStringArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -918,7 +852,7 @@ public abstract class NeObject {
 
 
 
-	public <T extends NeObject>  void onObj(String name, ObjNeMethod.Lambda<T> lambda) {
+	public <T extends NeObject> void onObject(String name, ObjNeMethod.Lambda<T> lambda) {
 		ObjNeMethod<T> method = prototype.getObjMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;

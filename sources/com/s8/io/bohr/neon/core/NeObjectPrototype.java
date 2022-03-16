@@ -34,32 +34,25 @@ import com.s8.io.bohr.neon.fields.primitives.UInt32NeField;
 import com.s8.io.bohr.neon.fields.primitives.UInt64NeField;
 import com.s8.io.bohr.neon.fields.primitives.UInt8NeField;
 import com.s8.io.bohr.neon.methods.NeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Bool8ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Float32ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Float64ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Int16ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Int32ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Int64ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.Int8ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.StringUTF8ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.UInt16ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.UInt32ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.UInt64ArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.UInt8ArrayNeMethod;
+import com.s8.io.bohr.neon.methods.NeRunnable;
+import com.s8.io.bohr.neon.methods.arrays.BooleanArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.DoubleArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.FloatArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.IntegerArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.LongArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.ShortArrayNeMethod;
+import com.s8.io.bohr.neon.methods.arrays.StringArrayNeMethod;
 import com.s8.io.bohr.neon.methods.objects.ListNeMethod;
 import com.s8.io.bohr.neon.methods.objects.ObjNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Bool8NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Float32NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Float64NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int16NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int32NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int64NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.Int8NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.StringUTF8NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt16NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt32NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt64NeMethod;
-import com.s8.io.bohr.neon.methods.primitives.UInt8NeMethod;
+import com.s8.io.bohr.neon.methods.primitives.BooleanNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.DoubleNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.FloatNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.IntegerNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.LongNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.ShortNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.StringNeMethod;
+import com.s8.io.bohr.neon.methods.primitives.VoidNeMethod;
+import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
 
@@ -79,9 +72,9 @@ public class NeObjectPrototype {
 	 */
 	public final String name;
 
-	public final long code;
+	public final long outflowCode;
 
-	private NeField[] fields;
+	private NeField[] outboundFields;
 
 	
 	private boolean isUnpublished;
@@ -90,7 +83,7 @@ public class NeObjectPrototype {
 
 
 
-	private NeMethod[] methods;
+	public NeRunnable[] inboundRunnables;
 
 
 	private Map<String, NeMethod> methodsByName;
@@ -99,12 +92,12 @@ public class NeObjectPrototype {
 	public NeObjectPrototype(String name, long code) {
 		super();
 		this.name = name;
-		this.code = code;
-		this.fields = new NeField[0];
+		this.outflowCode = code;
+		this.outboundFields = new NeField[2];
 		fieldsByName = new HashMap<>();
 
 
-		this.methods = new NeMethod[0];
+		this.inboundRunnables = new NeRunnable[2];
 		this.methodsByName = new HashMap<>();
 		
 		isUnpublished = true;
@@ -115,6 +108,24 @@ public class NeObjectPrototype {
 
 	public final static String RUNTIME_MODFICATION_ERROR_MESSAGE = "Prototype can only be edited at compile time";
 
+	
+	
+
+	public VoidNeMethod getVoidMethod(String name) {
+		NeMethod method = methodsByName.get(name);
+		if(method != null) {
+			if(method.getSignature() != VoidNeMethod.SIGNATURE) { 
+				throw new RuntimeException("Cannot change field signature"); 
+			}
+			return (VoidNeMethod) method;
+		}
+		else {
+			VoidNeMethod newMethod = new VoidNeMethod(this, name);
+			appendMethod(newMethod);
+			return newMethod;
+		}
+	}
+	
 	/**
 	 * 
 	 * @param name
@@ -137,16 +148,16 @@ public class NeObjectPrototype {
 
 
 
-	public Bool8NeMethod getBool8Method(String name) {
+	public BooleanNeMethod getBooleanMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Bool8NeMethod.SIGNATURE) { 
+			if(method.getSignature() != BooleanNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Bool8NeMethod) method;
+			return (BooleanNeMethod) method;
 		}
 		else {
-			Bool8NeMethod newMethod = new Bool8NeMethod(this, name);
+			BooleanNeMethod newMethod = new BooleanNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -167,16 +178,16 @@ public class NeObjectPrototype {
 	}
 
 	
-	public Bool8ArrayNeMethod getBool8ArrayMethod(String name) {
+	public BooleanArrayNeMethod getBool8ArrayMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Bool8ArrayNeMethod.SIGNATURE) { 
+			if(method.getSignature() != BooleanArrayNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Bool8ArrayNeMethod) method;
+			return (BooleanArrayNeMethod) method;
 		}
 		else {
-			Bool8ArrayNeMethod newMethod = new Bool8ArrayNeMethod(this, name);
+			BooleanArrayNeMethod newMethod = new BooleanArrayNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -203,24 +214,6 @@ public class NeObjectPrototype {
 	
 	
 
-	
-	public UInt8NeMethod getUInt8Method(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt8NeMethod.SIGNATURE) { 
-				throw new RuntimeException("Cannot change field signature"); 
-			}
-			return (UInt8NeMethod) method;
-		}
-		else {
-			UInt8NeMethod newMethod = new UInt8NeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
-		}
-	}
-
-	
-
 
 	public UInt8ArrayNeField getUInt8ArrayField(String name) {
 		NeField field = fieldsByName.get(name);
@@ -232,22 +225,6 @@ public class NeObjectPrototype {
 			UInt8ArrayNeField newField = new UInt8ArrayNeField(this, name);
 			appendField(newField);
 			return newField;
-		}
-	}
-	
-
-	public UInt8ArrayNeMethod getUInt8ArrayMethod(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt8ArrayNeMethod.SIGNATURE) { 
-				throw new RuntimeException("Cannot change field signature"); 
-			}
-			return (UInt8ArrayNeMethod) method;
-		}
-		else {
-			UInt8ArrayNeMethod newMethod = new UInt8ArrayNeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
 		}
 	}
 
@@ -273,20 +250,6 @@ public class NeObjectPrototype {
 	
 
 	
-	public UInt16NeMethod getUInt16Method(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt16NeMethod.SIGNATURE) { 
-				throw new RuntimeException("Cannot change field signature"); 
-			}
-			return (UInt16NeMethod) method;
-		}
-		else {
-			UInt16NeMethod newMethod = new UInt16NeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
-		}
-	}
 
 	
 
@@ -307,24 +270,6 @@ public class NeObjectPrototype {
 			UInt16ArrayNeField newField = new UInt16ArrayNeField(this, name);
 			appendField(newField);
 			return newField;
-		}
-	}
-
-	
-
-	
-	public UInt16ArrayNeMethod getUInt16ArrayMethod(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt16ArrayNeMethod.SIGNATURE) { 
-				throw new RuntimeException("Cannot change field signature"); 
-			}
-			return (UInt16ArrayNeMethod) method;
-		}
-		else {
-			UInt16ArrayNeMethod newMethod = new UInt16ArrayNeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
 		}
 	}
 
@@ -351,23 +296,6 @@ public class NeObjectPrototype {
 	
 
 	
-	public UInt32NeMethod getUInt32Method(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt32NeMethod.SIGNATURE) { 
-				throw new RuntimeException("Cannot change field signature"); 
-			}
-			return (UInt32NeMethod) method;
-		}
-		else {
-			UInt32NeMethod newMethod = new UInt32NeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
-		}
-	}
-	
-
-
 	/**
 	 * 
 	 * @param name
@@ -389,25 +317,6 @@ public class NeObjectPrototype {
 
 	
 
-	/**
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public UInt32ArrayNeMethod getUInt32ArrayMethod(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt32NeMethod.SIGNATURE) { 
-				throw new RuntimeException("Cannot change field signature"); 
-			}
-			return (UInt32ArrayNeMethod) method;
-		}
-		else {
-			UInt32ArrayNeMethod newMethod = new UInt32ArrayNeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
-		}
-	}
 
 	/**
 	 * 
@@ -425,22 +334,6 @@ public class NeObjectPrototype {
 			UInt64NeField newField = new UInt64NeField(this, name);
 			appendField(newField);
 			return newField;
-		}
-	}
-
-
-
-
-	public UInt64NeMethod getUInt64Method(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt64NeMethod.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (UInt64NeMethod) method;
-		}
-		else {
-			UInt64NeMethod newMethod = new UInt64NeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
 		}
 	}
 
@@ -468,21 +361,6 @@ public class NeObjectPrototype {
 
 	
 
-	public UInt64ArrayNeMethod getUInt64ArrayMethod(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != UInt64ArrayNeMethod.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (UInt64ArrayNeMethod) method;
-		}
-		else {
-			UInt64ArrayNeMethod newMethod = new UInt64ArrayNeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
-		}
-	}
-
-
-
 
 
 	/**
@@ -505,21 +383,6 @@ public class NeObjectPrototype {
 	}
 	
 
-	public Int8NeMethod getInt8Method(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != Int8NeMethod.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (Int8NeMethod) method;
-		}
-		else {
-			Int8NeMethod newMethod = new Int8NeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
-		}
-	}
-
-
-
 	/**
 	 * 
 	 * @param name
@@ -539,25 +402,6 @@ public class NeObjectPrototype {
 		}
 	}
 
-	
-
-	/**
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public Int8ArrayNeMethod getInt8ArrayNeMethod(String name) {
-		NeMethod method = methodsByName.get(name);
-		if(method != null) {
-			if(method.getSignature() != Int8ArrayNeMethod.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (Int8ArrayNeMethod) method;
-		}
-		else {
-			Int8ArrayNeMethod newMethod = new Int8ArrayNeMethod(this, name);
-			appendMethod(newMethod);
-			return newMethod;
-		}
-	}
 	
 
 	/**
@@ -585,14 +429,14 @@ public class NeObjectPrototype {
 	 * @param name
 	 * @return
 	 */
-	public Int16NeMethod getInt16Method(String name) {
+	public ShortNeMethod getShortMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Int16NeMethod.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (Int16NeMethod) method;
+			if(method.getSignature() != ShortNeMethod.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			return (ShortNeMethod) method;
 		}
 		else {
-			Int16NeMethod newMethod = new Int16NeMethod(this, name);
+			ShortNeMethod newMethod = new ShortNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -623,16 +467,16 @@ public class NeObjectPrototype {
 	 * @param name
 	 * @return
 	 */
-	public Int16ArrayNeMethod getInt16ArrayMethod(String name) {
+	public ShortArrayNeMethod getShortArrayMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Int16ArrayNeMethod.SIGNATURE) { 
+			if(method.getSignature() != ShortArrayNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Int16ArrayNeMethod) method;
+			return (ShortArrayNeMethod) method;
 		}
 		else {
-			Int16ArrayNeMethod newMethod = new Int16ArrayNeMethod(this, name);
+			ShortArrayNeMethod newMethod = new ShortArrayNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -666,16 +510,16 @@ public class NeObjectPrototype {
 	 * @param name
 	 * @return
 	 */
-	public Int32NeMethod getInt32Method(String name) {
+	public IntegerNeMethod getIntegerMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Int32NeMethod.SIGNATURE) { 
+			if(method.getSignature() != IntegerNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Int32NeMethod) method;
+			return (IntegerNeMethod) method;
 		}
 		else {
-			Int32NeMethod newMethod = new Int32NeMethod(this, name);
+			IntegerNeMethod newMethod = new IntegerNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -709,16 +553,16 @@ public class NeObjectPrototype {
 	 * @param name
 	 * @return
 	 */
-	public Int32ArrayNeMethod getInt32ArrayNeMethod(String name) {
+	public IntegerArrayNeMethod getInt32ArrayNeMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Int32ArrayNeMethod.SIGNATURE) { 
+			if(method.getSignature() != IntegerArrayNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Int32ArrayNeMethod) method;
+			return (IntegerArrayNeMethod) method;
 		}
 		else {
-			Int32ArrayNeMethod newMethod = new Int32ArrayNeMethod(this, name);
+			IntegerArrayNeMethod newMethod = new IntegerArrayNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -745,16 +589,16 @@ public class NeObjectPrototype {
 	}
 	
 	
-	public Int64NeMethod getInt64Method(String name) {
+	public LongNeMethod getLongMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Int64NeMethod.SIGNATURE) { 
+			if(method.getSignature() != LongNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Int64NeMethod) method;
+			return (LongNeMethod) method;
 		}
 		else {
-			Int64NeMethod newMethod = new Int64NeMethod(this, name);
+			LongNeMethod newMethod = new LongNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -788,16 +632,16 @@ public class NeObjectPrototype {
 	 * @param name
 	 * @return
 	 */
-	public Int64ArrayNeMethod getInt64ArrayMethod(String name) {
+	public LongArrayNeMethod getLongArrayMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Int64NeMethod.SIGNATURE) { 
+			if(method.getSignature() != LongNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Int64ArrayNeMethod) method;
+			return (LongArrayNeMethod) method;
 		}
 		else {
-			Int64ArrayNeMethod newMethod = new Int64ArrayNeMethod(this, name);
+			LongArrayNeMethod newMethod = new LongArrayNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -824,16 +668,16 @@ public class NeObjectPrototype {
 	}
 
 	
-	public Float32NeMethod getFloat32Method(String name) {
+	public FloatNeMethod getFloatMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Float32NeMethod.SIGNATURE) { 
+			if(method.getSignature() != FloatNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Float32NeMethod) method;
+			return (FloatNeMethod) method;
 		}
 		else {
-			Float32NeMethod newMethod = new Float32NeMethod(this, name);
+			FloatNeMethod newMethod = new FloatNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -861,16 +705,16 @@ public class NeObjectPrototype {
 
 
 
-	public Float32ArrayNeMethod getFloat32ArrayMethod(String name) {
+	public FloatArrayNeMethod getFloatArrayMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Float32ArrayNeMethod.SIGNATURE) { 
+			if(method.getSignature() != FloatArrayNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Float32ArrayNeMethod) method;
+			return (FloatArrayNeMethod) method;
 		}
 		else {
-			Float32ArrayNeMethod newMethod = new Float32ArrayNeMethod(this, name);
+			FloatArrayNeMethod newMethod = new FloatArrayNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -897,14 +741,14 @@ public class NeObjectPrototype {
 	}
 
 
-	public Float64NeMethod getFloat64Method(String name) {
+	public DoubleNeMethod getDoubleMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != UInt64NeMethod.SIGNATURE) { throw new RuntimeException("Cannot change method signature"); }
-			return (Float64NeMethod) method;
+			if(method.getSignature() != DoubleNeMethod.SIGNATURE) { throw new RuntimeException("Cannot change method signature"); }
+			return (DoubleNeMethod) method;
 		}
 		else {
-			Float64NeMethod newMethod = new Float64NeMethod(this, name);
+			DoubleNeMethod newMethod = new DoubleNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -933,16 +777,16 @@ public class NeObjectPrototype {
 
 	
 
-	public Float64ArrayNeMethod getFloat64ArrayMethod(String name) {
+	public DoubleArrayNeMethod getDoubleArrayMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != Float64ArrayNeMethod.SIGNATURE) { 
+			if(method.getSignature() != DoubleArrayNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (Float64ArrayNeMethod) method;
+			return (DoubleArrayNeMethod) method;
 		}
 		else {
-			Float64ArrayNeMethod newMethod = new Float64ArrayNeMethod(this, name);
+			DoubleArrayNeMethod newMethod = new DoubleArrayNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -977,16 +821,16 @@ public class NeObjectPrototype {
 
 	
 
-	public StringUTF8NeMethod getStringUTF8NeMethod(String name) {
+	public StringNeMethod getStringUTF8NeMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != StringUTF8NeMethod.SIGNATURE) { 
+			if(method.getSignature() != StringNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (StringUTF8NeMethod) method;
+			return (StringNeMethod) method;
 		}
 		else {
-			StringUTF8NeMethod newMethod = new StringUTF8NeMethod(this, name);
+			StringNeMethod newMethod = new StringNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1016,16 +860,16 @@ public class NeObjectPrototype {
 
 	
 
-	public StringUTF8ArrayNeMethod getStringUTF8ArrayMethod(String name) {
+	public StringArrayNeMethod getStringArrayMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
-			if(method.getSignature() != StringUTF8ArrayNeMethod.SIGNATURE) { 
+			if(method.getSignature() != StringArrayNeMethod.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); 
 			}
-			return (StringUTF8ArrayNeMethod) method;
+			return (StringArrayNeMethod) method;
 		}
 		else {
-			StringUTF8ArrayNeMethod newMethod = new StringUTF8ArrayNeMethod(this, name);
+			StringArrayNeMethod newMethod = new StringArrayNeMethod(this, name);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1104,16 +948,16 @@ public class NeObjectPrototype {
 	 * @param field
 	 */
 	private void appendField(NeField field) {
-		int position = fields.length;
+		int position = outboundFields.length;
 		field.ordinal = position;
 		field.code = position;
 
 		NeField[] extended = new NeField[position+1];
 		for(int i=0; i<position; i++) {
-			extended[i] = fields[i];
+			extended[i] = outboundFields[i];
 		}
 		extended[position] = field;
-		fields = extended;
+		outboundFields = extended;
 
 		if(fieldsByName.containsKey(field.name)) {
 			System.err.println("NE_COMPILE_ERROR: name conflict: "+field.name);
@@ -1129,17 +973,7 @@ public class NeObjectPrototype {
 	 * @param field
 	 */
 	private void appendMethod(NeMethod method) {
-		int position = fields.length;
-		method.ordinal = position;
-		method.code = position;
-
-		NeMethod[] extended = new NeMethod[position+1];
-		for(int i=0; i<position; i++) {
-			extended[i] = methods[i];
-		}
-		extended[position] = method;
-		methods = extended;
-
+	
 		if(methodsByName.containsKey(method.name)) {
 			System.err.println("NE_COMPILE_ERROR: METHOD name conflict: "+method.name);
 		}
@@ -1148,13 +982,43 @@ public class NeObjectPrototype {
 	}
 	
 	
+	public void consumeDeclareRunnable(ByteInflow inflow) throws IOException {
+		
+		String methodName = inflow.getStringUTF8();
+		
+		
+		NeMethod method = methodsByName.get(methodName);
+		if(inboundRunnables == null) {
+			System.err.println("CANNOT find method for name : "+methodName);
+		}
+		
+		
+		NeRunnable runnable = method.buildRunnable(inflow);
+		
+
+		int code = inflow.getUInt8();
+		
+		int n = inboundRunnables.length;
+		
+		/* extend if necessary */
+		if(n <= code) {
+			int m = inboundRunnables.length;
+			while(m <= code) { m*=2; }
+			NeRunnable[] extended = new NeRunnable[m];
+			for(int i=0; i<n; i++) { extended[i] = inboundRunnables[i]; }
+			inboundRunnables = extended;
+		}
+
+		inboundRunnables[code] = runnable;
+	}
+	
 	
 	/**
 	 * 
 	 * @param outflow
 	 * @throws IOException
 	 */
-	public void declare(ByteOutflow outflow) throws IOException {
+	public void publish_DECLARE_TYPE(ByteOutflow outflow) throws IOException {
 		
 		if(isUnpublished) {
 			
@@ -1165,7 +1029,7 @@ public class NeObjectPrototype {
 			outflow.putStringUTF8(name);
 
 			/* publish code */
-			outflow.putUInt7x(code);
+			outflow.putUInt7x(outflowCode);
 			
 			isUnpublished = false;
 		}
@@ -1181,10 +1045,10 @@ public class NeObjectPrototype {
 	public void publishFields(NeValue[] values, ByteOutflow outflow) throws IOException {
 		
 		
-		int n = fields.length;
+		int n = outboundFields.length;
 		
 		for(int code =0; code < n; code++) {
-			NeField field = fields[code];
+			NeField field = outboundFields[code];
 			if(field != null) {
 				
 				/* declare field (if not already done) */

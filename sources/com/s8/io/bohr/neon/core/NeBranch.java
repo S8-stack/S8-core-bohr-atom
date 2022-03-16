@@ -20,7 +20,7 @@ public class NeBranch extends S8Branch {
 	
 	
 	
-	final Map<String, NeObjectPrototype> prototypes;
+	final Map<String, NeObjectPrototype> prototypesByName;
 	
 	
 	/**
@@ -45,7 +45,7 @@ public class NeBranch extends S8Branch {
 	
 	public NeBranch(String address, String id) {
 		super(address, id);
-		prototypes = new HashMap<>();
+		prototypesByName = new HashMap<>();
 		this.objects = new HashMap<>();
 		
 		
@@ -114,8 +114,8 @@ public class NeBranch extends S8Branch {
 	 * @param typename
 	 * @return
 	 */
-	public NeObjectPrototype getObjectPrototype(String typename) {
-		return prototypes.computeIfAbsent(typename, name -> new NeObjectPrototype(name, highestTypeCode++));
+	public NeObjectPrototype retrieveObjectPrototype(String typename) {
+		return prototypesByName.computeIfAbsent(typename, name -> new NeObjectPrototype(name, highestTypeCode++));
 	}
 
 

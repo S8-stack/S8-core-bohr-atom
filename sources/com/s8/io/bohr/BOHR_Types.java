@@ -11,6 +11,13 @@ package com.s8.io.bohr;
 public class BOHR_Types {
 
 	
+	/* <core> */
+	
+	public final static int VOID = 0x02;
+	
+	/* </core> */
+	
+	
 	/* <system> */
 	public final static int TUPLE = 0x12;
 	

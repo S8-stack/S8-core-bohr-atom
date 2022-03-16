@@ -74,7 +74,7 @@ public class NdTypeComposer {
 	/**
 	 * 
 	 * @param propertiesMap
-	 * @param code
+	 * @param outflowCode
 	 * @param type
 	 * @throws NdBuildException 
 	 * @throws LithTypeBuildException 

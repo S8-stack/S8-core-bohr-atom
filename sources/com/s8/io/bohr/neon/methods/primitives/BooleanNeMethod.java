@@ -7,6 +7,7 @@ import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
 import com.s8.io.bohr.neon.methods.NeFunc;
 import com.s8.io.bohr.neon.methods.NeMethod;
+import com.s8.io.bohr.neon.methods.NeRunnable;
 import com.s8.io.bytes.alpha.ByteInflow;
 
 /**
@@ -16,7 +17,7 @@ import com.s8.io.bytes.alpha.ByteInflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Bool8NeMethod extends NeMethod {
+public class BooleanNeMethod extends NeMethod {
 
 
 	public interface Lambda {
@@ -36,15 +37,26 @@ public class Bool8NeMethod extends NeMethod {
 	 * @param prototype
 	 * @param name
 	 */
-	public Bool8NeMethod(NeObjectPrototype prototype, String name) {
+	public BooleanNeMethod(NeObjectPrototype prototype, String name) {
 		super(prototype, name);
 	}
 
 
 	@Override
-	public void run(NeBranch branch, ByteInflow inflow, NeFunc func) throws IOException {
-		boolean arg = inflow.getBool8();
-		((Lambda) (func.lambda)).operate(arg);
+	public NeRunnable buildRunnable(ByteInflow inflow) throws IOException {
+		switch(inflow.getUInt8()) {
+		case BOHR_Types.BOOL8 : new Bool8NeRunnable();
+		default : throw new IOException("Unsupported type");
+		}
 	}
 	
+	
+	private static class Bool8NeRunnable implements NeRunnable {
+
+		@Override
+		public void run(NeBranch branch, ByteInflow inflow, NeFunc func) throws IOException {
+			boolean arg = inflow.getBool8();
+			((Lambda) (func.lambda)).operate(arg);
+		}
+	}
 }

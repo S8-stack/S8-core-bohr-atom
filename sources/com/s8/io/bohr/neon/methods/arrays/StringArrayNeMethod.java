@@ -1,10 +1,9 @@
-package com.s8.io.bohr.neon.methods.objects;
+package com.s8.io.bohr.neon.methods.arrays;
 
 import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.NeBranch;
-import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
 import com.s8.io.bohr.neon.methods.NeFunc;
 import com.s8.io.bohr.neon.methods.NeMethod;
@@ -18,17 +17,17 @@ import com.s8.io.bytes.alpha.ByteInflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class ObjNeMethod<T extends NeObject> extends NeMethod {
+public class StringArrayNeMethod extends NeMethod {
 
 
-	public interface Lambda<T extends NeObject> {
+	public interface Lambda {
 		
-		public void operate(T arg);
+		public void operate(String[] arg);
 		
 	}
 	
 
-	public final static long SIGNATURE = BOHR_Types.S8OBJECT;
+	public final static long SIGNATURE = (BOHR_Types.ARRAY << 8) & BOHR_Types.STRING_UTF8;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
@@ -38,30 +37,35 @@ public class ObjNeMethod<T extends NeObject> extends NeMethod {
 	 * @param prototype
 	 * @param name
 	 */
-	public ObjNeMethod(NeObjectPrototype prototype, String name) {
+	public StringArrayNeMethod(NeObjectPrototype prototype, String name) {
 		super(prototype, name);
 	}
 
 
-
-
 	@Override
 	public NeRunnable buildRunnable(ByteInflow inflow) throws IOException {
+		if(inflow.getUInt8() != BOHR_Types.ARRAY) {	throw new IOException("Must be an array"); }
 		switch(inflow.getUInt8()) {
-		case BOHR_Types.S8OBJECT : new S8ObjectNeRunnable<T>();
+		case BOHR_Types.STRING_UTF8 : new Bool8ArratNeRunnable();
 		default : throw new IOException("Unsupported type");
 		}
 	}
 	
 	
-	private static class S8ObjectNeRunnable<T extends NeObject> implements NeRunnable {
+	private static class Bool8ArratNeRunnable implements NeRunnable {
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public void run(NeBranch branch, ByteInflow inflow, NeFunc func) throws IOException {
-			String index = inflow.getStringUTF8();
-			NeObject arg = index != null ? branch.getVertex(index) : null;
-			((Lambda<T>) (func.lambda)).operate((T) arg);
+			int length = (int) inflow.getUInt7x();
+			if(length >= 0) {
+				String[] arg = new String[length];
+				for(int i=0; i<length; i++) { arg[i] = inflow.getStringUTF8(); }
+				((Lambda) (func.lambda)).operate(arg);
+			}
+			else {
+				((Lambda) (func.lambda)).operate(null);
+			}
 		}
 	}
+	
 }

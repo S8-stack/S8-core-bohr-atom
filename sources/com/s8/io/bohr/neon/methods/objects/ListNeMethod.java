@@ -10,6 +10,7 @@ import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
 import com.s8.io.bohr.neon.methods.NeFunc;
 import com.s8.io.bohr.neon.methods.NeMethod;
+import com.s8.io.bohr.neon.methods.NeRunnable;
 import com.s8.io.bytes.alpha.ByteInflow;
 
 /**
@@ -44,23 +45,37 @@ public class ListNeMethod<T extends NeObject> extends NeMethod {
 	}
 
 
-	@SuppressWarnings("unchecked")
+
 	@Override
-	public void run(NeBranch branch, ByteInflow inflow, NeFunc func) throws IOException {
-		
-		int length = (int) inflow.getUInt7x();
-		if(length >= 0) {
-			List<T> list =  new ArrayList<T>();
-			for(int i=0; i<length; i++) {
-				String index = inflow.getStringUTF8();
-				list.add(index != null ? (T) branch.getVertex(index) : null);
+	public NeRunnable buildRunnable(ByteInflow inflow) throws IOException {
+		if(inflow.getUInt8() != BOHR_Types.ARRAY) {	throw new IOException("Must be an array"); }
+		switch(inflow.getUInt8()) {
+		case BOHR_Types.S8OBJECT : new S8ObjectNeRunnable<T>();
+		default : throw new IOException("Unsupported type");
+		}
+	}
+	
+	
+	private static class S8ObjectNeRunnable<T extends NeObject> implements NeRunnable {
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public void run(NeBranch branch, ByteInflow inflow, NeFunc func) throws IOException {
+			
+			int length = (int) inflow.getUInt7x();
+			if(length >= 0) {
+				List<T> list =  new ArrayList<T>();
+				for(int i=0; i<length; i++) {
+					String index = inflow.getStringUTF8();
+					list.add(index != null ? (T) branch.getVertex(index) : null);
+				}
+				((Lambda<T>) (func.lambda)).operate(list);	
 			}
-			((Lambda<T>) (func.lambda)).operate(list);	
+			else {
+				((Lambda<T>) (func.lambda)).operate(null);	
+			}
+			
 		}
-		else {
-			((Lambda<T>) (func.lambda)).operate(null);	
-		}
-		
 	}
 	
 }

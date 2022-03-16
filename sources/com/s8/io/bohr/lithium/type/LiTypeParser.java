@@ -60,7 +60,7 @@ public class LiTypeParser {
 	/**
 	 * 
 	 * @param propertiesMap
-	 * @param code
+	 * @param outflowCode
 	 * @param type
 	 * @throws LithTypeBuildException 
 	 * @throws LthSerialException

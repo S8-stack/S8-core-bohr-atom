@@ -74,7 +74,7 @@ public class LiTypeComposer {
 	/**
 	 * 
 	 * @param propertiesMap
-	 * @param code
+	 * @param outflowCode
 	 * @param type
 	 * @throws LiBuildException 
 	 * @throws LithTypeBuildException 

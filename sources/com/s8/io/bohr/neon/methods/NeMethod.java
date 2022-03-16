@@ -2,7 +2,6 @@ package com.s8.io.bohr.neon.methods;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObjectPrototype;
 import com.s8.io.bytes.alpha.ByteInflow;
 
@@ -47,6 +46,7 @@ public abstract class NeMethod {
 		return new NeFunc();
 	}
 	
-	public abstract void run(NeBranch branch, ByteInflow inflow, NeFunc func) throws IOException;
+
+	public abstract NeRunnable buildRunnable(ByteInflow inflow) throws IOException;
 	
 }
