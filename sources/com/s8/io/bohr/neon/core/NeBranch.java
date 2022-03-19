@@ -38,6 +38,8 @@ public class NeBranch extends S8Branch {
 	
 	
 	
+	public final NeInbound inbound;
+	
 	public final NeOutbound outbound;
 	
 	
@@ -50,6 +52,7 @@ public class NeBranch extends S8Branch {
 		
 		
 		/* outbound */
+		this.inbound = new NeInbound(this);
 		this.outbound = new NeOutbound();
 		
 		idxGen = new Base64Generator(id);

@@ -20,7 +20,7 @@ public class NeInbound {
 
 	private final NeBranch branch;
 
-	private final Map<Long, NeObjectPrototype> prototypesByCode;
+	private final Map<Long, NeObjectPrototype> inboundPrototypesByCode;
 
 	private int forkCode;
 
@@ -30,11 +30,31 @@ public class NeInbound {
 
 	private Object[] params;
 
-	public NeInbound(NeBranch branch) throws IOException {
+	public NeInbound(NeBranch branch) {
 		super();
 		this.branch = branch;
-		prototypesByCode = new HashMap<>();
+		inboundPrototypesByCode = new HashMap<>();
 	}
+	
+
+	/**
+	 * 
+	 * @param inflow
+	 * @throws IOException
+	 */
+	public void consume(ByteInflow inflow) throws IOException {
+
+		int code;
+		while((code = inflow.getUInt8()) != BOHR_Keywords.CLOSE_JUMP) {
+			switch(code) {
+			case BOHR_Keywords.DECLARE_TYPE: declareType(inflow); break;
+			case BOHR_Keywords.DECLARE_METHOD: declareMethod(inflow); break;
+			case BOHR_Keywords.RUN_FUNC : runFunc(inflow); break;
+			}
+		}
+	}
+
+	
 
 
 	private void declareType(ByteInflow inflow) throws IOException {
@@ -49,7 +69,7 @@ public class NeInbound {
 		long code = inflow.getUInt7x();
 		
 		// store new entry
-		prototypesByCode.put(code, prototype);
+		inboundPrototypesByCode.put(code, prototype);
 
 	}
 
@@ -63,7 +83,7 @@ public class NeInbound {
 
 		long typeCode = inflow.getUInt7x();
 		
-		NeObjectPrototype prototype = prototypesByCode.get(typeCode);
+		NeObjectPrototype prototype = inboundPrototypesByCode.get(typeCode);
 		if(prototype == null) {
 			throw new IOException("Failed to retrieve prototype for code: "+typeCode);
 		}
@@ -90,25 +110,8 @@ public class NeInbound {
 		NeFunc func = object.funcs[code];
 		if(func == null) { throw new IOException("Missing func @ code = "+code+", for index = "+index); }
 		
+		/* run function */
 		runnable.run(branch, inflow, func);
-	}
-
-	
-	/**
-	 * 
-	 * @param inflow
-	 * @throws IOException
-	 */
-	public void consume(ByteInflow inflow) throws IOException {
-
-		int code;
-		while((code = inflow.getUInt8()) != BOHR_Keywords.CLOSE_JUMP) {
-			switch(code) {
-			case BOHR_Keywords.DECLARE_TYPE: declareType(inflow); break;
-			case BOHR_Keywords.DECLARE_METHOD: declareMethod(inflow); break;
-			case BOHR_Keywords.RUN_FUNC : runFunc(inflow); break;
-			}
-		}
 	}
 
 	
