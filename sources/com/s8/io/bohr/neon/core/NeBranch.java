@@ -20,7 +20,7 @@ public class NeBranch extends S8Branch {
 	
 	
 	
-	final Map<String, NeObjectPrototype> prototypesByName;
+	final Map<String, NeObjectTypeHandler> prototypesByName;
 	
 	
 	/**
@@ -117,8 +117,8 @@ public class NeBranch extends S8Branch {
 	 * @param typename
 	 * @return
 	 */
-	public NeObjectPrototype retrieveObjectPrototype(String typename) {
-		return prototypesByName.computeIfAbsent(typename, name -> new NeObjectPrototype(name, highestTypeCode++));
+	public NeObjectTypeHandler retrieveObjectPrototype(String typename) {
+		return prototypesByName.computeIfAbsent(typename, name -> new NeObjectTypeHandler(name, highestTypeCode++));
 	}
 
 

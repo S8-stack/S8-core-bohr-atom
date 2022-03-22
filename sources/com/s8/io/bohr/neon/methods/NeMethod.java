@@ -2,7 +2,7 @@ package com.s8.io.bohr.neon.methods;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
 import com.s8.io.bytes.alpha.ByteInflow;
 
 
@@ -16,7 +16,7 @@ import com.s8.io.bytes.alpha.ByteInflow;
 public abstract class NeMethod {
 
 
-	public NeObjectPrototype prototype;
+	public NeObjectTypeHandler prototype;
 	/**
 	 * 
 	 */
@@ -32,7 +32,7 @@ public abstract class NeMethod {
 	 * 
 	 * @param name
 	 */
-	public NeMethod(NeObjectPrototype prototype, String name) {
+	public NeMethod(NeObjectTypeHandler prototype, String name) {
 		super();
 		this.prototype = prototype;
 		this.name = name;

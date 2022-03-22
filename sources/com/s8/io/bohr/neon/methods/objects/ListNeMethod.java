@@ -7,7 +7,7 @@ import java.util.List;
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
 import com.s8.io.bohr.neon.methods.NeFunc;
 import com.s8.io.bohr.neon.methods.NeMethod;
 import com.s8.io.bohr.neon.methods.NeRunnable;
@@ -40,7 +40,7 @@ public class ListNeMethod<T extends NeObject> extends NeMethod {
 	 * @param prototype
 	 * @param name
 	 */
-	public ListNeMethod(NeObjectPrototype prototype, String name) {
+	public ListNeMethod(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 

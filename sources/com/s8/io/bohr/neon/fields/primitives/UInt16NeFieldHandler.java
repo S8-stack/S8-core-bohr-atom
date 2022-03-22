@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
-import com.s8.io.bohr.neon.fields.NeValue;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -17,37 +17,31 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Bool8NeField extends PrimitiveNeField {
+public class UInt16NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
-	public final static long SIGNATURE = BOHR_Types.BOOL8;
+	public final static long SIGNATURE = BOHR_Types.UINT16;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
 
-	/**
-	 * 
-	 * @param name
-	 */
-	public Bool8NeField(NeObjectPrototype prototype, String name) {
+	public UInt16NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
-	
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.BOOL8);
+		outflow.putUInt8(BOHR_Types.UINT16);
 	}
-	
 
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	public boolean get(NeValue wrapper) {
+	public int get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -57,52 +51,39 @@ public class Bool8NeField extends PrimitiveNeField {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeValue wrapper, boolean value) {
+	public void set(NeFieldValue wrapper, int value) {
 		((Value) wrapper).value = value;
 	}
 	
 
-
-	/***
-	 * 
-	 * @param inflow
-	 * @return
-	 * @throws IOException
-	 */
-	public static Boolean parse(ByteInflow inflow) throws IOException {
-		return inflow.getBool8();
-	}
-	
-
 	@Override
-	public NeValue createValue() {
+	public NeFieldValue createValue() {
 		return new Value();
 	}
 
-
+	
+	
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeField.Value {
-
-		private boolean value;
-
+	public static class Value extends PrimitiveNeFieldHandler.Value {
+		
+		private int value;
+	
 		public Value() {
 			super();
 		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			outflow.putBool8(value);
+			outflow.putUInt16(value);
 		}
-		
+
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			value = inflow.getBool8();
+			value = inflow.getUInt16();
 		}
 	}
-
-
 }

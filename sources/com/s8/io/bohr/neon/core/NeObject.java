@@ -4,29 +4,29 @@ import java.io.IOException;
 import java.util.List;
 
 import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.neon.fields.NeField;
-import com.s8.io.bohr.neon.fields.NeValue;
-import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeField;
-import com.s8.io.bohr.neon.fields.arrays.Float32ArrayNeField;
-import com.s8.io.bohr.neon.fields.arrays.Float64ArrayNeField;
-import com.s8.io.bohr.neon.fields.arrays.Int64ArrayNeField;
-import com.s8.io.bohr.neon.fields.arrays.StringUTF8ArrayNeField;
-import com.s8.io.bohr.neon.fields.arrays.UInt16ArrayNeField;
-import com.s8.io.bohr.neon.fields.arrays.UInt32ArrayNeField;
-import com.s8.io.bohr.neon.fields.objects.NeList;
-import com.s8.io.bohr.neon.fields.objects.NeObj;
-import com.s8.io.bohr.neon.fields.primitives.Bool8NeField;
-import com.s8.io.bohr.neon.fields.primitives.Float32NeField;
-import com.s8.io.bohr.neon.fields.primitives.Float64NeField;
-import com.s8.io.bohr.neon.fields.primitives.Int16NeField;
-import com.s8.io.bohr.neon.fields.primitives.Int32NeField;
-import com.s8.io.bohr.neon.fields.primitives.Int64NeField;
-import com.s8.io.bohr.neon.fields.primitives.Int8NeField;
-import com.s8.io.bohr.neon.fields.primitives.StringUTF8NeField;
-import com.s8.io.bohr.neon.fields.primitives.UInt16NeField;
-import com.s8.io.bohr.neon.fields.primitives.UInt32NeField;
-import com.s8.io.bohr.neon.fields.primitives.UInt64NeField;
-import com.s8.io.bohr.neon.fields.primitives.UInt8NeField;
+import com.s8.io.bohr.neon.fields.NeFieldHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
+import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Float32ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Float64ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Int64ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.StringUTF8ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.UInt16ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.UInt32ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.objects.ListNeFieldHandler;
+import com.s8.io.bohr.neon.fields.objects.ObjNeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Bool8NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Float32NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Float64NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int16NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int32NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int64NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int8NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.StringUTF8NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt16NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt32NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt64NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt8NeFieldHandler;
 import com.s8.io.bohr.neon.methods.NeFunc;
 import com.s8.io.bohr.neon.methods.NeMethod;
 import com.s8.io.bohr.neon.methods.arrays.BooleanArrayNeMethod;
@@ -71,11 +71,11 @@ public abstract class NeObject {
 	private int slot;
 
 
-	NeValue[] values;
+	NeFieldValue[] values;
 
 	NeFunc[] funcs;
 
-	public final NeObjectPrototype prototype;
+	public final NeObjectTypeHandler prototype;
 
 
 	/**
@@ -97,7 +97,7 @@ public abstract class NeObject {
 		this.branch = branch;
 		this.prototype = branch.retrieveObjectPrototype(typeName);
 
-		values = new NeValue[4];
+		values = new NeFieldValue[4];
 
 
 		hasUnpublishedChanges = true;
@@ -221,9 +221,9 @@ public abstract class NeObject {
 	
 	
 
-	private NeValue getEntry(NeField field) {
+	private NeFieldValue getEntry(NeFieldHandler field) {
 		int ordinal= field.ordinal;
-		NeValue value;
+		NeFieldValue value;
 		if(field.ordinal < values.length) {
 			if((value = values[ordinal]) != null) {
 				return value;
@@ -234,7 +234,7 @@ public abstract class NeObject {
 		}
 		else {
 			int n = values.length;
-			NeValue[] extendedValues = new NeValue[2*n];
+			NeFieldValue[] extendedValues = new NeFieldValue[2*n];
 			for(int i = 0; i < n; i++) { extendedValues[i] = values[i]; }
 			values = extendedValues;
 			return (values[ordinal] = field.createValue());
@@ -279,8 +279,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setBool8(String name, boolean value) {
-		Bool8NeField field = prototype.getBool8Field(name);
-		NeValue entry = getEntry(field);
+		Bool8NeFieldHandler field = prototype.getBool8Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -292,8 +292,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public boolean getBool8(String name) {
-		Bool8NeField field = prototype.getBool8Field(name);
-		NeValue entry = getEntry(field);
+		Bool8NeFieldHandler field = prototype.getBool8Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -310,8 +310,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setBool8Array(String name, boolean[] value) {
-		Bool8ArrayNeField field = prototype.getBool8ArrayField(name);
-		NeValue entry = getEntry(field);
+		Bool8ArrayNeFieldHandler field = prototype.getBool8ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -323,8 +323,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public boolean[] getBool8Array(String name) {
-		Bool8ArrayNeField field = prototype.getBool8ArrayField(name);
-		NeValue entry = getEntry(field);
+		Bool8ArrayNeFieldHandler field = prototype.getBool8ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -341,8 +341,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setUInt8(String name, int value) {
-		UInt8NeField field = prototype.getUInt8Field(name);
-		NeValue entry = getEntry(field);
+		UInt8NeFieldHandler field = prototype.getUInt8Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -354,8 +354,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public int getUInt8(String name) {
-		UInt8NeField field = prototype.getUInt8Field(name);
-		NeValue entry = getEntry(field);
+		UInt8NeFieldHandler field = prototype.getUInt8Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -366,8 +366,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setUInt16(String name, int value) {
-		UInt16NeField field = prototype.getUInt16Field(name);
-		NeValue entry = getEntry(field);
+		UInt16NeFieldHandler field = prototype.getUInt16Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -379,8 +379,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public int getUInt16(String name) {
-		UInt16NeField field = prototype.getUInt16Field(name);
-		NeValue entry = getEntry(field);
+		UInt16NeFieldHandler field = prototype.getUInt16Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -392,8 +392,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setUInt16Array(String name, int[] value) {
-		UInt16ArrayNeField field = prototype.getUInt16ArrayField(name);
-		NeValue entry = getEntry(field);
+		UInt16ArrayNeFieldHandler field = prototype.getUInt16ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -405,8 +405,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public int[] getUInt16Array(String name) {
-		UInt16ArrayNeField field = prototype.getUInt16ArrayField(name);
-		NeValue entry = getEntry(field);
+		UInt16ArrayNeFieldHandler field = prototype.getUInt16ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -418,8 +418,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setUInt32(String name, long value) {
-		UInt32NeField field = prototype.getUInt32Field(name);
-		NeValue entry = getEntry(field);
+		UInt32NeFieldHandler field = prototype.getUInt32Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -431,8 +431,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public long getUInt32(String name) {
-		UInt32NeField field = prototype.getUInt32Field(name);
-		NeValue entry = getEntry(field);
+		UInt32NeFieldHandler field = prototype.getUInt32Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -443,8 +443,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setUInt32Array(String name, long[] value) {
-		UInt32ArrayNeField field = prototype.getUInt32ArrayField(name);
-		NeValue entry = getEntry(field);
+		UInt32ArrayNeFieldHandler field = prototype.getUInt32ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -456,8 +456,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public long[] getUInt32Array(String name) {
-		UInt32ArrayNeField field = prototype.getUInt32ArrayField(name);
-		NeValue entry = getEntry(field);
+		UInt32ArrayNeFieldHandler field = prototype.getUInt32ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -469,8 +469,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setUInt64(String name, long value) {
-		UInt64NeField field = prototype.getUInt64Field(name);
-		NeValue entry = getEntry(field);
+		UInt64NeFieldHandler field = prototype.getUInt64Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -482,8 +482,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public long getUInt64(String name) {
-		UInt64NeField field = prototype.getUInt64Field(name);
-		NeValue entry = getEntry(field);
+		UInt64NeFieldHandler field = prototype.getUInt64Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -494,8 +494,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setInt8(String name, int value) {
-		Int8NeField field = prototype.getInt8Field(name);
-		NeValue entry = getEntry(field);
+		Int8NeFieldHandler field = prototype.getInt8Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -507,8 +507,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public int getInt8(String name) {
-		Int8NeField field = prototype.getInt8Field(name);
-		NeValue entry = getEntry(field);
+		Int8NeFieldHandler field = prototype.getInt8Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -519,8 +519,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setInt16(String name, int value) {
-		Int16NeField field = prototype.getInt16Field(name);
-		NeValue entry = getEntry(field);
+		Int16NeFieldHandler field = prototype.getInt16Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -530,8 +530,8 @@ public abstract class NeObject {
 	 * 
 	 */
 	public int getInt16(String name) {
-		Int16NeField field = prototype.getInt16Field(name);
-		NeValue entry = getEntry(field);
+		Int16NeFieldHandler field = prototype.getInt16Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -549,8 +549,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setInt32(String name, int value) {
-		Int32NeField field = prototype.getInt32Field(name);
-		NeValue entry = getEntry(field);
+		Int32NeFieldHandler field = prototype.getInt32Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -562,8 +562,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public int getInt32(String name) {
-		Int32NeField field = prototype.getInt32Field(name);
-		NeValue entry = getEntry(field);
+		Int32NeFieldHandler field = prototype.getInt32Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -586,8 +586,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setInt64(String name, long value) {
-		Int64NeField field = prototype.getInt64Field(name);
-		NeValue entry = getEntry(field);
+		Int64NeFieldHandler field = prototype.getInt64Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -599,8 +599,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public long getInt64(String name) {
-		Int64NeField field = prototype.getInt64Field(name);
-		NeValue entry = getEntry(field);
+		Int64NeFieldHandler field = prototype.getInt64Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -618,8 +618,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setInt64Array(String name, long[] value) {
-		Int64ArrayNeField field = prototype.getInt64ArrayField(name);
-		NeValue entry = getEntry(field);
+		Int64ArrayNeFieldHandler field = prototype.getInt64ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -631,8 +631,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public long[] getInt64Array(String name) {
-		Int64ArrayNeField field = prototype.getInt64ArrayField(name);
-		NeValue entry = getEntry(field);
+		Int64ArrayNeFieldHandler field = prototype.getInt64ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -650,8 +650,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setFloat32(String name, float value) {
-		Float32NeField field = prototype.getFloat32Field(name);
-		NeValue entry = getEntry(field);
+		Float32NeFieldHandler field = prototype.getFloat32Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -663,8 +663,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public float getFloat32(String name) {
-		Float32NeField field = prototype.getFloat32Field(name);
-		NeValue entry = getEntry(field);
+		Float32NeFieldHandler field = prototype.getFloat32Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -682,8 +682,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setFloat32Array(String name, float[] value) {
-		Float32ArrayNeField field = prototype.getFloat32ArrayField(name);
-		NeValue entry = getEntry(field);
+		Float32ArrayNeFieldHandler field = prototype.getFloat32ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -696,8 +696,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public float[] getFloat32Array(String name) {
-		Float32ArrayNeField field = prototype.getFloat32ArrayField(name);
-		NeValue entry = getEntry(field);
+		Float32ArrayNeFieldHandler field = prototype.getFloat32ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -715,8 +715,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setFloat64(String name, double value) {
-		Float64NeField field = prototype.getFloat64Field(name);
-		NeValue entry = getEntry(field);
+		Float64NeFieldHandler field = prototype.getFloat64Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -728,8 +728,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public double getFloat64(String name) {
-		Float64NeField field = prototype.getFloat64Field(name);
-		NeValue entry = getEntry(field);
+		Float64NeFieldHandler field = prototype.getFloat64Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -751,8 +751,8 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setFloat64Array(String name, double[] value) {
-		Float64ArrayNeField field = prototype.getFloat64ArrayField(name);
-		NeValue entry = getEntry(field);
+		Float64ArrayNeFieldHandler field = prototype.getFloat64ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
@@ -764,8 +764,8 @@ public abstract class NeObject {
 	 * @return
 	 */
 	public double[] getFloat64Array(String name) {
-		Float64ArrayNeField field = prototype.getFloat64ArrayField(name);
-		NeValue entry = getEntry(field);
+		Float64ArrayNeFieldHandler field = prototype.getFloat64ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -789,16 +789,16 @@ public abstract class NeObject {
 	 * @param value
 	 */
 	public void setStringUTF8(String name, String value) {
-		StringUTF8NeField field = prototype.getStringUTF8Field(name);
-		NeValue entry = getEntry(field);
+		StringUTF8NeFieldHandler field = prototype.getStringUTF8Field(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
 
 
 	public String getStringUTF8(String name) {
-		StringUTF8NeField field = prototype.getStringUTF8Field(name);
-		NeValue entry = getEntry(field);
+		StringUTF8NeFieldHandler field = prototype.getStringUTF8Field(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -812,16 +812,16 @@ public abstract class NeObject {
 
 
 	public void setStringUTF8Array(String name, String[] value) {
-		StringUTF8ArrayNeField field = prototype.getStringUTF8ArrayField(name);
-		NeValue entry = getEntry(field);
+		StringUTF8ArrayNeFieldHandler field = prototype.getStringUTF8ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
 
 
 	public String[] getStringUTF8Array(String name) {
-		StringUTF8ArrayNeField field = prototype.getStringUTF8ArrayField(name);
-		NeValue entry = getEntry(field);
+		StringUTF8ArrayNeFieldHandler field = prototype.getStringUTF8ArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -837,16 +837,16 @@ public abstract class NeObject {
 
 
 	public <T extends NeObject> void setObj(String name, T value) {
-		NeObj<T> field = prototype.getObjField(name);
-		NeValue entry = getEntry(field);
+		ObjNeFieldHandler<T> field = prototype.getObjField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
 
 
 	public <T extends NeObject> T getObj(String name) {
-		NeObj<T> field = prototype.getObjField(name);
-		NeValue entry = getEntry(field);
+		ObjNeFieldHandler<T> field = prototype.getObjField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
@@ -861,16 +861,16 @@ public abstract class NeObject {
 
 
 	public <T extends NeObject> void setObjList(String name, List<T> value) {
-		NeList<T> field = prototype.getObjArrayField(name);
-		NeValue entry = getEntry(field);
+		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
 	}
 
 
 	public <T extends NeObject> List<T> getObjList(String name) {
-		NeList<T> field = prototype.getObjArrayField(name);
-		NeValue entry = getEntry(field);
+		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 

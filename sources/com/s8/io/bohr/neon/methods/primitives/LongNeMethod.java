@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.NeBranch;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
 import com.s8.io.bohr.neon.methods.NeFunc;
 import com.s8.io.bohr.neon.methods.NeMethod;
 import com.s8.io.bohr.neon.methods.NeRunnable;
@@ -37,7 +37,7 @@ public class LongNeMethod extends NeMethod {
 	 * @param prototype
 	 * @param name
 	 */
-	public LongNeMethod(NeObjectPrototype prototype, String name) {
+	public LongNeMethod(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 

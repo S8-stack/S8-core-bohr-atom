@@ -20,7 +20,7 @@ public class NeInbound {
 
 	private final NeBranch branch;
 
-	private final Map<Long, NeObjectPrototype> inboundPrototypesByCode;
+	private final Map<Long, NeObjectTypeHandler> inboundPrototypesByCode;
 
 	private int forkCode;
 
@@ -61,7 +61,7 @@ public class NeInbound {
 
 		String typename = inflow.getStringUTF8();
 
-		NeObjectPrototype prototype = branch.prototypesByName.get(typename);
+		NeObjectTypeHandler prototype = branch.prototypesByName.get(typename);
 		if(prototype == null) {
 			throw new IOException("Failed to retrieve prototype for typename: "+typename);
 		}
@@ -83,7 +83,7 @@ public class NeInbound {
 
 		long typeCode = inflow.getUInt7x();
 		
-		NeObjectPrototype prototype = inboundPrototypesByCode.get(typeCode);
+		NeObjectTypeHandler prototype = inboundPrototypesByCode.get(typeCode);
 		if(prototype == null) {
 			throw new IOException("Failed to retrieve prototype for code: "+typeCode);
 		}

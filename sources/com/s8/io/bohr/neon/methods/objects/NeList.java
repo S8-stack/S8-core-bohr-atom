@@ -7,9 +7,9 @@ import java.util.List;
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
 import com.s8.io.bohr.neon.core.NeObject;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
-import com.s8.io.bohr.neon.fields.NeField;
-import com.s8.io.bohr.neon.fields.NeValue;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
+import com.s8.io.bohr.neon.fields.NeFieldHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -21,7 +21,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class NeList<T extends NeObject> extends NeField {
+public class NeList<T extends NeObject> extends NeFieldHandler {
 	
 	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.S8OBJECT;
 
@@ -31,7 +31,7 @@ public class NeList<T extends NeObject> extends NeField {
 	 * 
 	 * @param view
 	 */
-	public NeList(NeObjectPrototype prototype, String name) {
+	public NeList(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -50,7 +50,7 @@ public class NeList<T extends NeObject> extends NeField {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<T> get(NeValue wrapper) {
+	public List<T> get(NeFieldValue wrapper) {
 		Value<T> value = (Value<T>) wrapper; 
 		if(value.list == null) {
 			List<T> list = new ArrayList<T>();
@@ -63,7 +63,7 @@ public class NeList<T extends NeObject> extends NeField {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void set(NeValue wrapper, List<T> list) {
+	public void set(NeFieldValue wrapper, List<T> list) {
 		Value<T> value = (Value<T>) wrapper; 
 		value.list = list;
 	}
@@ -71,7 +71,7 @@ public class NeList<T extends NeObject> extends NeField {
 	
 	
 	@Override
-	public NeValue createValue() {
+	public NeFieldValue createValue() {
 		return new Value<>();
 	}
 	
@@ -82,7 +82,7 @@ public class NeList<T extends NeObject> extends NeField {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value<T extends NeObject> extends NeValue {
+	public static class Value<T extends NeObject> extends NeFieldValue {
 		
 		private List<T> list;
 	

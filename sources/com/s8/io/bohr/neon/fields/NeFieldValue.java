@@ -14,7 +14,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public abstract class NeValue {
+public abstract class NeFieldValue {
 
 
 
@@ -24,7 +24,7 @@ public abstract class NeValue {
 	 */
 	public boolean hasDelta;
 	
-	public NeValue() {
+	public NeFieldValue() {
 	}
 	
 

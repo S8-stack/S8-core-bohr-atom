@@ -18,7 +18,7 @@ public class BOHR_Types {
 	/* </core> */
 	
 	
-	/* <system> */
+	/* <structure> */
 	public final static int TUPLE = 0x12;
 	
 	public final static int ARRAY = 0x14;
@@ -27,7 +27,7 @@ public class BOHR_Types {
 	
 	public final static int TREE_MAP = 0x17;
 
-	/* </system> */
+	/* </structure> */
 	
 	
 	/* <byte> */

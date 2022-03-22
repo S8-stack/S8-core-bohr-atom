@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
-import com.s8.io.bohr.neon.fields.NeValue;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -17,14 +17,14 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class StringUTF8ArrayNeField extends PrimitiveNeField {
+public class Int16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.STRING_UTF8;
+	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.INT16;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-	public StringUTF8ArrayNeField(NeObjectPrototype prototype, String name) {
+	public Int16ArrayNeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -32,15 +32,16 @@ public class StringUTF8ArrayNeField extends PrimitiveNeField {
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
 		outflow.putUInt8(BOHR_Types.ARRAY);
-		outflow.putUInt8(BOHR_Types.STRING_UTF8);
+		outflow.putUInt8(BOHR_Types.INT16);
 	}
 
+	
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	public String[] get(NeValue wrapper) {
+	public short[] get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -50,26 +51,28 @@ public class StringUTF8ArrayNeField extends PrimitiveNeField {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeValue wrapper, String[] value) {
+	public void set(NeFieldValue wrapper, short[] value) {
 		((Value) wrapper).value = value;
 	}
 	
 	
+	
 	@Override
-	public NeValue createValue() {
+	public NeFieldValue createValue() {
 		return new Value();
 	}
 
 
-
+	
+	
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeField.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private String[] value;
+		private short[] value;
 	
 		public Value() {
 			super();
@@ -82,7 +85,7 @@ public class StringUTF8ArrayNeField extends PrimitiveNeField {
 				int length = value.length;
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
-					outflow.putStringUTF8(value[i]);		
+					outflow.putInt16(value[i]);		
 				}
 			}
 			else {
@@ -94,9 +97,9 @@ public class StringUTF8ArrayNeField extends PrimitiveNeField {
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length >=0 ) {
-				value = new String[length];
+				value = new short[length];
 				for(int i=0; i<length; i++) {
-					value[i] = inflow.getStringUTF8();
+					value[i] = inflow.getInt16();
 				}
 			}
 			else {

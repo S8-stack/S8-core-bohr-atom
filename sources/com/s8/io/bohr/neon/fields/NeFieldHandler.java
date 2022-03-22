@@ -3,7 +3,7 @@ package com.s8.io.bohr.neon.fields;
 import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
 /**
@@ -13,10 +13,10 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public abstract class NeField {
+public abstract class NeFieldHandler {
 	
 	
-	public NeObjectPrototype prototype;
+	public NeObjectTypeHandler prototype;
 	
 	
 	/**
@@ -35,7 +35,7 @@ public abstract class NeField {
 	 * 
 	 * @param name
 	 */
-	public NeField(NeObjectPrototype prototype, String name) {
+	public NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super();
 		this.prototype = prototype;
 		this.name = name;
@@ -63,7 +63,7 @@ public abstract class NeField {
 	 * @param vertex
 	 * @return
 	 */
-	public abstract NeValue createValue();
+	public abstract NeFieldValue createValue();
 	
 	
 

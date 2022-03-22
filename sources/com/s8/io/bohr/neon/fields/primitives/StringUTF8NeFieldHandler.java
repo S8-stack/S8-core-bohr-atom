@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
-import com.s8.io.bohr.neon.fields.NeValue;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -17,7 +17,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class StringUTF8NeField extends PrimitiveNeField {
+public class StringUTF8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
 	public final static long SIGNATURE = BOHR_Types.STRING_UTF8;
@@ -27,7 +27,7 @@ public class StringUTF8NeField extends PrimitiveNeField {
 	
 
 
-	public StringUTF8NeField(NeObjectPrototype prototype, String name) {
+	public StringUTF8NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -42,7 +42,7 @@ public class StringUTF8NeField extends PrimitiveNeField {
 	 * @param values
 	 * @return
 	 */
-	public String get(NeValue wrapper) {
+	public String get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -52,14 +52,14 @@ public class StringUTF8NeField extends PrimitiveNeField {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeValue wrapper, String value) {
+	public void set(NeFieldValue wrapper, String value) {
 		((Value) wrapper).value = value;
 	}
 	
 	
 	
 	@Override
-	public NeValue createValue() {
+	public NeFieldValue createValue() {
 		return new Value();
 	}
 
@@ -70,7 +70,7 @@ public class StringUTF8NeField extends PrimitiveNeField {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeField.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
 		private String value;
 	

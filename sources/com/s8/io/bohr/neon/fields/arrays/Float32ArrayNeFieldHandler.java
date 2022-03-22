@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
-import com.s8.io.bohr.neon.fields.NeValue;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -13,24 +13,19 @@ import com.s8.io.bytes.alpha.ByteOutflow;
 /**
  * 
  *
+ *
  * @author Pierre Convert
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class UInt8ArrayNeField extends PrimitiveNeField {
+public class Float32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.UINT8;
+	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.FLOAT32;
 
 	public @Override long getSignature() { return SIGNATURE; }
-	
 
 
-	/**
-	 * 
-	 * @param prototype
-	 * @param name
-	 */
-	public UInt8ArrayNeField(NeObjectPrototype prototype, String name) {
+	public Float32ArrayNeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -38,15 +33,16 @@ public class UInt8ArrayNeField extends PrimitiveNeField {
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
 		outflow.putUInt8(BOHR_Types.ARRAY);
-		outflow.putUInt8(BOHR_Types.UINT8);
+		outflow.putUInt8(BOHR_Types.FLOAT32);
 	}
-
+	
+	
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	public int[] get(NeValue wrapper) {
+	public float[] get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -56,26 +52,26 @@ public class UInt8ArrayNeField extends PrimitiveNeField {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeValue wrapper, int[] value) {
+	public void set(NeFieldValue wrapper, float[] value) {
 		((Value) wrapper).value = value;
 	}
 	
-
+	
+	
 	@Override
-	public NeValue createValue() {
+	public NeFieldValue createValue() {
 		return new Value();
 	}
 
-	
 	
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeField.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private int[] value;
+		private float[] value;
 	
 		public Value() {
 			super();
@@ -87,7 +83,7 @@ public class UInt8ArrayNeField extends PrimitiveNeField {
 				int length = value.length;
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
-					outflow.putUInt8(value[i]);		
+					outflow.putFloat32(value[i]);		
 				}
 			}
 			else {
@@ -99,10 +95,13 @@ public class UInt8ArrayNeField extends PrimitiveNeField {
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length >=0 ) {
-				value = new int[length];
+				value = new float[length];
 				for(int i=0; i<length; i++) {
-					value[i] = inflow.getUInt8();
+					value[i] = inflow.getFloat32();
 				}
+			}
+			else {
+				value = null;
 			}
 		}
 	}

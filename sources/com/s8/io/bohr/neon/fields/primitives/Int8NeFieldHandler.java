@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
-import com.s8.io.bohr.neon.fields.NeValue;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -17,23 +17,23 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Int64NeField extends PrimitiveNeField {
+public class Int8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
-	public final static long SIGNATURE = BOHR_Types.INT64;
+	public final static long SIGNATURE = BOHR_Types.INT8;
 
 	public @Override long getSignature() { return SIGNATURE; }
+	
 
 
-
-	public Int64NeField(NeObjectPrototype prototype, String name) {
+	public Int8NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.INT64);
+		outflow.putUInt8(BOHR_Types.UINT8);
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class Int64NeField extends PrimitiveNeField {
 	 * @param values
 	 * @return
 	 */
-	public long get(NeValue wrapper) {
+	public int get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -51,26 +51,27 @@ public class Int64NeField extends PrimitiveNeField {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeValue wrapper, long value) {
+	public void set(NeFieldValue wrapper, int value) {
 		((Value) wrapper).value = value;
 	}
 	
-
 	
+
 	@Override
-	public NeValue createValue() {
+	public NeFieldValue createValue() {
 		return new Value();
 	}
 
+	
 	
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeField.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private long value;
+		private int value;
 	
 		public Value() {
 			super();
@@ -78,12 +79,12 @@ public class Int64NeField extends PrimitiveNeField {
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			outflow.putInt64(value);
+			outflow.putUInt8(value);
 		}
 
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			value = inflow.getInt64();
+			value = inflow.getUInt8();
 		}
 	}
 }

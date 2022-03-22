@@ -5,9 +5,9 @@ import java.io.IOException;
 import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.neon.core.BuildScope;
 import com.s8.io.bohr.neon.core.NeObject;
-import com.s8.io.bohr.neon.core.NeObjectPrototype;
-import com.s8.io.bohr.neon.fields.NeField;
-import com.s8.io.bohr.neon.fields.NeValue;
+import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
+import com.s8.io.bohr.neon.fields.NeFieldHandler;
+import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -19,7 +19,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class NeObj<T extends NeObject> extends NeField {
+public class NeObj<T extends NeObject> extends NeFieldHandler {
 	
 	public final static long SIGNATURE =  BOHR_Types.S8OBJECT;
 
@@ -29,7 +29,7 @@ public class NeObj<T extends NeObject> extends NeField {
 	 * 
 	 * @param view
 	 */
-	public NeObj(NeObjectPrototype prototype, String name) {
+	public NeObj(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -48,7 +48,7 @@ public class NeObj<T extends NeObject> extends NeField {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public T get(NeValue wrapper) {
+	public T get(NeFieldValue wrapper) {
 		return ((Value<T>) wrapper).value;
 	}
 	
@@ -59,13 +59,13 @@ public class NeObj<T extends NeObject> extends NeField {
 	 * @param value
 	 */
 	@SuppressWarnings("unchecked")
-	public void set(NeValue wrapper, T value) {
+	public void set(NeFieldValue wrapper, T value) {
 		((Value<T>) wrapper).value = value;
 	}
 	
 	
 	@Override
-	public NeValue createValue() {
+	public NeFieldValue createValue() {
 		return new Value<>();
 	}
 	
@@ -76,7 +76,7 @@ public class NeObj<T extends NeObject> extends NeField {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value<T extends NeObject> extends NeValue {
+	public static class Value<T extends NeObject> extends NeFieldValue {
 		
 		private T value;
 	
