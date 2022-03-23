@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sources xmlns="http://s8.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://s8.com schema.xsd">
+	<root-local-path>/Users/pc/qx/git/com.s8.io.bohr/web-sources/s8-io-bohr/</root-local-path>
+	<root-web-path>/s8-io-bohr/</root-web-path>
+	<html-filter cache="PRODUCTION" frag-length="1024">
+		<sources>**.html</sources>
+	</html-filter>
+	<css-filter cache="PRODUCTION" frag-length="1024">
+		<sources>**.css</sources>
+	</css-filter>
+	<js-filter cache="PRODUCTION" frag-length="1024">
+		<sources>**.js</sources>
+	</js-filter>
+	<png-filter cache="PRODUCTION" frag-length="65536">
+		<sources>**.png</sources>
+	</png-filter>
+	<jpg-filter cache="PRODUCTION" frag-length="65536">
+		<sources>**.{jpg,jpeg}</sources>
+	</jpg-filter>
+	<svg-filter cache="PRODUCTION" frag-length="65536">
+		<sources>**.svg</sources>
+	</svg-filter>
+</sources>
