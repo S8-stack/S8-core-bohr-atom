@@ -33,29 +33,29 @@ export const BOHR_Keywords = {
     /**
      * (Must be closed)
      */
-    CREATE_NODE = 0x42,
+    CREATE_NODE : 0x42,
 
     /**
      * (must be closed)
      */
-    UPDATE_NODE = 0x43,
+    UPDATE_NODE : 0x43,
 
 
     /**
      * no-closing required
      */
-    EXPOSE_NODE = 0x44,
+    EXPOSE_NODE : 0x44,
 
 
     /**
      * no-closing required
      */
-    REMOVE_NODE = 0x45,
+    REMOVE_NODE : 0x45,
 
     /**
      * 
      */
-    CLOSE_NODE = 0x4f,
+    CLOSE_NODE : 0x4f,
     /* </nodes> */
 
 

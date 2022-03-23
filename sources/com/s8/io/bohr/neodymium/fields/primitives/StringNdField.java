@@ -59,7 +59,7 @@ public class StringNdField extends PrimitiveNdField {
 
 	/**
 	 * 
-	 * @param name
+	 * @param outboundTypeName
 	 * @param handler
 	 * @throws NdBuildException 
 	 */

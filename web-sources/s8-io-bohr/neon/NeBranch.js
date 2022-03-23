@@ -1,12 +1,8 @@
 
-import { ByteInflow } from 's8-io-bytes/ByteInflow';
-import { BOHR_Keywords } from '../atom/BOHR_Protocol';
-import { NeInflow } from './NeInflow';
-import { NeLexicon } from './NeLexicon';
 import { NeObjectTypeHandler } from './NeObjectTypeHandler';
-import { NeRequest } from './NeRequest';
-import { NeObject } from './NeObject';
-import { CreateNeObjectHandler } from './NeObjectHandler';
+import { S8Object } from '../atom/S8Object';
+import { S8 } from '../atom/S8.js';
+import { NeBranchInbound } from './NeBranchInbound.js';
 
 export class NeBranch {
 
@@ -18,9 +14,15 @@ export class NeBranch {
 	 objectTypes = new Map();
 
 	/**
-	 * @type {Map<string, NeObject>}
+	 * @type {Map<string, S8Object>}
 	 */
-	nodes = new Map();
+	objects = new Map();
+
+
+	/**
+	 * @type {NeBranchInbound}
+	 */
+	inbound;
 
 
 	/**
@@ -28,17 +30,16 @@ export class NeBranch {
 	 */
 	constructor() {
 
-		// BOHR
-		this.BOHR_lexicon = new NeLexicon(this);
-
 		/** views */
-		this.nodes.set("NULL", null);
+		this.objects.set("NULL", null);
 
 		/* <screen> */
 		this.screenNode = document.createElement("div");
 		document.body.appendChild(this.screenNode);
 		/* </screen> */
 
+		// create branch inbound
+		this.inbound = new NeBranchInbound(this);
 
 		this.isVerbose = false;
 	}
@@ -47,27 +48,32 @@ export class NeBranch {
 	/**
 	 * 
 	 * @param {string} id 
-	 * @returns {NeObject}
+	 * @returns {S8Object}
 	 */
-	getNode(id) {
-		return this.nodes.get(id);
+	getObject(id) {
+		return this.objects.get(id);
 	}
 
 
-	setNode(id, node) {
-		if (!this.nodes.has(id)) {
-			this.nodes.set(id, node);
+	/**
+	 * 
+	 * @param {string} id 
+	 * @param {S8Object} node 
+	 */
+	setObject(id, node) {
+		if (!this.objects.has(id)) {
+			this.objects.set(id, node);
 		}
 		else {
 			throw "HARD overriding for node with index = " + id;
 		}
 	}
 
-	deleteNode(id) {
-		let orbital = this.nodes.get(id);
-		if (orbital) {
-			orbital.S8_dispose();
-			this.nodes.delete(id);
+	deleteObject(id) {
+		let object = this.objects.get(id);
+		if (object) {
+			object.S8_dispose();
+			this.objects.delete(id);
 		}
 	}
 
@@ -77,6 +83,17 @@ export class NeBranch {
 	}
 
 
+	/**
+	 * 
+	 * @param {string} id 
+	 * @param {number} slot 
+	 */
+	expose(id, slot){
+		if(slot != 0) { throw "Only slot 0 is available!"; }
+		let node = this.objects.get(id);
+		S8.removeChildren(this.screenNode);
+		this.screenNode.appendChild(node.getEnvelope());
+	}
 
 }
 

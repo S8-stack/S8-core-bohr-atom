@@ -122,7 +122,7 @@ public class BeCodebase {
 	
 	/**
 	 * (Runtime side)
-	 * @param name
+	 * @param outboundTypeName
 	 * @return
 	 */
 	public BeType getTypeByCode(int code) {

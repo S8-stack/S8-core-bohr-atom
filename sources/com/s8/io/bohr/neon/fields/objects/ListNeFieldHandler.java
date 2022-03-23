@@ -98,7 +98,7 @@ public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 				T item;
 				for(int i = 0; i < n; i++) {
 					item = list.get(i);
-					outflow.putStringUTF8(item != null ? item._index() : null);
+					outflow.putStringUTF8(item != null ? item.getIndex() : null);
 				}
 			}
 			else {

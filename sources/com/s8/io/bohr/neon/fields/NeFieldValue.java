@@ -25,6 +25,8 @@ public abstract class NeFieldValue {
 	public boolean hasDelta;
 	
 	public NeFieldValue() {
+		super();
+		hasDelta = true;
 	}
 	
 

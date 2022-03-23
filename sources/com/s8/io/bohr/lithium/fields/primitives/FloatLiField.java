@@ -58,7 +58,7 @@ public class FloatLiField extends PrimitiveLiField {
 
 	/**
 	 * 
-	 * @param name
+	 * @param outboundTypeName
 	 * @param handler
 	 * @throws LiBuildException 
 	 */

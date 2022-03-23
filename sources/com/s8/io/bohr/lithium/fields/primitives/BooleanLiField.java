@@ -59,7 +59,7 @@ public class BooleanLiField extends PrimitiveLiField {
 
 	/**
 	 * 
-	 * @param name
+	 * @param outboundTypeName
 	 * @param handler
 	 * @throws S8BuildException 
 	 */

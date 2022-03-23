@@ -1,9 +1,9 @@
 
-import { ByteInflow } from "s8-io-bytes/ByteInflow.js";
-import { BOHR_Keywords } from "s8-io-bohr/atom/BOHR_Protocol";
+import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
+import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol";
 import { NeBranch } from "./NeBranch";
-import { CreateNeObjectHandler } from "./NeObjectHandler";
 import { NeObjectTypeHandler } from "./NeObjectTypeHandler";
+import { jump } from "./NeJump.js";
 
 
 
@@ -36,7 +36,13 @@ export class NeBranchInbound {
 	 * @param {ByteInflow} inflow 
 	 */
 	consume(inflow) {
+		let code = inflow.getUInt8();
+		if(code != BOHR_Keywords.OPEN_JUMP){
+			throw "Error: Can only start with a JUMP!!";
+		}
 
+		// perform jump
+		jump(this, inflow, function(){});
 		
 	}
 

@@ -1,47 +1,29 @@
+import { NeObjectTypeHandler } from "../neon/NeObjectTypeHandler";
 
 
 
-
-export class S8FieldTypeHandler {
-
-}
-
-
+/**
+ * 
+ */
+export class S8Object {
 
 
+    /**
+     * Automatically assigned by NeObjectTypeHandler
+     * 
+     * @type {string}
+     */
+    S8_id;
 
 
+    /**
+     * Automatically assigned by NeObjectTypeHandler
+     * 
+     * @type {NeObjectTypeHandler}
+     */
+    S8_type;
 
-class S8TypeHandler {
-
-    constructor(props, inherited){
-        super();
-        this.props = props;
-        this.inherited = inherited;
+    constructor(){
     }
 
-    
-}
-
-
-export function TYPE(props, inherited){
-    return new ObjectS8TypeHandler(props, inherited);
-}
-
-
-
-class ObjectS8FieldTypeHandler extends S8FieldTypeHandler {
-
-    constructor(type, setter){
-        super();
-        this.type = type;
-        this.setter = setter;
-    }
-
-    
-}
-
-
-export function OBJECT(type, setter){
-    return new ObjectS8FieldTypeHandler(type, setter);
 }

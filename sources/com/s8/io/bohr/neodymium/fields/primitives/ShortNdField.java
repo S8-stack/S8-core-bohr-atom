@@ -58,7 +58,7 @@ public class ShortNdField extends PrimitiveNdField {
 
 	/**
 	 * 
-	 * @param name
+	 * @param outboundTypeName
 	 * @param handler
 	 * @throws NdBuildException 
 	 */

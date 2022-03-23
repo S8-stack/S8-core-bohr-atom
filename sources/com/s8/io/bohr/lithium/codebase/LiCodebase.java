@@ -122,7 +122,7 @@ public class LiCodebase {
 	
 	/**
 	 * (Runtime side)
-	 * @param name
+	 * @param outboundTypeName
 	 * @return
 	 */
 	public LiType getTypeByCode(int code) {

@@ -70,9 +70,9 @@ public class NeObjectTypeHandler {
 	/**
 	 * The name associated to this object type
 	 */
-	public final String name;
+	public final String outboundTypeName;
 
-	public final long outflowCode;
+	public final long outboundCode;
 
 	private NeFieldHandler[] outboundFields;
 
@@ -91,8 +91,8 @@ public class NeObjectTypeHandler {
 
 	public NeObjectTypeHandler(String name, long code) {
 		super();
-		this.name = name;
-		this.outflowCode = code;
+		this.outboundTypeName = name;
+		this.outboundCode = code;
 		this.outboundFields = new NeFieldHandler[2];
 		fieldsByName = new HashMap<>();
 
@@ -878,7 +878,7 @@ public class NeObjectTypeHandler {
 
 
 	@SuppressWarnings("unchecked")
-	public <T extends NeObject> ObjNeFieldHandler<T> getObjField(String string) {
+	public <T extends NeObject> ObjNeFieldHandler<T> getObjField(String name) {
 		NeFieldHandler field = fieldsByName.get(name);
 		if(field != null) {
 			if(field.getSignature() != ObjNeFieldHandler.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
@@ -913,7 +913,7 @@ public class NeObjectTypeHandler {
 
 
 	@SuppressWarnings("unchecked")
-	public <T extends NeObject> ListNeFieldHandler<T> getObjArrayField(String string) {
+	public <T extends NeObject> ListNeFieldHandler<T> getObjArrayField(String name) {
 		NeFieldHandler field = fieldsByName.get(name);
 		if(field != null) {
 			if(field.getSignature() != ListNeFieldHandler.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
@@ -1026,10 +1026,10 @@ public class NeObjectTypeHandler {
 			outflow.putUInt8(BOHR_Keywords.DECLARE_TYPE);
 			
 			/* publish name */
-			outflow.putStringUTF8(name);
+			outflow.putStringUTF8(outboundTypeName);
 
 			/* publish code */
-			outflow.putUInt7x(outflowCode);
+			outflow.putUInt7x(outboundCode);
 			
 			isUnpublished = false;
 		}
@@ -1045,17 +1045,20 @@ public class NeObjectTypeHandler {
 	public void publishFields(NeFieldValue[] values, ByteOutflow outflow) throws IOException {
 		
 		
-		int n = outboundFields.length;
+		int n = values.length;
 		
+		NeFieldValue value;
 		for(int code =0; code < n; code++) {
-			NeFieldHandler field = outboundFields[code];
-			if(field != null) {
+			
+			if((value = values[code]) != null) {
+
+				NeFieldHandler field = outboundFields[code];
 				
 				/* declare field (if not already done) */
 				field.declare(outflow);
 			
 				/* publish entry */
-				values[code].publishEntry(code, outflow);
+				value.publishEntry(code, outflow);
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 import { NeBranch } from "./NeBranch";
 import { NeFieldHandler } from "./NeFieldHandler";
-import { NeObject } from "./NeObject";
+import { S8Object } from "../atom/S8Object";
 
 
 
@@ -29,7 +29,7 @@ export class NeFieldEntry {
 
 	/**
 	 * @param {NeBranch} branch  
-	 * @param {NeObject} object 
+	 * @param {S8Object} object 
 	 */
 	set(object, branch){
 		this.fieldHandler.setValue(object, this.value, branch);

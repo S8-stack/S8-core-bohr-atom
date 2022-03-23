@@ -122,7 +122,7 @@ public class NdCodebase {
 	
 	/**
 	 * (Runtime side)
-	 * @param name
+	 * @param outboundTypeName
 	 * @return
 	 */
 	public NdType getTypeByCode(int code) {

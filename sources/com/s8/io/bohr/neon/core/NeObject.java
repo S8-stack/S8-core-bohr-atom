@@ -59,13 +59,13 @@ public abstract class NeObject {
 	public final NeBranch branch;
 
 
-	private boolean hasUnpublishedChanges;
+	private boolean hasUnpublishedChanges = false;
 
-	private boolean isCreateUnpublished;
+	private boolean isCreateUnpublished = false;
 
-	private boolean isExposeUnpublished;
+	private boolean isExposeUnpublished = false;
 
-	private boolean isUpdateUnpublished;
+	private boolean isUpdateUnpublished = false;
 
 
 	private int slot;
@@ -98,17 +98,14 @@ public abstract class NeObject {
 		this.prototype = branch.retrieveObjectPrototype(typeName);
 
 		values = new NeFieldValue[4];
-
-
-		hasUnpublishedChanges = true;
-		isCreateUnpublished = true;
+		funcs = new NeFunc[4];
 	}
 
 	/**
 	 * 
 	 * @return index
 	 */
-	public String _index() {
+	public String getIndex() {
 
 		if(index == null) {
 
@@ -140,9 +137,6 @@ public abstract class NeObject {
 
 	private void onUpdate() {
 
-		/* keep track of unchanged status */
-		hasUnpublishedChanges = true;
-
 		/* keep track of update required status */
 		isUpdateUnpublished = true;
 
@@ -157,7 +151,8 @@ public abstract class NeObject {
 			/* push toUnpublished */
 			branch.outbound.notifyChanged(this);
 			
-			/* has unpublished changes */
+
+			/* keep track of unchanged status */
 			hasUnpublishedChanges = true;
 		}
 	}
@@ -167,7 +162,7 @@ public abstract class NeObject {
 	public void publish(ByteOutflow outflow) throws IOException {
 
 		if(hasUnpublishedChanges) {
-			String index = _index();
+			String index = getIndex();
 
 			/* publish prototype */
 			prototype.publish_DECLARE_TYPE(outflow);
@@ -178,12 +173,14 @@ public abstract class NeObject {
 				outflow.putUInt8(BOHR_Keywords.CREATE_NODE);
 
 				/* publish type code */
-				outflow.putUInt7x(prototype.outflowCode);
+				outflow.putUInt7x(prototype.outboundCode);
 
 				/* publish index */
 				outflow.putStringUTF8(index);
 
-				prototype.publishFields(values, outflow);			
+				prototype.publishFields(values, outflow);
+				
+				outflow.putUInt8(BOHR_Keywords.CLOSE_NODE);
 
 				isCreateUnpublished = false;
 			}	
@@ -197,6 +194,8 @@ public abstract class NeObject {
 
 				/* fields */
 				prototype.publishFields(values, outflow);
+				
+				outflow.putUInt8(BOHR_Keywords.CLOSE_NODE);
 
 				isUpdateUnpublished = false;
 			}

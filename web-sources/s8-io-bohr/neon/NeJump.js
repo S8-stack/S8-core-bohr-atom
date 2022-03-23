@@ -1,13 +1,26 @@
-import { ByteInflow } from "s8-io-bytes/ByteInflow";
-import { BOHR_Keywords } from "s8-io-bohr/atom/BOHR_Protocol";
+import { ByteInflow } from "/s8-io-bytes/ByteInflow";
+import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol";
 import { NeBranch } from "./NeBranch";
 import { NeBranchInbound } from "./NeBranchInbound";
 import { NeFieldEntry } from "./NeFieldEntry";
 import { NeObjectTypeHandler } from "./NeObjectTypeHandler";
+import { S8Object } from "../atom/S8Object.js";
 
 
-export class NeJump {
 
+
+/**
+ * 
+ * @param {NeBranchInbound} branchInbound 
+ * @param {ByteInflow} inflow 
+ * @param {Function} onBuilt 
+ */
+export const jump = function(branchInbound, inflow, onBuilt){
+   let jumpScope = new NeJumpScope(branchInbound);
+   jumpScope.consume(inflow, onBuilt);
+}
+
+class NeJumpScope {
 
     /**
      * @type {NeBranchInbound}
@@ -27,38 +40,40 @@ export class NeJump {
     objectHandlers = new Array();
 
 
+    /**
+     * @type {ExposeNeSlotHandler[]}
+     */
+    slotHandlers = new Array();
+
+
     isConsumed = false;
 
     isBuilt = false;
 
     /**
-     * @type {Function}
+     * @type {NeBranchInbound}
      */
-    onBuilt;
-
-
-    /**
-     * 
-     * @param {Function} onBuilt 
-     */
-    constructor(onBuilt) {
-        this.onBuilt = onBuilt;
+    constructor(branchInbound) {
+        this.branchInbound = branchInbound
     }
 
     /**
      * 
      * @param {ByteInflow} inflow 
+     * @param {Function} onBuilt
      */
-    consume(inflow) {
+    consume(inflow, onBuilt) {
         let code = 0;
         while (!this.isConsumed) {
             switch (code = inflow.getUInt8()) {
 
-                case BOHR_Keywords.DECLARE_TYPE: this.consume_DECLARE_TYPE(inflow); break;
+                case BOHR_Keywords.DECLARE_TYPE: this.consume_DECLARE_TYPE(inflow, onBuilt); break;
 
                 case BOHR_Keywords.CREATE_NODE: this.consume_CREATE_NODE(inflow); break;
 
                 case BOHR_Keywords.UPDATE_NODE: this.consume_UPDATE_NODE(inflow); break;
+
+                case BOHR_Keywords.EXPOSE_NODE : this.consume_EXPOSE_NODE(inflow); break;
 
                 case BOHR_Keywords.CLOSE_JUMP: this.isConsumed = true; break;
 
@@ -66,18 +81,17 @@ export class NeJump {
             }
         }
 
-     
-
         // try to build
-        this.build();
+        this.build(onBuilt);
     }
 
 
     /**
      * 
      * @param {ByteInflow} inflow 
+     * @param {Function} onBuilt
      */
-    consume_DECLARE_TYPE(inflow) {
+    consume_DECLARE_TYPE(inflow, onBuilt) {
         let objectType = this.branchInbound.declareType(inflow);
 
         /* append to type loadings */
@@ -85,7 +99,7 @@ export class NeJump {
         this.typeLoadings.set(objectType.code, typeLoading);
 
         // immediately trigger loading
-        typeLoading.load();
+        typeLoading.load(onBuilt);
     }
 
 
@@ -98,10 +112,12 @@ export class NeJump {
         let typeCode = inflow.getUInt7x();
         let id = inflow.getStringUTF8();
 
+        /** @type {NeObjectTypeHandler} */
         let objectType = this.branchInbound.objectTypes.get(typeCode);
-        let createObjectHandler = new CreateNeObjectHandler(id, entries);
-        let entries = objectType.consume(createObjectHandler, inflow);
 
+        let entries = objectType.consumeEntries(inflow);
+
+        let createObjectHandler = new CreateNeObjectHandler(id, entries);
 
         /* test if a type loading is in progress */
         let typeLoading = this.typeLoadings.get(typeCode);
@@ -120,9 +136,9 @@ export class NeJump {
      */
     consume_UPDATE_NODE(inflow) {
         let id = inflow.getStringUTF8();
-        let object = this.branchInbound.branch.getNode(id);
-        let objectType = object.type;
-        let entries = objectType.consume(inflow);
+        let object = this.branchInbound.branch.getObject(id);
+        let objectType = object.S8_type;
+        let entries = objectType.consumeEntries(inflow);
 
         let updateObjectHandler = new UpdateNeObjectHandler(id, entries);
 
@@ -131,6 +147,13 @@ export class NeJump {
         updateObjectHandler.resolve(branch);
 
         this.objectHandlers.push(updateObjectHandler);
+    }
+
+
+    consume_EXPOSE_NODE(inflow){
+        let id = inflow.getStringUTF8();
+        let slot = inflow.getUInt8();
+        this.slotHandlers.push(new ExposeNeSlotHandler(id, slot));
     }
 
 
@@ -143,30 +166,36 @@ export class NeJump {
     }
 
 
-    build() {
-        if (!this.isBuilt && this.isConsumed && this.areAllTypesLoaded()) {
+    /**
+     * @param {Function} onBuilt
+     */
+    build(onBuilt) {
+        if (!this.isBuilt && this.isConsumed && this.areAllTypesLoadingsTerminated()) {
             let branch = this.branchInbound.branch;
 
             /* set field values */
             this.objectHandlers.forEach(handler => handler.setFieldValues(branch));
 
+            /* exposed */
+            this.slotHandlers.forEach(handler => handler.setSlot(branch));
+           
             /* render all objects */
             this.objectHandlers.forEach(handler => handler.render());
 
             this.isBuilt = true;
 
-            this.onBuilt();
+            onBuilt();
         }
     }
 }
 
 
 
-export class NeObjectTypeHandlerLoading {
+class NeObjectTypeHandlerLoading {
 
 
     /**
-     * @type {NeJump}
+     * @type {NeJumpScope}
      */
     jump;
 
@@ -200,38 +229,40 @@ export class NeObjectTypeHandlerLoading {
 
     /**
      * Can only be launched by a consume_DECLARE_TYPE statement
-     * @param {NeJump} jump 
+     * @param {NeJumpScope} jump 
+     * @param {Function} onBuilt
      */
-    load() {
+    load(onBuilt) {
 
         /* unresolved */
         if (!this.isLoaded && !this.typeHandler.isClassLoaded) {
 
             // so that jump can track loadings
-            this.jump.typeLoadings.add(this.code);
+            this.jump.typeLoadings.set(this.code, this);
 
             let _this = this;
+            let typeHandler = _this.typeHandler;
             
-            let onClassLoaded = function (_constructor) {
+            let onClassLoaded = function (_class) {
 
                 // handler
-                _this.typeHandler.setClass(_class);
+                typeHandler.setClass(_class);
 
                 // set as loaded
                 _this.isLoaded = true;
 
                 /* instantiate what's missing */
 			    let branch = _this.jump.branchInbound.branch;
-                _this.instantiables.forEach(handler => handler.instantiate(branch, _this.typeHandler));
+                _this.instantiables.forEach(handler => handler.instantiate(branch, typeHandler));
 
                 _this.isTerminated = true;
 
                 /* try to trigger build */
-                _this.jump.build();
+                _this.jump.build(onBuilt);
             }
 
             // trigger loading
-            import(this.getTargetClassPathname()).then(module => onClassLoaded(module[classname]));
+            import(typeHandler.getTargetClassPathname()).then(module => onClassLoaded(module[typeHandler.classname]));
         }
         else if (this.typeHandler.isClassLoaded) {
             this.isLoaded = true;
@@ -280,7 +311,7 @@ class NeObjectHandler {
 	entries;
 
     /**
-	 * @type {NeObject}
+	 * @type {S8Object}
 	 */
 	object;
 
@@ -340,7 +371,7 @@ class CreateNeObjectHandler extends NeObjectHandler {
 		if(!this.isInstantiated){
 			this.object = typeHandler.createNewInstance(this.id);
 
-			branch.setNode(this.id, this.object);
+			branch.setObject(this.id, this.object);
 
 			this.isInstantiated = true;
 		}
@@ -363,7 +394,36 @@ class UpdateNeObjectHandler extends NeObjectHandler {
      * @param {NeBranch} branch 
      */
     resolve(branch) {
-		this.object = branch.getNode(this.id);
+		this.object = branch.getObject(this.id);
+	}
+
+}
+
+
+class ExposeNeSlotHandler {
+
+    /**
+     * @type {string}
+     */
+    id;
+
+      /**
+     * @type {number}
+     */
+    slot;
+
+	constructor(id, slot) {
+		this.id = id;
+        this.slot = slot;
+	}
+
+
+    /**
+     * 
+     * @param {NeBranch} branch 
+     */
+    setSlot(branch) {
+		branch.expose(this.id, this.slot);
 	}
 
 }

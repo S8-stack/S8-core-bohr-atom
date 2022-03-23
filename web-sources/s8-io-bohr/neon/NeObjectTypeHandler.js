@@ -1,13 +1,10 @@
-import { ByteInflow } from "s8-io-bytes/ByteInflow";
+import { ByteInflow } from "/s8-io-bytes/ByteInflow";
 
-import { Types } from "s8-io-bohr/BOHR_Protocol";
 import { NeFieldHandler } from "./NeFieldHandler";
 import { NeBranch } from "./NeBranch";
-import { NeObjectHandler } from "./NeObjectHandler";
-import { BOHR_Keywords } from "s8-io-bohr/atom/BOHR_Protocol";
+import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol";
 import { NeFieldEntry } from "./NeFieldEntry";
-import { NeJump } from "./NeJump";
-import { NeObject } from "./NeObject";
+import { S8Object } from "../atom/S8Object";
 
 
 
@@ -23,7 +20,13 @@ export class NeObjectTypeHandler {
     /**
      * @type {string}
      */
-    classPathname = "(undefined)";
+    pathname = "(undefined)";
+
+
+    /**
+     * @type {string}
+     */
+    classname = "(undefined)";
 
 
     /**
@@ -65,33 +68,34 @@ export class NeObjectTypeHandler {
      */
     constructor(branch, classPathname, code) {
         this.branch = branch;
-        this.classPathname = classPathname;
+        this.parseClassPathname(classPathname); 
         this.code = code;
     }
 
 
     /**
      * 
-     * @returns {string} the target classpath for server module loading
+     * @param {string} classPathname 
      */
-    getTargetClassPathname() {
+    parseClassPathname(classPathname) {
         let lastSeparatorIndex = -1, i;
-        while ((i = this.classPathname.indexOf("/", lastSeparatorIndex + 1)) >= 0) {
+        while ((i = classPathname.indexOf("/", lastSeparatorIndex + 1)) >= 0) {
             lastSeparatorIndex = i;
         }
         if (lastSeparatorIndex == -1) {
-            throw "Illformed classpath: " + this.classPathname;
+            throw "Illformed classpath: " + classPathname;
         }
-        let n = this.classPathname.length;
+        let n = classPathname.length;
 
         // pathname (with last folder separator)
-        let pathname = this.classPathname.substring(0, lastSeparatorIndex + 1);
-
-        let classname = this.classPathname.substring(lastSeparatorIndex + 1, n);
-
-        return pathname + classname;
+        this.pathname = classPathname.substring(0, lastSeparatorIndex + 1);
+        this.classname = classPathname.substring(lastSeparatorIndex + 1, n);
     }
 
+
+    getTargetClassPathname(){
+        return this.pathname + this.classname;
+    }
 
 
     /**
@@ -114,16 +118,6 @@ export class NeObjectTypeHandler {
 
 
 
-    declareFieldCode(name, code) {
-        let fieldHandler = this.fieldHandlersByName.get(name);
-        if (fieldHandler != undefined) {
-            this.fieldHandlersByCode.set(code, fieldHandler);
-        }
-        else {
-            throw "[NeLexicon] Failed to match type for name: " + name;
-        }
-    }
-
 
     /**
      * 
@@ -145,10 +139,20 @@ export class NeObjectTypeHandler {
     /**
      * 
      * @param {string} id 
-     * @returns {NeObject}
+     * @returns {S8Object}
      */
     createNewInstance(id) {
-        return new this._class(id, this);
+        
+        /** @type {S8Object} */
+        let object = new this._class();
+
+        // assign id
+        object.S8_id = id;
+
+        // assign type handler
+        object.S8_type = this;
+
+        return object;
     }
 
 
@@ -158,7 +162,7 @@ export class NeObjectTypeHandler {
      * @param {ByteInflow} inflow 
      * @returns {NeFieldEntry[]}
      */
-    consume(inflow) {
+    consumeEntries(inflow) {
         let entries = new Array();
         let code;
         while ((code = inflow.getUInt8()) != BOHR_Keywords.CLOSE_NODE) {
@@ -180,21 +184,21 @@ export class NeObjectTypeHandler {
     consume_DECLARE_FIELD(inflow) {
 
         /* retrieve name */
-        let classPathname = inflow.getStringUTF8();
+        let fieldName = inflow.getStringUTF8();
 
         /* build field */
         let field = NeFieldHandler.consumeFormat(inflow);
 
         /* retrieve code */
-        let code = inflow.getUInt8();
+        let fieldCode = inflow.getUInt8();
 
-        field.classPathname = classPathname;
-        field.code = code;
+        field.name = fieldName;
+        field.code = fieldCode;
 
         /* link field immediately if possible */
         if (this.isClassLoaded) { field.link(this._class); }
 
-        this.appendField(code, field);
+        this.appendField(fieldCode, field);
     }
 
 

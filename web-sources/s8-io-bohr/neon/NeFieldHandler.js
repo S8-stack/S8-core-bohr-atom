@@ -1,10 +1,11 @@
 
 
-import { ByteInflow } from "s8-io-bytes/ByteInflow.js";
+import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
 
-import { BOHR_Types } from "s8-io-bohr/atom/BOHR_Protocol.js";
+import { BOHR_Types } from "/s8-io-bohr/atom/BOHR_Protocol.js";
 import { NeFieldEntry } from "./NeFieldEntry";
-import { NeObject } from "./NeObject";
+import { S8Object } from "../atom/S8Object";
+import { NeBranch } from "./NeBranch.js";
 
 
 
@@ -134,12 +135,15 @@ export class NeFieldHandler {
      * @param {Class} objectClass 
      */
     link(objectClass) {
-        if(this.isLinked){
+        if(!this.isLinked){
             this.type = objectClass;
 
             // resolve setter
-            this.setter = this.type["S8_set_" + this.name];
-            
+            let setMethod = this.type.prototype["S8_set_" + this.name];
+            if(setMethod == undefined){
+                throw "Failed to link against method for "+this.name+" in "+objectClass;
+            }
+            this.setter = setMethod;
             this.isLinked = true;
         }
     }
@@ -152,7 +156,7 @@ class PrimitiveNeFieldHandler extends NeFieldHandler {
 
    /**
     * 
-    * @param {NeObject} object 
+    * @param {S8Object} object 
     * @param { * } value 
     */
     setValue(object, value) {
@@ -595,11 +599,11 @@ class S8ObjectNeFieldHandler extends NeFieldHandler {
     /**
      * 
      * @param {*} object 
-     * @param {string} index 
-     * @param {Map<string, *>} map 
+     * @param {string} id 
+     * @param {NeBranch} branch 
      */
-    setValue(object, index, map) {
-        let value = index != null ? map.get(index) : null;
+    setValue(object, id, branch) {
+        let value = (id != null) ? branch.getObject(id) : null;
         this.setter.call(object, value);
     }
 }
@@ -630,14 +634,17 @@ class S8ObjectArrayNeFieldHandler extends NeFieldHandler {
     * 
     * @param {*} object 
     * @param {string[]} index 
-    * @param {Map<string, *>} map 
+    * @param {NeBranch} branch 
     */
-    setValue(object, indices, map) {
+    setValue(object, indices, branch) {
 
         if (indices != null) {
             let length = indices.length;
             let array = new Array(length);
-            for (let i = 0; i < length; i++) { array[i] = map.get(indices[i]); }
+            for (let i = 0; i < length; i++) { 
+                let id = indices[i];
+                array[i] = id!=null ? branch.getObject(id) : null; 
+            }
             this.setter.call(object, array);
         }
         else {
