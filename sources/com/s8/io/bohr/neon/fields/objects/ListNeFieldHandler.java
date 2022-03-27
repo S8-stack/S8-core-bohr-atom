@@ -22,7 +22,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * 
  */
 public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
-	
+
 	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.S8OBJECT;
 
 	public @Override long getSignature() { return SIGNATURE; }
@@ -42,15 +42,16 @@ public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 		outflow.putUInt8(BOHR_Types.S8OBJECT);
 	}
 
-	
+
 
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	
 	public List<T> get(NeFieldValue wrapper) {
+		@SuppressWarnings("unchecked")
 		Value<T> value = (Value<T>) wrapper; 
 		if(value.list == null) {
 			List<T> list = new ArrayList<T>();
@@ -58,36 +59,98 @@ public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 			return list;
 		}
 		else {
-			return value.list;
+			List<T> list = value.list;
+			List<T> copy = new ArrayList<T>(list.size());
+			list.forEach(item -> copy.add(item));
+			return copy;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void set(NeFieldValue wrapper, List<T> list) {
-		Value<T> value = (Value<T>) wrapper; 
-		value.list = list;
+		((Value<T>) wrapper).setValue(list);
+	}
+
+
+
+
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param obj
+	 */
+	@SuppressWarnings("unchecked")
+	public void add(NeFieldValue wrapper, T obj) {
+		((Value<T>) wrapper).addObject(obj);
 	}
 	
-	
-	
+
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param obj
+	 */
+	@SuppressWarnings("unchecked")
+	public void remove(NeFieldValue wrapper, String index) {
+		((Value<T>) wrapper).removeObject(index);
+	}
+
+
+
 	@Override
 	public NeFieldValue createValue() {
 		return new Value<>();
 	}
-	
 
-	
+
+
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
 	public static class Value<T extends NeObject> extends NeFieldValue {
-		
+
 		private List<T> list;
-	
+
 		public Value() {
 			super();
+		}
+
+		public void notifyChange() {
+			hasDelta = true;
+		}
+
+		public void setValue(List<T> value) {
+			this.list = value;
+			this.hasDelta = true;
+		}
+		
+		
+		public void addObject(T obj) {
+			if(list == null) { list = new ArrayList<T>(); }
+			list.add(obj);
+			hasDelta = true;
+		}
+		
+		public void removeObject(String objectIndex) {
+			if(list != null) {
+				boolean isFound = false;
+				int i = 0, n = list.size();
+				while(!isFound && i < n) {
+					if(list.get(i).getIndex().equals(objectIndex)) {
+						isFound = true;
+					}
+					else {
+						i++;
+					}
+				}
+				list.remove(i);
+				
+				hasDelta = true;		
+			}
 		}
 
 		@Override
@@ -113,9 +176,9 @@ public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 			if(n >= 0) {
 				List<String> indices = new ArrayList<String>(n);
 				for(int i = 0; i < n; i++) { indices.add(inflow.getStringUTF8()); }
-				
+
 				scope.appendBinding(new BuildScope.Binding() {
-					
+
 					@Override
 					public void resolve(BuildScope scope) throws IOException {
 						list = new ArrayList<T>(n);
@@ -130,7 +193,7 @@ public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 			else {
 				list = null;
 			}
-			
+
 		}
 	}	
 }

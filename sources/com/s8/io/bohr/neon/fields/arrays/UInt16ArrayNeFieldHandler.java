@@ -52,7 +52,7 @@ public class UInt16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 	 * @param value
 	 */
 	public void set(NeFieldValue wrapper, int[] value) {
-		((Value) wrapper).value = value;
+		((Value) wrapper).setValue(value);
 	}
 	
 
@@ -74,6 +74,12 @@ public class UInt16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 	
 		public Value() {
 			super();
+		}
+		
+		
+		public void setValue(int[] value) {
+			this.value = value;
+			this.hasDelta = true;
 		}
 
 

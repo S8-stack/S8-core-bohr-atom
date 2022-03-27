@@ -51,7 +51,7 @@ public class Int64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 	 * @param value
 	 */
 	public void set(NeFieldValue wrapper, long[] value) {
-		((Value) wrapper).value = value;
+		((Value) wrapper).setValue(value);
 	}
 	
 
@@ -73,6 +73,11 @@ public class Int64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 	
 		public Value() {
 			super();
+		}
+		
+		public void setValue(long[] value) {
+			this.value = value;
+			this.hasDelta = true;
 		}
 
 

@@ -60,7 +60,7 @@ public class ObjNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 	 */
 	@SuppressWarnings("unchecked")
 	public void set(NeFieldValue wrapper, T value) {
-		((Value<T>) wrapper).value = value;
+		((Value<T>) wrapper).setValue(value);
 	}
 	
 	
@@ -82,6 +82,12 @@ public class ObjNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 	
 		public Value() {
 			super();
+		}
+		
+		
+		public void setValue(T value) {
+			this.value = value;
+			this.hasDelta = true;
 		}
 
 		@Override

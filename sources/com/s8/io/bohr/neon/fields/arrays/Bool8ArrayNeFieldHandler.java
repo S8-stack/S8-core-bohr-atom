@@ -60,7 +60,7 @@ public class Bool8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 	 * @param value
 	 */
 	public void set(NeFieldValue wrapper, boolean[] value) {
-		((Value) wrapper).value = value;
+		((Value) wrapper).setValue(value);
 	}
 	
 
@@ -101,6 +101,11 @@ public class Bool8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
 		public Value() {
 			super();
+		}
+		
+		public void setValue(boolean[] value) {
+			this.value = value;
+			this.hasDelta = true;
 		}
 
 		@Override

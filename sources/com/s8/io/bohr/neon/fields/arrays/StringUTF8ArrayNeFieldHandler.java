@@ -51,7 +51,7 @@ public class StringUTF8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 	 * @param value
 	 */
 	public void set(NeFieldValue wrapper, String[] value) {
-		((Value) wrapper).value = value;
+		((Value) wrapper).setValue(value);
 	}
 	
 	
@@ -75,6 +75,10 @@ public class StringUTF8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 			super();
 		}
 
+		public void setValue(String[] value) {
+			this.value = value;
+			this.hasDelta = true;
+		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {

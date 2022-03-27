@@ -22,7 +22,7 @@ public abstract class NeFieldValue {
 	/**
 	 * has delta
 	 */
-	public boolean hasDelta;
+	protected boolean hasDelta;
 	
 	public NeFieldValue() {
 		super();

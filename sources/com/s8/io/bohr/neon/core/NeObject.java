@@ -1,6 +1,7 @@
 package com.s8.io.bohr.neon.core;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.io.bohr.BOHR_Keywords;
@@ -232,8 +233,9 @@ public abstract class NeObject {
 			}
 		}
 		else {
-			int n = values.length;
-			NeFieldValue[] extendedValues = new NeFieldValue[2*n];
+			int n = values.length, m = n;
+			while(n <= field.ordinal) { m*=2; }
+			NeFieldValue[] extendedValues = new NeFieldValue[m];
 			for(int i = 0; i < n; i++) { extendedValues[i] = values[i]; }
 			values = extendedValues;
 			return (values[ordinal] = field.createValue());
@@ -744,6 +746,7 @@ public abstract class NeObject {
 		func.lambda = lambda;
 	}
 
+	
 	/**
 	 * 
 	 * @param name
@@ -810,6 +813,11 @@ public abstract class NeObject {
 	}
 
 
+	/**
+	 * 
+	 * @param name
+	 * @param value
+	 */
 	public void setStringUTF8Array(String name, String[] value) {
 		StringUTF8ArrayNeFieldHandler field = prototype.getStringUTF8ArrayField(name);
 		NeFieldValue entry = getEntry(field);
@@ -818,6 +826,11 @@ public abstract class NeObject {
 	}
 
 
+	/**
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public String[] getStringUTF8Array(String name) {
 		StringUTF8ArrayNeFieldHandler field = prototype.getStringUTF8ArrayField(name);
 		NeFieldValue entry = getEntry(field);
@@ -825,7 +838,11 @@ public abstract class NeObject {
 	}
 
 
-
+	/**
+	 * 
+	 * @param name
+	 * @param lambda
+	 */
 	public void onStringArray(String name, StringArrayNeMethod.Lambda lambda) {
 		StringArrayNeMethod method = prototype.getStringArrayMethod(name);
 		NeFunc func = getFunc(method);
@@ -833,8 +850,12 @@ public abstract class NeObject {
 	}
 
 
-
-
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param value
+	 */
 	public <T extends NeObject> void setObj(String name, T value) {
 		ObjNeFieldHandler<T> field = prototype.getObjField(name);
 		NeFieldValue entry = getEntry(field);
@@ -843,6 +864,12 @@ public abstract class NeObject {
 	}
 
 
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @return
+	 */
 	public <T extends NeObject> T getObj(String name) {
 		ObjNeFieldHandler<T> field = prototype.getObjField(name);
 		NeFieldValue entry = getEntry(field);
@@ -867,13 +894,55 @@ public abstract class NeObject {
 	}
 
 
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @return a <b>COPY</b> of the underlying list
+	 */
 	public <T extends NeObject> List<T> getObjList(String name) {
 		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
 		NeFieldValue entry = getEntry(field);
-		return field.get(entry);
+		List<T> list = field.get(entry);
+		List<T> copy = new ArrayList<T>(list.size());
+		list.forEach(item -> copy.add(item));
+		return copy;
 	}
 
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param obj
+	 */
+	public <T extends NeObject> void addObjToList(String name, T obj) {
+		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+		NeFieldValue entry = getEntry(field);
+		field.add(entry, obj);
+	}
+	
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param obj
+	 */
+	public <T extends NeObject> void removeObjFromList(String name, T obj) {
+		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+		NeFieldValue entry = getEntry(field);
+		field.remove(entry, obj.getIndex());		
+	}
 
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param lambda
+	 */
 	public <T extends NeObject> void onObjList(String name, ListNeMethod.Lambda<T> lambda) {
 		ListNeMethod<T> method = prototype.getObjListMethod(name);
 		NeFunc func = getFunc(method);

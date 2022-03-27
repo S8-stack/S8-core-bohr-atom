@@ -54,7 +54,7 @@ public class Float64NeFieldHandler extends PrimitiveNeFieldHandler {
 	 * @param value
 	 */
 	public void set(NeFieldValue wrapper, double value) {
-		((Value) wrapper).value = value;
+		((Value) wrapper).setValue(value);
 	}
 	
 	
@@ -78,6 +78,11 @@ public class Float64NeFieldHandler extends PrimitiveNeFieldHandler {
 	
 		public Value() {
 			super();
+		}
+		
+		public void setValue(double value) {
+			this.value = value;
+			this.hasDelta = true;
 		}
 
 		@Override
