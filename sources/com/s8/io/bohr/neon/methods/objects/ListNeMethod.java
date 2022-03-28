@@ -67,7 +67,7 @@ public class ListNeMethod<T extends NeObject> extends NeMethod {
 				List<T> list =  new ArrayList<T>();
 				for(int i=0; i<length; i++) {
 					String index = inflow.getStringUTF8();
-					list.add(index != null ? (T) branch.getVertex(index) : null);
+					list.add(index != null ? (T) branch.getObject(index) : null);
 				}
 				((Lambda<T>) (func.lambda)).operate(list);	
 			}

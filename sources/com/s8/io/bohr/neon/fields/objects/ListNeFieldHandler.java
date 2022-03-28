@@ -140,7 +140,7 @@ public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 				boolean isFound = false;
 				int i = 0, n = list.size();
 				while(!isFound && i < n) {
-					if(list.get(i).getIndex().equals(objectIndex)) {
+					if(list.get(i).vertex.getIndex().equals(objectIndex)) {
 						isFound = true;
 					}
 					else {
@@ -161,7 +161,7 @@ public class ListNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 				T item;
 				for(int i = 0; i < n; i++) {
 					item = list.get(i);
-					outflow.putStringUTF8(item != null ? item.getIndex() : null);
+					outflow.putStringUTF8(item != null ? item.vertex.getIndex() : null);
 				}
 			}
 			else {

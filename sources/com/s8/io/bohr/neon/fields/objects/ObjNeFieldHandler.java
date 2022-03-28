@@ -92,7 +92,7 @@ public class ObjNeFieldHandler<T extends NeObject> extends NeFieldHandler {
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			outflow.putStringUTF8(value != null ? value.getIndex() : null);
+			outflow.putStringUTF8(value != null ? value.vertex.getIndex() : null);
 		}
 
 		

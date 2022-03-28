@@ -895,7 +895,7 @@ public class NeObjectTypeHandler {
 
 	
 	@SuppressWarnings("unchecked")
-	public <T extends NeObject>  ObjNeMethod<T> getObjMethod(String name) {
+	public <T extends NeVertex>  ObjNeMethod<T> getObjMethod(String name) {
 		NeMethod method = methodsByName.get(name);
 		if(method != null) {
 			if(method.getSignature() != ObjNeMethod.SIGNATURE) { 

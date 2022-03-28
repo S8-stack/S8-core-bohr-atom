@@ -100,7 +100,7 @@ public class NeInbound {
 	private void runFunc(ByteInflow inflow) throws IOException {
 		
 		String index = inflow.getStringUTF8();
-		NeObject object = branch.objects.get(index);
+		NeVertex object = branch.vertices.get(index);
 		if(object == null) { throw new IOException("No Object for index = "+index); }
 		
 		int code = inflow.getUInt8();

@@ -26,7 +26,7 @@ public class NeBranch extends S8Branch {
 	/**
 	 * 
 	 */
-	final Map<String, NeObject> objects;
+	final Map<String, NeVertex> vertices;
 
 	
 	/**
@@ -48,7 +48,7 @@ public class NeBranch extends S8Branch {
 	public NeBranch(String address, String id) {
 		super(address, id);
 		prototypesByName = new HashMap<>();
-		this.objects = new HashMap<>();
+		this.vertices = new HashMap<>();
 		
 		
 		/* outbound */
@@ -88,11 +88,11 @@ public class NeBranch extends S8Branch {
 	 * @param vertex
 	 * @return
 	 */
-	String appendObject(NeObject object) {
+	String appendObject(NeVertex object) {
 		
 		String index = createNewIndex();
 		
-		objects.put(index, object);
+		vertices.put(index, object);
 		
 		outbound.notifyChanged(object);
 		
@@ -106,8 +106,19 @@ public class NeBranch extends S8Branch {
 	 * @param index
 	 * @return
 	 */
-	public NeObject getVertex(String index) {
-		return objects.get(index);
+	public NeVertex getVertex(String index) {
+		return vertices.get(index);
+	}
+	
+	
+	/**
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public NeObject getObject(String index) {
+		NeVertex vertex = vertices.get(index);
+		return vertex != null ? vertex.object : null;
 	}
 
 
