@@ -108,6 +108,14 @@ export class NeObjectTypeHandler {
         this._class = _class;
         this.isClassLoaded = true;
 
+
+        /* search for exigible methods */
+        let renderMethod = _class.prototype["S8_render"];
+        if(renderMethod == undefined){ throw this.classname+" is missing an S8_render() method."; }
+
+        let disposeMethod = _class.prototype["S8_dispose"];
+        if(disposeMethod == undefined){ throw this.classname+" is missing an S8_dispose() method."; }
+
         /* link fields */
         let nFields = this.fieldHandlers.length;
         let fieldHandler;

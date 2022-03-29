@@ -235,11 +235,13 @@ public class NeVertex {
 			}
 		}
 		else {
-			int n = values.length, m = n;
-			while(n <= field.ordinal) { m*=2; }
+			// increase values size
+			int n = values.length, m = n >= 2 ? n : 2;
+			while(m <= field.ordinal) { m*=2; }
 			NeFieldValue[] extendedValues = new NeFieldValue[m];
 			for(int i = 0; i < n; i++) { extendedValues[i] = values[i]; }
 			values = extendedValues;
+			
 			return (values[ordinal] = field.createValue());
 		}
 	}
