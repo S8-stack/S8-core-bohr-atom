@@ -1,6 +1,6 @@
 
-import { NeObjectTypeHandler } from './NeObjectTypeHandler';
-import { S8Object } from '../atom/S8Object';
+import { NeObjectTypeHandler } from './NeObjectTypeHandler.js';
+import { S8Object } from '../atom/S8Object.js';
 import { S8 } from '../atom/S8.js';
 import { NeBranchInbound } from './NeBranchInbound.js';
 

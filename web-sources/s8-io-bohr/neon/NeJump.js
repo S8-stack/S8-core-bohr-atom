@@ -1,9 +1,9 @@
-import { ByteInflow } from "/s8-io-bytes/ByteInflow";
-import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol";
-import { NeBranch } from "./NeBranch";
-import { NeBranchInbound } from "./NeBranchInbound";
-import { NeFieldEntry } from "./NeFieldEntry";
-import { NeObjectTypeHandler } from "./NeObjectTypeHandler";
+import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
+import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol.js";
+import { NeBranch } from "./NeBranch.js";
+import { NeBranchInbound } from "./NeBranchInbound.js";
+import { NeFieldEntry } from "./NeFieldEntry.js";
+import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
 import { S8Object } from "../atom/S8Object.js";
 
 
@@ -15,9 +15,9 @@ import { S8Object } from "../atom/S8Object.js";
  * @param {ByteInflow} inflow 
  * @param {Function} onBuilt 
  */
-export const jump = function(branchInbound, inflow, onBuilt){
-   let jumpScope = new NeJumpScope(branchInbound);
-   jumpScope.consume(inflow, onBuilt);
+export const jump = function (branchInbound, inflow, onBuilt) {
+    let jumpScope = new NeJumpScope(branchInbound);
+    jumpScope.consume(inflow, onBuilt);
 }
 
 class NeJumpScope {
@@ -73,7 +73,7 @@ class NeJumpScope {
 
                 case BOHR_Keywords.UPDATE_NODE: this.consume_UPDATE_NODE(inflow); break;
 
-                case BOHR_Keywords.EXPOSE_NODE : this.consume_EXPOSE_NODE(inflow); break;
+                case BOHR_Keywords.EXPOSE_NODE: this.consume_EXPOSE_NODE(inflow); break;
 
                 case BOHR_Keywords.CLOSE_JUMP: this.isConsumed = true; break;
 
@@ -150,7 +150,7 @@ class NeJumpScope {
     }
 
 
-    consume_EXPOSE_NODE(inflow){
+    consume_EXPOSE_NODE(inflow) {
         let id = inflow.getStringUTF8();
         let slot = inflow.getUInt8();
         this.slotHandlers.push(new ExposeNeSlotHandler(id, slot));
@@ -178,7 +178,7 @@ class NeJumpScope {
 
             /* exposed */
             this.slotHandlers.forEach(handler => handler.setSlot(branch));
-           
+
             /* render all objects */
             this.objectHandlers.forEach(handler => handler.render());
 
@@ -242,7 +242,7 @@ class NeObjectTypeHandlerLoading {
 
             let _this = this;
             let typeHandler = _this.typeHandler;
-            
+
             let onClassLoaded = function (_class) {
 
                 // handler
@@ -252,7 +252,7 @@ class NeObjectTypeHandlerLoading {
                 _this.isLoaded = true;
 
                 /* instantiate what's missing */
-			    let branch = _this.jump.branchInbound.branch;
+                let branch = _this.jump.branchInbound.branch;
                 _this.instantiables.forEach(handler => handler.instantiate(branch, typeHandler));
 
                 _this.isTerminated = true;
@@ -262,7 +262,12 @@ class NeObjectTypeHandlerLoading {
             }
 
             // trigger loading
-            import(typeHandler.getTargetClassPathname()).then(module => onClassLoaded(module[typeHandler.classname]));
+            import(typeHandler.getTargetClassPathname()).
+                then(module => onClassLoaded(module[typeHandler.classname])).
+                catch(function (reason) {
+                    console.error(`[NEON] Failed to load: ${typeHandler.getTargetClassPathname()}, due to: ${reason}`);
+                });
+
         }
         else if (this.typeHandler.isClassLoaded) {
             this.isLoaded = true;
@@ -293,52 +298,52 @@ class NeObjectTypeHandlerLoading {
  */
 class NeObjectHandler {
 
-	/**
-	 * @type {string}
-	 */
-	id;
+    /**
+     * @type {string}
+     */
+    id;
 
-
-	/**
-	 * @type {NeObjectTypeHandler}
-	 */
-	typeHandler;
-
-
-	/**
-	 * @type {NeFieldEntry[]}
-	 */
-	entries;
 
     /**
-	 * @type {S8Object}
-	 */
-	object;
+     * @type {NeObjectTypeHandler}
+     */
+    typeHandler;
 
 
-	/**
-	 *  
-	 * @param {string} id 
-	 * @param {NeFieldEntry[]} entries 
-	 */
-	constructor(id, entries) {
-		this.id = id;
-		this.entries = entries;
-	}
+    /**
+     * @type {NeFieldEntry[]}
+     */
+    entries;
+
+    /**
+     * @type {S8Object}
+     */
+    object;
 
 
-	/**
-	 * 
-	 * @param {NeBranch} branch 
-	 */
-	setFieldValues(branch) {
-		let object = this.object;
-		this.entries.forEach(entry => { entry.set(object, branch); });
-	}
+    /**
+     *  
+     * @param {string} id 
+     * @param {NeFieldEntry[]} entries 
+     */
+    constructor(id, entries) {
+        this.id = id;
+        this.entries = entries;
+    }
 
-	render() {
-		this.object.S8_render();
-	}
+
+    /**
+     * 
+     * @param {NeBranch} branch 
+     */
+    setFieldValues(branch) {
+        let object = this.object;
+        this.entries.forEach(entry => { entry.set(object, branch); });
+    }
+
+    render() {
+        this.object.S8_render();
+    }
 }
 
 /**
@@ -347,35 +352,35 @@ class NeObjectHandler {
 class CreateNeObjectHandler extends NeObjectHandler {
 
 
-	/**
-	 * @type {boolean}
-	 */
-	isInstantiated;
+    /**
+     * @type {boolean}
+     */
+    isInstantiated;
 
-	/**
+    /**
 	
-	 * @param {NeFieldEntry[]} entries 
-	 */
-	constructor(id, entries) {
-		super(id, entries);
-		this.isInstantiated = false;
-	}
+     * @param {NeFieldEntry[]} entries 
+     */
+    constructor(id, entries) {
+        super(id, entries);
+        this.isInstantiated = false;
+    }
 
 
-	/**
-	 * 
-	 * @param {NeBranch} branch 
+    /**
+     * 
+     * @param {NeBranch} branch 
      * @param {NeObjectTypeHandler} typeHandler 
-	 */
-	instantiate(branch, typeHandler) {
-		if(!this.isInstantiated){
-			this.object = typeHandler.createNewInstance(this.id);
+     */
+    instantiate(branch, typeHandler) {
+        if (!this.isInstantiated) {
+            this.object = typeHandler.createNewInstance(this.id);
 
-			branch.setObject(this.id, this.object);
+            branch.setObject(this.id, this.object);
 
-			this.isInstantiated = true;
-		}
-	}
+            this.isInstantiated = true;
+        }
+    }
 
 }
 
@@ -384,9 +389,9 @@ class CreateNeObjectHandler extends NeObjectHandler {
  */
 class UpdateNeObjectHandler extends NeObjectHandler {
 
-	constructor(id, entries) {
-		super(id, entries);
-	}
+    constructor(id, entries) {
+        super(id, entries);
+    }
 
 
     /**
@@ -394,8 +399,8 @@ class UpdateNeObjectHandler extends NeObjectHandler {
      * @param {NeBranch} branch 
      */
     resolve(branch) {
-		this.object = branch.getObject(this.id);
-	}
+        this.object = branch.getObject(this.id);
+    }
 
 }
 
@@ -407,15 +412,15 @@ class ExposeNeSlotHandler {
      */
     id;
 
-      /**
-     * @type {number}
-     */
+    /**
+   * @type {number}
+   */
     slot;
 
-	constructor(id, slot) {
-		this.id = id;
+    constructor(id, slot) {
+        this.id = id;
         this.slot = slot;
-	}
+    }
 
 
     /**
@@ -423,7 +428,7 @@ class ExposeNeSlotHandler {
      * @param {NeBranch} branch 
      */
     setSlot(branch) {
-		branch.expose(this.id, this.slot);
-	}
+        branch.expose(this.id, this.slot);
+    }
 
 }

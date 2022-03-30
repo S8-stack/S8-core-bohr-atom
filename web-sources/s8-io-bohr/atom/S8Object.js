@@ -1,4 +1,4 @@
-import { NeObjectTypeHandler } from "../neon/NeObjectTypeHandler";
+import { NeObjectTypeHandler } from "../neon/NeObjectTypeHandler.js";
 
 
 

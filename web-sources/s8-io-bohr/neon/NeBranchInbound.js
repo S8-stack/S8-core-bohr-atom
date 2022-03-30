@@ -1,8 +1,8 @@
 
 import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
-import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol";
-import { NeBranch } from "./NeBranch";
-import { NeObjectTypeHandler } from "./NeObjectTypeHandler";
+import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol.js";
+import { NeBranch } from "./NeBranch.js";
+import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
 import { jump } from "./NeJump.js";
 
 

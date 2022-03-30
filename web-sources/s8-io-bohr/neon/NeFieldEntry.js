@@ -1,6 +1,6 @@
-import { NeBranch } from "./NeBranch";
-import { NeFieldHandler } from "./NeFieldHandler";
-import { S8Object } from "../atom/S8Object";
+import { NeBranch } from "./NeBranch.js";
+import { NeFieldHandler } from "./NeFieldHandler.js";
+import { S8Object } from "../atom/S8Object.js";
 
 
 

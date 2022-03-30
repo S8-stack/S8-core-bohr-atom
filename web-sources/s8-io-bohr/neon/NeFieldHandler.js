@@ -3,8 +3,8 @@
 import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
 
 import { BOHR_Types } from "/s8-io-bohr/atom/BOHR_Protocol.js";
-import { NeFieldEntry } from "./NeFieldEntry";
-import { S8Object } from "../atom/S8Object";
+import { NeFieldEntry } from "./NeFieldEntry.js";
+import { S8Object } from "../atom/S8Object.js";
 import { NeBranch } from "./NeBranch.js";
 
 
@@ -224,7 +224,7 @@ class UInt8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Uint8Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getUInt8(); }
             return new NeFieldEntry(this, array);
         }
@@ -258,7 +258,7 @@ class UInt16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Uint16Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getUInt16(); }
             return new NeFieldEntry(this, array);
         }
@@ -292,7 +292,7 @@ class UInt32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Uint32Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getUInt32(); }
             return new NeFieldEntry(this, array);
         }
@@ -361,7 +361,7 @@ class Int8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Int8Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getInt8(); }
             return new NeFieldEntry(this, array);
         }
@@ -395,7 +395,7 @@ class Int16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Int16Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getInt16(); }
             return new NeFieldEntry(this, array);
         }
@@ -429,7 +429,7 @@ class Int32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Int32Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getInt32(); }
             return new NeFieldEntry(this, array);
         }
@@ -499,7 +499,7 @@ class Float32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Float32Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getFloat32(); }
             return new NeFieldEntry(this, array);
         }
@@ -535,7 +535,7 @@ class Float64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
     retrieveValue(inflow) {
         let length = inflow.getUInt7x();
         if (length >= 0) {
-            let array = new Array(length);
+            let array = new Float64Array(length);
             for (let i = 0; i < length; i++) { array[i] = inflow.getFloat64(); }
             return new NeFieldEntry(this, array);
         }

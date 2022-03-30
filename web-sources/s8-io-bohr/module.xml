@@ -4,21 +4,21 @@
 	<root-local-path>/Users/pc/qx/git/com.s8.io.bohr/web-sources/s8-io-bohr/</root-local-path>
 	<root-web-path>/s8-io-bohr/</root-web-path>
 	<html-filter cache="PRODUCTION" frag-length="1024">
-		<sources>**.html</sources>
+		<pattern>**.html</pattern>
 	</html-filter>
 	<css-filter cache="PRODUCTION" frag-length="1024">
-		<sources>**.css</sources>
+		<pattern>**.css</pattern>
 	</css-filter>
 	<js-filter cache="PRODUCTION" frag-length="1024">
-		<sources>**.js</sources>
+		<pattern>**.js</pattern>
 	</js-filter>
 	<png-filter cache="PRODUCTION" frag-length="65536">
-		<sources>**.png</sources>
+		<pattern>**.png</pattern>
 	</png-filter>
 	<jpg-filter cache="PRODUCTION" frag-length="65536">
-		<sources>**.{jpg,jpeg}</sources>
+		<pattern>**.{jpg,jpeg}</pattern>
 	</jpg-filter>
 	<svg-filter cache="PRODUCTION" frag-length="65536">
-		<sources>**.svg</sources>
+		<pattern>**.svg</pattern>
 	</svg-filter>
 </sources>

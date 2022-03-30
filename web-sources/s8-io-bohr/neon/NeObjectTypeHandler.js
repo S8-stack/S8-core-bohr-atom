@@ -1,15 +1,17 @@
-import { ByteInflow } from "/s8-io-bytes/ByteInflow";
+import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
 
-import { NeFieldHandler } from "./NeFieldHandler";
-import { NeBranch } from "./NeBranch";
-import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol";
-import { NeFieldEntry } from "./NeFieldEntry";
-import { S8Object } from "../atom/S8Object";
+import { NeFieldHandler } from "./NeFieldHandler.js";
+import { NeBranch } from "./NeBranch.js";
+import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol.js";
+import { NeFieldEntry } from "./NeFieldEntry.js";
+import { S8Object } from "../atom/S8Object.js";
 
 
 
 export class NeObjectTypeHandler {
 
+
+    static JS_EXTENSION = ".js";
 
     /**
      * @type {NeBranch}
@@ -94,7 +96,7 @@ export class NeObjectTypeHandler {
 
 
     getTargetClassPathname(){
-        return this.pathname + this.classname;
+        return this.pathname + this.classname + NeObjectTypeHandler.JS_EXTENSION ;
     }
 
 
