@@ -267,7 +267,6 @@ class NeObjectTypeHandlerLoading {
                 catch(function (reason) {
                     console.error(`[NEON] Failed to load: ${typeHandler.getTargetClassPathname()}, due to: ${reason}`);
                 });
-
         }
         else if (this.typeHandler.isClassLoaded) {
             this.isLoaded = true;
