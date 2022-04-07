@@ -265,7 +265,8 @@ class NeObjectTypeHandlerLoading {
             import(typeHandler.getTargetClassPathname()).
                 then(module => onClassLoaded(module[typeHandler.classname])).
                 catch(function (reason) {
-                    console.error(`[NEON] Failed to load: ${typeHandler.getTargetClassPathname()}, due to: ${reason}`);
+                    console.error(`[NEON] Failed to load: ${typeHandler.getTargetClassPathname()}, 
+                        due to:-->\n ${reason.stack}`);
                 });
         }
         else if (this.typeHandler.isClassLoaded) {
