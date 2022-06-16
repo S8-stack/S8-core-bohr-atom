@@ -1,8 +1,10 @@
 
 import { NeObjectTypeHandler } from './NeObjectTypeHandler.js';
-import { S8Object } from '../atom/S8Object.js';
 import { S8 } from '../atom/S8.js';
 import { NeBranchInbound } from './NeBranchInbound.js';
+import { NeVertex } from './NeVertex.js';
+import { NeObject } from './NeObject.js';
+
 
 export class NeBranch {
 
@@ -11,12 +13,12 @@ export class NeBranch {
 	/**
 	 * @type {Map<string, NeObjectTypeHandler>}
 	 */
-	 objectTypes = new Map();
+	objectTypes = new Map();
 
 	/**
-	 * @type {Map<string, S8Object>}
+	 * @type {Map<string, NeVertex>}
 	 */
-	objects = new Map();
+	vertices = new Map();
 
 
 	/**
@@ -31,7 +33,7 @@ export class NeBranch {
 	constructor() {
 
 		/** views */
-		this.objects.set("NULL", null);
+		this.vertices.set("NULL", null);
 
 		/* <screen> */
 		this.screenNode = document.createElement("div");
@@ -48,32 +50,44 @@ export class NeBranch {
 	/**
 	 * 
 	 * @param {string} id 
-	 * @returns {S8Object}
+	 * @returns {NeVertex}
+	 */
+	getVertex(id) {
+		return this.vertices.get(id);
+	}
+
+	/**
+	 * 
+	 * @param {string} id 
+	 * @returns {NeObject}
 	 */
 	getObject(id) {
-		return this.objects.get(id);
+		let vertex = this.vertices.get(id);
+		if(vertex == undefined){ throw `Failed to retrieve vertex for id=${id}`; }
+		return vertex.object;
 	}
 
 
 	/**
 	 * 
 	 * @param {string} id 
-	 * @param {S8Object} node 
+	 * @param {NeVertex} node 
 	 */
-	setObject(id, node) {
-		if (!this.objects.has(id)) {
-			this.objects.set(id, node);
+	setVertex(id, vertex) {
+		if (!this.vertices.has(id)) {
+			this.vertices.set(id, vertex);
 		}
 		else {
 			throw "HARD overriding for node with index = " + id;
 		}
 	}
 
-	deleteObject(id) {
-		let object = this.objects.get(id);
-		if (object) {
+	deleteVertex(id) {
+		let vertex = this.vertices.get(id);
+		if (vertex) {
+			let object = vertex.object;
 			object.S8_dispose();
-			this.objects.delete(id);
+			this.vertices.delete(id);
 		}
 	}
 
@@ -88,11 +102,19 @@ export class NeBranch {
 	 * @param {string} id 
 	 * @param {number} slot 
 	 */
-	expose(id, slot){
-		if(slot != 0) { throw "Only slot 0 is available!"; }
-		let node = this.objects.get(id);
+	expose(id, slot) {
+		if (slot != 0) { throw "Only slot 0 is available!"; }
+
+		let vertex = this.getVertex(id);
+
+		if (vertex == undefined) { throw `No object for id=${id}`; }
+		let object = vertex.object;
+
+		/* clear screen */
 		S8.removeChildren(this.screenNode);
-		this.screenNode.appendChild(node.getEnvelope());
+
+		/* redraw screen */
+		this.screenNode.appendChild(object.getEnvelope());
 	}
 
 }

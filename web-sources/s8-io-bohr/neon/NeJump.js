@@ -4,7 +4,7 @@ import { NeBranch } from "./NeBranch.js";
 import { NeBranchInbound } from "./NeBranchInbound.js";
 import { NeFieldEntry } from "./NeFieldEntry.js";
 import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
-import { S8Object } from "../atom/S8Object.js";
+import { NeVertex } from "./NeVertex.js";
 
 
 
@@ -136,8 +136,8 @@ class NeJumpScope {
      */
     consume_UPDATE_NODE(inflow) {
         let id = inflow.getStringUTF8();
-        let object = this.branchInbound.branch.getObject(id);
-        let objectType = object.S8_type;
+        let vertex = this.branchInbound.branch.getVertex(id);
+        let objectType = vertex.type;
         let entries = objectType.consumeEntries(inflow);
 
         let updateObjectHandler = new UpdateNeObjectHandler(id, entries);
@@ -266,7 +266,8 @@ class NeObjectTypeHandlerLoading {
                 then(module => onClassLoaded(module[typeHandler.classname])).
                 catch(function (reason) {
                     console.error(`[NEON] Failed to load: ${typeHandler.getTargetClassPathname()}, 
-                        due to:-->\n ${reason.stack}`);
+                        due to:-->\n ${reason}
+                        stack:-->\n ${reason.stack}`);
                 });
         }
         else if (this.typeHandler.isClassLoaded) {
@@ -305,20 +306,15 @@ class NeObjectHandler {
 
 
     /**
-     * @type {NeObjectTypeHandler}
-     */
-    typeHandler;
-
-
-    /**
      * @type {NeFieldEntry[]}
      */
     entries;
 
+    
     /**
-     * @type {S8Object}
+     * @type {NeVertex}
      */
-    object;
+    vertex;
 
 
     /**
@@ -334,15 +330,13 @@ class NeObjectHandler {
 
     /**
      * 
-     * @param {NeBranch} branch 
      */
-    setFieldValues(branch) {
-        let object = this.object;
-        this.entries.forEach(entry => { entry.set(object, branch); });
+    setFieldValues() {
+        this.entries.forEach(entry => { entry.set(this.vertex); });
     }
 
     render() {
-        this.object.S8_render();
+        this.vertex.object.S8_render();
     }
 }
 
@@ -374,9 +368,18 @@ class CreateNeObjectHandler extends NeObjectHandler {
      */
     instantiate(branch, typeHandler) {
         if (!this.isInstantiated) {
-            this.object = typeHandler.createNewInstance(this.id);
 
-            branch.setObject(this.id, this.object);
+            /* create object */
+            let object = typeHandler.createNewInstance(this.id);
+
+            /* create vertex */
+            this.vertex = new NeVertex(branch, this.id, typeHandler, object);
+
+            /* assign vertex to object */
+            object.S8_vertex = this.vertex;
+
+            /* register vertex */
+            branch.setVertex(this.id, this.vertex);
 
             this.isInstantiated = true;
         }
@@ -399,7 +402,8 @@ class UpdateNeObjectHandler extends NeObjectHandler {
      * @param {NeBranch} branch 
      */
     resolve(branch) {
-        this.object = branch.getObject(this.id);
+        this.vertex = branch.getVertex(this.id);
+        if(this.vertex == undefined){ throw "Failed to retrieve object for id"+this.id; }
     }
 
 }

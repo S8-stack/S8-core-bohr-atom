@@ -1,10 +1,11 @@
+
 import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
 
 import { NeFieldHandler } from "./NeFieldHandler.js";
 import { NeBranch } from "./NeBranch.js";
 import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol.js";
 import { NeFieldEntry } from "./NeFieldEntry.js";
-import { S8Object } from "../atom/S8Object.js";
+import { NeObject } from "./NeObject.js";
 
 
 
@@ -149,18 +150,12 @@ export class NeObjectTypeHandler {
     /**
      * 
      * @param {string} id 
-     * @returns {S8Object}
+     * @returns {NeObject}
      */
     createNewInstance(id) {
         
-        /** @type {S8Object} */
+        /** @type {NeObject} */
         let object = new this._class();
-
-        // assign id
-        object.S8_id = id;
-
-        // assign type handler
-        object.S8_type = this;
 
         return object;
     }

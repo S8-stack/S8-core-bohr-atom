@@ -1,6 +1,6 @@
-import { NeBranch } from "./NeBranch.js";
+
 import { NeFieldHandler } from "./NeFieldHandler.js";
-import { S8Object } from "../atom/S8Object.js";
+import { NeVertex } from "./NeVertex.js";
 
 
 
@@ -28,10 +28,9 @@ export class NeFieldEntry {
     }
 
 	/**
-	 * @param {NeBranch} branch  
-	 * @param {S8Object} object 
+	 * @param {NeVertex} vertex 
 	 */
-	set(object, branch){
-		this.fieldHandler.setValue(object, this.value, branch);
+	set(vertex){
+		this.fieldHandler.setValue(vertex, this.value);
 	}
 }

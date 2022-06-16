@@ -4,8 +4,7 @@ import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
 
 import { BOHR_Types } from "/s8-io-bohr/atom/BOHR_Protocol.js";
 import { NeFieldEntry } from "./NeFieldEntry.js";
-import { S8Object } from "../atom/S8Object.js";
-import { NeBranch } from "./NeBranch.js";
+import { NeVertex } from "./NeVertex.js";
 
 
 
@@ -156,10 +155,11 @@ class PrimitiveNeFieldHandler extends NeFieldHandler {
 
    /**
     * 
-    * @param {S8Object} object 
+    * @param {NeVertex} vertex 
     * @param { * } value 
     */
-    setValue(object, value) {
+    setValue(vertex, value) {
+        let object = vertex.object;
         this.setter.call(object, value);
     }
 }
@@ -598,11 +598,12 @@ class S8ObjectNeFieldHandler extends NeFieldHandler {
 
     /**
      * 
-     * @param {*} object 
+     * @param {NeVertex} vertex 
      * @param {string} id 
-     * @param {NeBranch} branch 
      */
-    setValue(object, id, branch) {
+    setValue(vertex, id) {
+        let branch = vertex.branch;
+        let object = vertex.object;
         let value = (id != null) ? branch.getObject(id) : null;
         this.setter.call(object, value);
     }
@@ -632,11 +633,12 @@ class S8ObjectArrayNeFieldHandler extends NeFieldHandler {
 
     /**
     * 
-    * @param {*} object 
+    * @param {NeVertex} vertex 
     * @param {string[]} index 
-    * @param {NeBranch} branch 
     */
-    setValue(object, indices, branch) {
+    setValue(vertex, indices) {
+        let branch = vertex.branch;
+        let object = vertex.object;
 
         if (indices != null) {
             let length = indices.length;
