@@ -22,6 +22,8 @@ public class NeBranch extends S8Branch {
 	
 	final Map<String, NeObjectTypeHandler> prototypesByName;
 	
+	final Map<Long, NeObjectTypeHandler> prototypesByCode;
+	
 	
 	/**
 	 * 
@@ -48,7 +50,8 @@ public class NeBranch extends S8Branch {
 	public NeBranch(String address, String id) {
 		super(address, id);
 		prototypesByName = new HashMap<>();
-		this.vertices = new HashMap<>();
+		prototypesByCode = new HashMap<>();
+		vertices = new HashMap<>();
 		
 		
 		/* outbound */
@@ -129,7 +132,13 @@ public class NeBranch extends S8Branch {
 	 * @return
 	 */
 	public NeObjectTypeHandler retrieveObjectPrototype(String typename) {
-		return prototypesByName.computeIfAbsent(typename, name -> new NeObjectTypeHandler(name, highestTypeCode++));
+		return prototypesByName.computeIfAbsent(typename, name -> {
+			NeObjectTypeHandler proto = new NeObjectTypeHandler(name, highestTypeCode++);
+			
+			// store by code (so share code with front)
+			prototypesByCode.put(proto.code, proto);
+			return proto;
+		});
 	}
 
 

@@ -2,6 +2,7 @@
 import { NeBranch } from "./NeBranch.js";
 import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
 import { NeObject } from "./NeObject.js";
+import { fire } from "./NeFire.js";
 
 /**
  * 
@@ -48,265 +49,289 @@ export class NeVertex {
 
     /**
      * 
-     * @param {string} fieldName 
-     * @param {string} fieldValue 
+     * @param {string} methodName 
+     * @param {string} argValue 
      */
-    fire(fieldName, fieldValue){
+    fire(methodName, argValue){
 
     }
 
-    setVoid(fieldName){
+    setVoid(methodName){
 
     }
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {boolean} fieldValue 
+	 * @param {string} methodName 
+     * @param {boolean} argValue 
 	 */
-	setBool8(fieldName, fieldValue) {
-		
+	runBool8(methodName, argValue) {
+		let methodRunner = this.type.getBool8MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
 	 */
-	setBool8Array(fieldName, fieldValue) {
-		
+	runBool8Array(methodName, argValue) {
+		let methodRunner = this.type.getBool8ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-	setUInt8(fieldName, fieldValue) {
-		
+	runUInt8(methodName, argValue) {
+		let methodRunner = this.type.getUInt8MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-	setUInt8Array(fieldName, fieldValue) {
-		
+	setUInt8Array(methodName, argValue) {
+		let methodRunner = this.type.getUInt8ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-	setUInt16(fieldName, fieldValue) {
-		
-	}
-
-
-
-	/**
-	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
-	 */
-	setUInt16Array(fieldName, fieldValue) {
-		
+	setUInt16(methodName, argValue) {
+		let methodRunner = this.type.getUInt16MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
 	 */
-	setUInt32(fieldName, fieldValue) {
-		
-	}
-
-
-	/**
-	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
-	 */
-	setUInt32Array(fieldName, fieldValue) {
-		
+	setUInt16Array(methodName, argValue) {
+		let methodRunner = this.type.getUInt16ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-	setUInt64(fieldName, fieldValue) {
-		
+	setUInt32(methodName, argValue) {
+		let methodRunner = this.type.getUInt32MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
 	 */
-	setUInt64Array(fieldName, fieldValue) {
-		
+	setUInt32Array(methodName, argValue) {
+		let methodRunner = this.type.getUInt32ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
+	}
+
+
+
+	/**
+	 * 
+	 * @param {string} methodName 
+     * @param {number} argValue 
+	 */
+	setUInt64(methodName, argValue) {
+		let methodRunner = this.type.getUInt64MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
+	}
+
+
+	/**
+	 * 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
+	 */
+	setUInt64Array(methodName, argValue) {
+		let methodRunner = this.type.getUInt64ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-    setInt8(fieldName, fieldValue) {
-		
+    setInt8(methodName, argValue) {
+		let methodRunner = this.type.getInt8MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
 	 */
-    setInt8Array(fieldName, fieldValue) {
-		
-	}
-
-
-
-	/**
-	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
-	 */
-    setInt16(fieldName, fieldValue) {
-		
+    setInt8Array(methodName, argValue) {
+		let methodRunner = this.type.getInt8ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-    setInt16Array(fieldName, fieldValue) {
-		
-	}
-
-
-	/**
-	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
-	 */
-    setInt32(fieldName, fieldValue) {
-		
-	}
-
-
-	/**
-	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
-	 */
-    setInt32Array(fieldName, fieldValue) {
-		
-	}
-
-
-	/**
-	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
-	 */
-    setInt64(fieldName, fieldValue) {
-		
+    setInt16(methodName, argValue) {
+		let methodRunner = this.type.getInt16MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
 	 */
-    setInt64Array(fieldName, fieldValue) {
-		
+    setInt16Array(methodName, argValue) {
+		let methodRunner = this.type.getInt16ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
+	}
+
+
+	/**
+	 * 
+	 * @param {string} methodName 
+     * @param {number} argValue 
+	 */
+    setInt32(methodName, argValue) {
+		let methodRunner = this.type.getInt32MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
+	}
+
+
+	/**
+	 * 
+	 * @param {string} methodName 
+     * @param {number} argValue 
+	 */
+    setInt32Array(methodName, argValue) {
+		let methodRunner = this.type.getInt16ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
+	}
+
+
+	/**
+	 * 
+	 * @param {string} methodName 
+     * @param {number} argValue 
+	 */
+    setInt64(methodName, argValue) {
+		let methodRunner = this.type.getInt64ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-    setFloat32(fieldName, fieldValue) {
-		
+    setInt64Array(methodName, argValue) {
+		let methodRunner = this.type.getInt64MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-    setFloat32Array(fieldName, fieldValue) {
-		
+    setFloat32(methodName, argValue) {
+		let methodRunner = this.type.getFloat32MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
 	 */
-    setFloat64(fieldName, fieldValue) {
-		
+    setFloat32Array(methodName, argValue) {
+		let methodRunner = this.type.getFloat32ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-    setFloat64Array(fieldName, fieldValue) {
-		
+    setFloat64(methodName, argValue) {
+		let methodRunner = this.type.getFloat64MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
+	}
+
+
+
+	/**
+	 * 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
+	 */
+    setFloat64Array(methodName, argValue) {
+		let methodRunner = this.type.getFloat64ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 
 	/**
 	 * 
-	 * @param {string} fieldName 
-     * @param {number} fieldValue 
+	 * @param {string} methodName 
+     * @param {number} argValue 
 	 */
-    setStringUTF8(fieldName, fieldValue) {
-		
+    setStringUTF8(methodName, argValue) {
+		let methodRunner = this.type.getStringUTF8MethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 	
     /**
 	 * 
-	 * @param {string} fieldName 
-     * @param {Array} fieldValue 
+	 * @param {string} methodName 
+     * @param {Array} argValue 
 	 */
-    setStringUTF8Array(fieldName, fieldValue) {
-		
+    setStringUTF8Array(methodName, argValue) {
+		let methodRunner = this.type.getStringUTF8ArrayMethodRunner(methodName);
+        fire(id, methodRunner, argValue);
 	}
 
 }

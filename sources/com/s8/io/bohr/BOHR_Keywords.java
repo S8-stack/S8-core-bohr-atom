@@ -120,7 +120,7 @@ public class BOHR_Keywords {
 	
 	
 	
-	public final static int RUN_FUNC = 0x84;
+	public final static int RUN_METHOD = 0x84;
 	
 	
 	

@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neon.methods.objects;
+package com.s8.io.bohr.neon.fields.objects;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class NeList<T extends NeObject> extends NeFieldComposer {
-	
+public class ListNeFieldComposer<T extends NeObject> extends NeFieldComposer {
+
 	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.S8OBJECT;
 
 	public @Override long getSignature() { return SIGNATURE; }
@@ -31,7 +31,7 @@ public class NeList<T extends NeObject> extends NeFieldComposer {
 	 * 
 	 * @param view
 	 */
-	public NeList(NeObjectTypeHandler prototype, String name) {
+	public ListNeFieldComposer(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -42,15 +42,16 @@ public class NeList<T extends NeObject> extends NeFieldComposer {
 		outflow.putUInt8(BOHR_Types.S8OBJECT);
 	}
 
-	
+
 
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
+	
 	public List<T> get(NeFieldValue wrapper) {
+		@SuppressWarnings("unchecked")
 		Value<T> value = (Value<T>) wrapper; 
 		if(value.list == null) {
 			List<T> list = new ArrayList<T>();
@@ -58,36 +59,98 @@ public class NeList<T extends NeObject> extends NeFieldComposer {
 			return list;
 		}
 		else {
-			return value.list;
+			List<T> list = value.list;
+			List<T> copy = new ArrayList<T>(list.size());
+			list.forEach(item -> copy.add(item));
+			return copy;
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void set(NeFieldValue wrapper, List<T> list) {
-		Value<T> value = (Value<T>) wrapper; 
-		value.list = list;
+		((Value<T>) wrapper).setValue(list);
+	}
+
+
+
+
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param obj
+	 */
+	@SuppressWarnings("unchecked")
+	public void add(NeFieldValue wrapper, T obj) {
+		((Value<T>) wrapper).addObject(obj);
 	}
 	
-	
-	
+
+	/**
+	 * 
+	 * @param <T>
+	 * @param name
+	 * @param obj
+	 */
+	@SuppressWarnings("unchecked")
+	public void remove(NeFieldValue wrapper, String index) {
+		((Value<T>) wrapper).removeObject(index);
+	}
+
+
+
 	@Override
 	public NeFieldValue createValue() {
 		return new Value<>();
 	}
-	
 
-	
+
+
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
 	public static class Value<T extends NeObject> extends NeFieldValue {
-		
+
 		private List<T> list;
-	
+
 		public Value() {
 			super();
+		}
+
+		public void notifyChange() {
+			hasDelta = true;
+		}
+
+		public void setValue(List<T> value) {
+			this.list = value;
+			this.hasDelta = true;
+		}
+		
+		
+		public void addObject(T obj) {
+			if(list == null) { list = new ArrayList<T>(); }
+			list.add(obj);
+			hasDelta = true;
+		}
+		
+		public void removeObject(String objectIndex) {
+			if(list != null) {
+				boolean isFound = false;
+				int i = 0, n = list.size();
+				while(!isFound && i < n) {
+					if(list.get(i).vertex.getIndex().equals(objectIndex)) {
+						isFound = true;
+					}
+					else {
+						i++;
+					}
+				}
+				list.remove(i);
+				
+				hasDelta = true;		
+			}
 		}
 
 		@Override
@@ -113,15 +176,15 @@ public class NeList<T extends NeObject> extends NeFieldComposer {
 			if(n >= 0) {
 				List<String> indices = new ArrayList<String>(n);
 				for(int i = 0; i < n; i++) { indices.add(inflow.getStringUTF8()); }
-				
+
 				scope.appendBinding(new BuildScope.Binding() {
-					
+
 					@Override
 					public void resolve(BuildScope scope) throws IOException {
 						list = new ArrayList<T>(n);
 						String index;
 						for(int i = 0; i < n; i++) {
-							index = inflow.getStringUTF8();
+							index = indices.get(i);
 							list.add(index != null ? (T) scope.retrieveObject(indices.get(i)) : null);
 						}	
 					}
@@ -130,7 +193,7 @@ public class NeList<T extends NeObject> extends NeFieldComposer {
 			else {
 				list = null;
 			}
-			
+
 		}
 	}	
 }

@@ -5,7 +5,7 @@ import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol.js";
 
 
 import { NeFieldParser } from "./NeFieldParser.js";
-import { NeFieldComposer } from "./NeFieldComposer.js";
+import { Float32ArrayNeMethodRunner, Float32NeMethodRunner, Float64ArrayNeMethodRunner, Float64NeMethodRunner, Int16NeMethodRunner, Int32ArrayNeMethodRunner, Int32NeMethodRunner, Int64ArrayNeMethodRunner, Int64NeMethodRunner, Int8ArrayNeMethodRunner, Int8NeMethodRunner, NeMethodRunner, StringUTF8ArrayNeMethodRunner, StringUTF8NeMethodRunner, UInt16ArrayNeMethodRunner, UInt16NeMethodRunner, UInt32ArrayNeMethodRunner, UInt32NeMethodRunner, UInt64ArrayNeMethodRunner, UInt64NeMethodRunner, UInt8ArrayNeMethodRunner, UInt8NeMethodRunner } from "./NeMethodRunner.js";
 import { NeBranch } from "./NeBranch.js";
 import { NeFieldEntry } from "./NeFieldEntry.js";
 import { NeObject } from "./NeObject.js";
@@ -60,17 +60,16 @@ export class NeObjectTypeHandler {
     fieldParsers = new Array(4);
 
 
-    /**
-     * @type {Map<string, NeFieldComposer>}
-     */
-    fieldComposers = new Map();
-
 
     /**
-     * @type { Map<string, NeOrbitalTypeFieldHandler> }
-     */
-    fieldHandlersByName = new Map();
+        * @type {number}
+        */
+    methodRunnerNextOrdinal = 0;
 
+    /**
+    * @type {Map<string, NeMethodRunner>}
+    */
+    methodRunnersByName = new Map();
 
 
     /**
@@ -80,7 +79,7 @@ export class NeObjectTypeHandler {
      */
     constructor(branch, classPathname, code) {
         this.branch = branch;
-        this.parseClassPathname(classPathname); 
+        this.parseClassPathname(classPathname);
         this.code = code;
     }
 
@@ -105,8 +104,8 @@ export class NeObjectTypeHandler {
     }
 
 
-    getTargetClassPathname(){
-        return this.pathname + this.classname + NeObjectTypeHandler.JS_EXTENSION ;
+    getTargetClassPathname() {
+        return this.pathname + this.classname + NeObjectTypeHandler.JS_EXTENSION;
     }
 
 
@@ -123,10 +122,10 @@ export class NeObjectTypeHandler {
 
         /* search for exigible methods */
         let renderMethod = _class.prototype["S8_render"];
-        if(renderMethod == undefined){ throw this.classname+" is missing an S8_render() method."; }
+        if (renderMethod == undefined) { throw this.classname + " is missing an S8_render() method."; }
 
         let disposeMethod = _class.prototype["S8_dispose"];
-        if(disposeMethod == undefined){ throw this.classname+" is missing an S8_dispose() method."; }
+        if (disposeMethod == undefined) { throw this.classname + " is missing an S8_dispose() method."; }
 
         /* link fields */
         let nFields = this.fieldParsers.length;
@@ -162,7 +161,7 @@ export class NeObjectTypeHandler {
      * @returns {NeObject}
      */
     createNewInstance(id) {
-        
+
         /** @type {NeObject} */
         let object = new this._class();
 
@@ -247,6 +246,182 @@ export class NeObjectTypeHandler {
 
 
 
+
+    /**
+     * @param {string} methodName
+     */
+    getMethodRunner(methodName, createFunc) {
+        let methodRunner = this.methodRunnersByName.get(methodName);
+        if (methodRunner == undefined) {
+            methodRunner = createFunc(this.methodRunnerNextOrdinal++);
+            methodRunner.type = this;
+            this.methodRunnersByName.set(methodName, methodRunner);
+        }
+        return methodRunner;
+    }
+
+
+    /**
+     * @param {string} methodName
+     */
+    getUInt8MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt8NeMethodRunner(methodName, code));
+    }
+
+    /**
+     * @param {string} methodName
+     */
+    getUInt8ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt8ArrayNeMethodRunner(methodName, code));
+    }
+
+    /**
+     * @param {string} methodName
+     */
+    getUInt16MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt16NeMethodRunner(methodName, code));
+    }
+
+    /**
+    * @param {string} methodName
+    */
+    getUInt16ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt16ArrayNeMethodRunner(methodName, code));
+    }
+
+    /**
+     * @param {string} methodName
+     */
+    getUInt32MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt32NeMethodRunner(methodName, code));
+    }
+
+    /**
+    * @param {string} methodName
+    */
+    getUInt32ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt32ArrayNeMethodRunner(methodName, code));
+    }
+
+    /**
+     * @param {string} methodRunnersByName
+     */
+    getUInt64MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt64NeMethodRunner(methodName, code));
+    }
+
+
+    /**
+    * @param {string} methodRunnersByName
+    */
+    getUInt64ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new UInt64ArrayNeMethodRunner(methodName, code));
+    }
+
+
+    /**
+    * @param {string} methodName
+    */
+    getInt8MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Int8NeMethodRunner(methodName, code));
+    }
+
+
+    /**
+    * @param {string} methodRunnersByName
+    */
+    getInt8ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Int8ArrayNeMethodRunner(methodName, code));
+    }
+
+
+    /**
+     * @param {string} methodName
+     */
+    getInt16MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Int16NeMethodRunner(methodName, code));
+    }
+
+
+    /**
+     * @param {string} methodName
+     */
+    getInt32MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Int32NeMethodRunner(methodName, code));
+    }
+
+    /**
+     * @param {string} methodName
+     */
+    getInt32ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Int32ArrayNeMethodRunner(methodName, code));
+    }
+
+    /**
+     * @param {string} methodRunnersByName
+     */
+    getInt64MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Int64NeMethodRunner(methodName, code));
+    }
+
+
+    /**
+     * @param {string} methodRunnersByName
+     */
+    getInt64ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Int64ArrayNeMethodRunner(methodName, code));
+    }
+
+
+    /**
+     * @param {string} methodName
+     */
+    getFloat32MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Float32NeMethodRunner(methodName, code));
+    }
+
+
+    /**
+        * @param {string} methodName
+        */
+    getFloat32ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Float32ArrayNeMethodRunner(methodName, code));
+    }
+
+
+    /**
+     * @param {string} methodRunnersByName
+     */
+    getFloat64MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Float64NeMethodRunner(methodName, code));
+    }
+
+
+
+    /**
+     * @param {string} methodRunnersByName
+     */
+    getFloat64ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new Float64ArrayNeMethodRunner(methodName, code));
+    }
+
+
+
+    /**
+     * @param {string} methodRunnersByName
+     */
+    getStringUTF8MethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new StringUTF8NeMethodRunner(methodName, code));
+    }
+
+
+
+    /**
+     * @param {string} methodRunnersByName
+     */
+    getStringUTF8ArrayMethodRunner(methodName) {
+        return this.getMethodRunner(methodName, code => new StringUTF8ArrayNeMethodRunner(methodName, code));
+    }
 
 }
 

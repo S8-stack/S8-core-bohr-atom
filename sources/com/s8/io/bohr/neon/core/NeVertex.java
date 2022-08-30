@@ -5,46 +5,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.neon.fields.NeFieldHandler;
+import com.s8.io.bohr.neon.core.NeObject.Float32ArrayLambda;
+import com.s8.io.bohr.neon.core.NeObject.Float32Lambda;
+import com.s8.io.bohr.neon.core.NeObject.Float64ArrayLambda;
+import com.s8.io.bohr.neon.core.NeObject.Float64Lambda;
+import com.s8.io.bohr.neon.core.NeObject.Int64ArrayLambda;
+import com.s8.io.bohr.neon.core.NeObject.ListLambda;
+import com.s8.io.bohr.neon.core.NeObject.VoidLambda;
+import com.s8.io.bohr.neon.fields.NeFieldComposer;
 import com.s8.io.bohr.neon.fields.NeFieldValue;
-import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeFieldHandler;
-import com.s8.io.bohr.neon.fields.arrays.Float32ArrayNeFieldHandler;
-import com.s8.io.bohr.neon.fields.arrays.Float64ArrayNeFieldHandler;
-import com.s8.io.bohr.neon.fields.arrays.Int64ArrayNeFieldHandler;
-import com.s8.io.bohr.neon.fields.arrays.StringUTF8ArrayNeFieldHandler;
-import com.s8.io.bohr.neon.fields.arrays.UInt16ArrayNeFieldHandler;
-import com.s8.io.bohr.neon.fields.arrays.UInt32ArrayNeFieldHandler;
-import com.s8.io.bohr.neon.fields.objects.ListNeFieldHandler;
-import com.s8.io.bohr.neon.fields.objects.ObjNeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.Bool8NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.Float32NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.Float64NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.Int16NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.Int32NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.Int64NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.Int8NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.StringUTF8NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.UInt16NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.UInt32NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.UInt64NeFieldHandler;
-import com.s8.io.bohr.neon.fields.primitives.UInt8NeFieldHandler;
-import com.s8.io.bohr.neon.methods.NeFunc;
-import com.s8.io.bohr.neon.methods.NeMethod;
-import com.s8.io.bohr.neon.methods.arrays.BooleanArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.DoubleArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.FloatArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.LongArrayNeMethod;
-import com.s8.io.bohr.neon.methods.arrays.StringArrayNeMethod;
-import com.s8.io.bohr.neon.methods.objects.ListNeMethod;
-import com.s8.io.bohr.neon.methods.objects.ObjNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.BooleanNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.DoubleNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.FloatNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.IntegerNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.LongNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.ShortNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.StringNeMethod;
-import com.s8.io.bohr.neon.methods.primitives.VoidNeMethod;
+import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeFieldComposer;
+import com.s8.io.bohr.neon.fields.arrays.Float32ArrayNeFieldComposer;
+import com.s8.io.bohr.neon.fields.arrays.Float64ArrayNeFieldComposer;
+import com.s8.io.bohr.neon.fields.arrays.Int64ArrayNeFieldComposer;
+import com.s8.io.bohr.neon.fields.arrays.StringUTF8ArrayNeFieldComposer;
+import com.s8.io.bohr.neon.fields.arrays.UInt16ArrayNeFieldComposer;
+import com.s8.io.bohr.neon.fields.arrays.UInt32ArrayNeFieldComposer;
+import com.s8.io.bohr.neon.fields.objects.ListNeFieldComposer;
+import com.s8.io.bohr.neon.fields.objects.ObjNeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.Bool8NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.Float32NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.Float64NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.Int16NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.Int32NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.Int64NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.Int8NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.StringUTF8NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.UInt16NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.UInt32NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.UInt64NeFieldComposer;
+import com.s8.io.bohr.neon.fields.primitives.UInt8NeFieldComposer;
+import com.s8.io.bohr.neon.methods.NeMethodRunner;
+import com.s8.io.bohr.neon.methods.arrays.Bool8ArrayNeMethodRunner;
+import com.s8.io.bohr.neon.methods.arrays.Float32ArrayNeMethodRunner;
+import com.s8.io.bohr.neon.methods.arrays.Float64ArrayNeMethodRunner;
+import com.s8.io.bohr.neon.methods.arrays.Int64ArrayNeMethodRunner;
+import com.s8.io.bohr.neon.methods.arrays.StringUTF8ArrayNeMethodRunner;
+import com.s8.io.bohr.neon.methods.objects.ListNeMethodRunner;
+import com.s8.io.bohr.neon.methods.objects.ObjNeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.Bool8NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.Float32NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.Float64NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.Int16NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.Int32NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.Int64NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.Int8NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.StringUTF8NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.UInt16NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.UInt32NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.UInt64NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.UInt8NeMethodRunner;
+import com.s8.io.bohr.neon.methods.primitives.VoidNeMethodRunner;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
 
@@ -176,7 +187,7 @@ public class NeVertex {
 				outflow.putUInt8(BOHR_Keywords.CREATE_NODE);
 
 				/* publish type code */
-				outflow.putUInt7x(prototype.outboundCode);
+				outflow.putUInt7x(prototype.code);
 
 				/* publish index */
 				outflow.putStringUTF8(index);
@@ -223,7 +234,7 @@ public class NeVertex {
 	
 	
 
-	private NeFieldValue getEntry(NeFieldHandler field) {
+	private NeFieldValue getEntry(NeFieldComposer field) {
 		int ordinal= field.ordinal;
 		NeFieldValue value;
 		if(field.ordinal < values.length) {
@@ -248,7 +259,12 @@ public class NeVertex {
 
 
 
-	private NeFunc getFunc(NeMethod method) {
+	/**
+	 * 
+	 * @param method
+	 * @return
+	 */
+	private NeFunc getFunc(NeMethodRunner method) {
 		int ordinal = method.ordinal;
 		NeFunc func;
 		if(ordinal < funcs.length) {
@@ -270,8 +286,8 @@ public class NeVertex {
 
 	
 
-	public void onVoid(String name, VoidNeMethod.Lambda lambda) {
-		VoidNeMethod method = prototype.getVoidMethod(name);
+	public void forVoid(String name, VoidLambda lambda) {
+		VoidNeMethodRunner method = prototype.getVoidMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -284,7 +300,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setBool8(String name, boolean value) {
-		Bool8NeFieldHandler field = prototype.getBool8Field(name);
+		Bool8NeFieldComposer field = prototype.getBool8Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -297,17 +313,18 @@ public class NeVertex {
 	 * @return
 	 */
 	public boolean getBool8(String name) {
-		Bool8NeFieldHandler field = prototype.getBool8Field(name);
+		Bool8NeFieldComposer field = prototype.getBool8Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
-	public void onBoolean(String name, BooleanNeMethod.Lambda lambda) {
-		BooleanNeMethod method = prototype.getBooleanMethod(name);
+	public void forBool8(String name, NeObject.Bool8Lambda lambda) {
+		Bool8NeMethodRunner method = prototype.getBooleanMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
+	
 
 	/**
 	 * 
@@ -315,7 +332,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setBool8Array(String name, boolean[] value) {
-		Bool8ArrayNeFieldHandler field = prototype.getBool8ArrayField(name);
+		Bool8ArrayNeFieldComposer field = prototype.getBool8ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -328,14 +345,14 @@ public class NeVertex {
 	 * @return
 	 */
 	public boolean[] getBool8Array(String name) {
-		Bool8ArrayNeFieldHandler field = prototype.getBool8ArrayField(name);
+		Bool8ArrayNeFieldComposer field = prototype.getBool8ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
-	public void onBooleanArray(String name, BooleanArrayNeMethod.Lambda lambda) {
-		BooleanArrayNeMethod method = prototype.getBool8ArrayMethod(name);
+	public void forBool8Array(String name, Bool8ArrayNeMethodRunner.Lambda lambda) {
+		Bool8ArrayNeMethodRunner method = prototype.getBool8ArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -346,7 +363,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setUInt8(String name, int value) {
-		UInt8NeFieldHandler field = prototype.getUInt8Field(name);
+		UInt8NeFieldComposer field = prototype.getUInt8Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -359,11 +376,17 @@ public class NeVertex {
 	 * @return
 	 */
 	public int getUInt8(String name) {
-		UInt8NeFieldHandler field = prototype.getUInt8Field(name);
+		UInt8NeFieldComposer field = prototype.getUInt8Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
+
+	public void forUInt8(String name, NeObject.UInt8Lambda lambda) {
+		UInt8NeMethodRunner method = prototype.getUInt8Method(name);
+		NeFunc func = getFunc(method);
+		func.lambda = lambda;
+	}
 
 	/**
 	 * 
@@ -371,7 +394,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setUInt16(String name, int value) {
-		UInt16NeFieldHandler field = prototype.getUInt16Field(name);
+		UInt16NeFieldComposer field = prototype.getUInt16Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -384,20 +407,26 @@ public class NeVertex {
 	 * @return
 	 */
 	public int getUInt16(String name) {
-		UInt16NeFieldHandler field = prototype.getUInt16Field(name);
+		UInt16NeFieldComposer field = prototype.getUInt16Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
 
+	public void forUInt16(String name, NeObject.UInt16Lambda lambda) {
+		UInt16NeMethodRunner method = prototype.getUInt16Method(name);
+		NeFunc func = getFunc(method);
+		func.lambda = lambda;
+	}
+	
 	/**
 	 * 
 	 * @param name
 	 * @param value
 	 */
 	public void setUInt16Array(String name, int[] value) {
-		UInt16ArrayNeFieldHandler field = prototype.getUInt16ArrayField(name);
+		UInt16ArrayNeFieldComposer field = prototype.getUInt16ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -410,7 +439,7 @@ public class NeVertex {
 	 * @return
 	 */
 	public int[] getUInt16Array(String name) {
-		UInt16ArrayNeFieldHandler field = prototype.getUInt16ArrayField(name);
+		UInt16ArrayNeFieldComposer field = prototype.getUInt16ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
@@ -423,7 +452,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setUInt32(String name, long value) {
-		UInt32NeFieldHandler field = prototype.getUInt32Field(name);
+		UInt32NeFieldComposer field = prototype.getUInt32Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -436,11 +465,16 @@ public class NeVertex {
 	 * @return
 	 */
 	public long getUInt32(String name) {
-		UInt32NeFieldHandler field = prototype.getUInt32Field(name);
+		UInt32NeFieldComposer field = prototype.getUInt32Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
+	public void forUInt32(String name, NeObject.UInt32Lambda lambda) {
+		UInt32NeMethodRunner method = prototype.getUInt32Method(name);
+		NeFunc func = getFunc(method);
+		func.lambda = lambda;
+	}
 
 	/**
 	 * 
@@ -448,7 +482,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setUInt32Array(String name, long[] value) {
-		UInt32ArrayNeFieldHandler field = prototype.getUInt32ArrayField(name);
+		UInt32ArrayNeFieldComposer field = prototype.getUInt32ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -461,7 +495,7 @@ public class NeVertex {
 	 * @return
 	 */
 	public long[] getUInt32Array(String name) {
-		UInt32ArrayNeFieldHandler field = prototype.getUInt32ArrayField(name);
+		UInt32ArrayNeFieldComposer field = prototype.getUInt32ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
@@ -474,7 +508,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setUInt64(String name, long value) {
-		UInt64NeFieldHandler field = prototype.getUInt64Field(name);
+		UInt64NeFieldComposer field = prototype.getUInt64Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -487,19 +521,24 @@ public class NeVertex {
 	 * @return
 	 */
 	public long getUInt64(String name) {
-		UInt64NeFieldHandler field = prototype.getUInt64Field(name);
+		UInt64NeFieldComposer field = prototype.getUInt64Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
-
+	public void forUInt64(String name, NeObject.UInt16Lambda lambda) {
+		UInt64NeMethodRunner method = prototype.getUInt64Method(name);
+		NeFunc func = getFunc(method);
+		func.lambda = lambda;
+	}
+	
 	/**
 	 * 
 	 * @param name
 	 * @param value
 	 */
 	public void setInt8(String name, int value) {
-		Int8NeFieldHandler field = prototype.getInt8Field(name);
+		Int8NeFieldComposer field = prototype.getInt8Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -512,11 +551,17 @@ public class NeVertex {
 	 * @return
 	 */
 	public int getInt8(String name) {
-		Int8NeFieldHandler field = prototype.getInt8Field(name);
+		Int8NeFieldComposer field = prototype.getInt8Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
+	
+	public void forInt8(String name, NeObject.Int8Lambda lambda) {
+		Int8NeMethodRunner method = prototype.getInt8Method(name);
+		NeFunc func = getFunc(method);
+		func.lambda = lambda;
+	}
 
 	/**
 	 * 
@@ -524,7 +569,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setInt16(String name, int value) {
-		Int16NeFieldHandler field = prototype.getInt16Field(name);
+		Int16NeFieldComposer field = prototype.getInt16Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -535,17 +580,18 @@ public class NeVertex {
 	 * 
 	 */
 	public int getInt16(String name) {
-		Int16NeFieldHandler field = prototype.getInt16Field(name);
+		Int16NeFieldComposer field = prototype.getInt16Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
-
-
-	public void onShort(String name, ShortNeMethod.Lambda lambda) {
-		ShortNeMethod method = prototype.getShortMethod(name);
+	
+	public void forInt16(String name, NeObject.Int16Lambda lambda) {
+		Int16NeMethodRunner method = prototype.getInt16Method(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
+
+
 
 
 	/**
@@ -554,7 +600,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setInt32(String name, int value) {
-		Int32NeFieldHandler field = prototype.getInt32Field(name);
+		Int32NeFieldComposer field = prototype.getInt32Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -567,31 +613,25 @@ public class NeVertex {
 	 * @return
 	 */
 	public int getInt32(String name) {
-		Int32NeFieldHandler field = prototype.getInt32Field(name);
+		Int32NeFieldComposer field = prototype.getInt32Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
-
-	/**
-	 * 
-	 * @param name
-	 * @param lambda
-	 */
-	public void onInteger(String name, IntegerNeMethod.Lambda lambda) {
-		IntegerNeMethod method = prototype.getIntegerMethod(name);
+	public void forInt32(String name, NeObject.UInt32Lambda lambda) {
+		Int32NeMethodRunner method = prototype.getInt32Method(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
-
-
+	
+	
 	/**
 	 * 
 	 * @param name
 	 * @param value
 	 */
 	public void setInt64(String name, long value) {
-		Int64NeFieldHandler field = prototype.getInt64Field(name);
+		Int64NeFieldComposer field = prototype.getInt64Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -604,14 +644,14 @@ public class NeVertex {
 	 * @return
 	 */
 	public long getInt64(String name) {
-		Int64NeFieldHandler field = prototype.getInt64Field(name);
+		Int64NeFieldComposer field = prototype.getInt64Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
-	public void onLong(String name, LongNeMethod.Lambda lambda) {
-		LongNeMethod method = prototype.getLongMethod(name);
+	public void forInt64(String name, NeObject.Int64Lambda lambda) {
+		Int64NeMethodRunner method = prototype.getInt64Method(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -623,7 +663,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setInt64Array(String name, long[] value) {
-		Int64ArrayNeFieldHandler field = prototype.getInt64ArrayField(name);
+		Int64ArrayNeFieldComposer field = prototype.getInt64ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -636,14 +676,19 @@ public class NeVertex {
 	 * @return
 	 */
 	public long[] getInt64Array(String name) {
-		Int64ArrayNeFieldHandler field = prototype.getInt64ArrayField(name);
+		Int64ArrayNeFieldComposer field = prototype.getInt64ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
-	public void onLongArray(String name, LongArrayNeMethod.Lambda lambda) {
-		LongArrayNeMethod method = prototype.getLongArrayMethod(name);
+	/**
+	 * 
+	 * @param name
+	 * @param lambda
+	 */
+	public void forInt64Array(String name, Int64ArrayLambda lambda) {
+		Int64ArrayNeMethodRunner method = prototype.getInt64ArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -655,7 +700,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setFloat32(String name, float value) {
-		Float32NeFieldHandler field = prototype.getFloat32Field(name);
+		Float32NeFieldComposer field = prototype.getFloat32Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -668,14 +713,19 @@ public class NeVertex {
 	 * @return
 	 */
 	public float getFloat32(String name) {
-		Float32NeFieldHandler field = prototype.getFloat32Field(name);
+		Float32NeFieldComposer field = prototype.getFloat32Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
-	public void onFloat(String name, FloatNeMethod.Lambda lambda) {
-		FloatNeMethod method = prototype.getFloatMethod(name);
+	/**
+	 * 
+	 * @param name
+	 * @param lambda
+	 */
+	public void forFloat32(String name, Float32Lambda lambda) {
+		Float32NeMethodRunner method = prototype.getFloat32Method(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -687,7 +737,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setFloat32Array(String name, float[] value) {
-		Float32ArrayNeFieldHandler field = prototype.getFloat32ArrayField(name);
+		Float32ArrayNeFieldComposer field = prototype.getFloat32ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -701,14 +751,14 @@ public class NeVertex {
 	 * @return
 	 */
 	public float[] getFloat32Array(String name) {
-		Float32ArrayNeFieldHandler field = prototype.getFloat32ArrayField(name);
+		Float32ArrayNeFieldComposer field = prototype.getFloat32ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
-	public void onFloatArray(String name, FloatArrayNeMethod.Lambda lambda) {
-		FloatArrayNeMethod method = prototype.getFloatArrayMethod(name);
+	public void forFloat32Array(String name, Float32ArrayLambda lambda) {
+		Float32ArrayNeMethodRunner method = prototype.getFloat32ArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -720,7 +770,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setFloat64(String name, double value) {
-		Float64NeFieldHandler field = prototype.getFloat64Field(name);
+		Float64NeFieldComposer field = prototype.getFloat64Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -733,7 +783,7 @@ public class NeVertex {
 	 * @return
 	 */
 	public double getFloat64(String name) {
-		Float64NeFieldHandler field = prototype.getFloat64Field(name);
+		Float64NeFieldComposer field = prototype.getFloat64Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
@@ -744,8 +794,8 @@ public class NeVertex {
 	 * @param name
 	 * @param func
 	 */
-	public void onDouble(String name, DoubleNeMethod.Lambda lambda) {
-		DoubleNeMethod method = prototype.getDoubleMethod(name);
+	public void forFloat64(String name, Float64Lambda lambda) {
+		Float64NeMethodRunner method = prototype.getFloat64Method(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -757,7 +807,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setFloat64Array(String name, double[] value) {
-		Float64ArrayNeFieldHandler field = prototype.getFloat64ArrayField(name);
+		Float64ArrayNeFieldComposer field = prototype.getFloat64ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -770,7 +820,7 @@ public class NeVertex {
 	 * @return
 	 */
 	public double[] getFloat64Array(String name) {
-		Float64ArrayNeFieldHandler field = prototype.getFloat64ArrayField(name);
+		Float64ArrayNeFieldComposer field = prototype.getFloat64ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
@@ -782,8 +832,8 @@ public class NeVertex {
 	 * @param name
 	 * @param func
 	 */
-	public void onDoubleArray(String name, DoubleArrayNeMethod.Lambda lambda) {
-		DoubleArrayNeMethod method = prototype.getDoubleArrayMethod(name);
+	public void forFloat64Array(String name, Float64ArrayLambda lambda) {
+		Float64ArrayNeMethodRunner method = prototype.getFloat64ArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -795,7 +845,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setStringUTF8(String name, String value) {
-		StringUTF8NeFieldHandler field = prototype.getStringUTF8Field(name);
+		StringUTF8NeFieldComposer field = prototype.getStringUTF8Field(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -803,15 +853,15 @@ public class NeVertex {
 
 
 	public String getStringUTF8(String name) {
-		StringUTF8NeFieldHandler field = prototype.getStringUTF8Field(name);
+		StringUTF8NeFieldComposer field = prototype.getStringUTF8Field(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
 
-	public void onString(String name, StringNeMethod.Lambda lambda) {
-		StringNeMethod method = prototype.getStringUTF8NeMethod(name);
+	public void forStringUTF8(String name, StringUTF8NeMethodRunner.Lambda lambda) {
+		StringUTF8NeMethodRunner method = prototype.getStringUTF8NeMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -823,7 +873,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public void setStringUTF8Array(String name, String[] value) {
-		StringUTF8ArrayNeFieldHandler field = prototype.getStringUTF8ArrayField(name);
+		StringUTF8ArrayNeFieldComposer field = prototype.getStringUTF8ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -836,7 +886,7 @@ public class NeVertex {
 	 * @return
 	 */
 	public String[] getStringUTF8Array(String name) {
-		StringUTF8ArrayNeFieldHandler field = prototype.getStringUTF8ArrayField(name);
+		StringUTF8ArrayNeFieldComposer field = prototype.getStringUTF8ArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
@@ -847,8 +897,8 @@ public class NeVertex {
 	 * @param name
 	 * @param lambda
 	 */
-	public void onStringArray(String name, StringArrayNeMethod.Lambda lambda) {
-		StringArrayNeMethod method = prototype.getStringArrayMethod(name);
+	public void forStringUTF8Array(String name, StringUTF8ArrayNeMethodRunner.Lambda lambda) {
+		StringUTF8ArrayNeMethodRunner method = prototype.getStringUTF8ArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -861,7 +911,7 @@ public class NeVertex {
 	 * @param value
 	 */
 	public <T extends NeObject> void setObj(String name, T value) {
-		ObjNeFieldHandler<T> field = prototype.getObjField(name);
+		ObjNeFieldComposer<T> field = prototype.getObjField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -875,15 +925,15 @@ public class NeVertex {
 	 * @return
 	 */
 	public <T extends NeObject> T getObj(String name) {
-		ObjNeFieldHandler<T> field = prototype.getObjField(name);
+		ObjNeFieldComposer<T> field = prototype.getObjField(name);
 		NeFieldValue entry = getEntry(field);
 		return field.get(entry);
 	}
 
 
 
-	public <T extends NeVertex> void onObject(String name, ObjNeMethod.Lambda<T> lambda) {
-		ObjNeMethod<T> method = prototype.getObjMethod(name);
+	public <T extends NeVertex> void forObject(String name, ObjNeMethodRunner.Lambda<T> lambda) {
+		ObjNeMethodRunner<T> method = prototype.getObjMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}
@@ -891,7 +941,7 @@ public class NeVertex {
 
 
 	public <T extends NeObject> void setObjList(String name, List<T> value) {
-		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+		ListNeFieldComposer<T> field = prototype.getObjArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.set(entry, value);
 		onUpdate();
@@ -906,7 +956,7 @@ public class NeVertex {
 	 * @return a <b>COPY</b> of the underlying list
 	 */
 	public <T extends NeObject> List<T> getObjList(String name) {
-		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+		ListNeFieldComposer<T> field = prototype.getObjArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		List<T> list = field.get(entry);
 		List<T> copy = new ArrayList<T>(list.size());
@@ -922,7 +972,7 @@ public class NeVertex {
 	 * @param obj
 	 */
 	public <T extends NeObject> void addObjToList(String name, T obj) {
-		ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+		ListNeFieldComposer<T> field = prototype.getObjArrayField(name);
 		NeFieldValue entry = getEntry(field);
 		field.add(entry, obj);
 	}
@@ -936,7 +986,7 @@ public class NeVertex {
 	 */
 	public <T extends NeObject> void removeObjFromList(String name, T obj) {
 		if(obj != null) {
-			ListNeFieldHandler<T> field = prototype.getObjArrayField(name);
+			ListNeFieldComposer<T> field = prototype.getObjArrayField(name);
 			NeFieldValue entry = getEntry(field);
 			field.remove(entry, obj.vertex.getIndex());
 		}
@@ -949,8 +999,8 @@ public class NeVertex {
 	 * @param name
 	 * @param lambda
 	 */
-	public <T extends NeObject> void onObjList(String name, ListNeMethod.Lambda<T> lambda) {
-		ListNeMethod<T> method = prototype.getObjListMethod(name);
+	public <T extends NeObject> void forObjList(String name, ListLambda<T> lambda) {
+		ListNeMethodRunner<T> method = prototype.getObjListMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
 	}

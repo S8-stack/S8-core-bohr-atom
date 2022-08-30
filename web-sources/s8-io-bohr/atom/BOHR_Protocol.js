@@ -84,7 +84,7 @@ export const BOHR_Keywords = {
 
 
 
-    RUN_FUNC: 0x84,
+    RUN_METHOD: 0x84,
 
 };
 
@@ -118,6 +118,61 @@ export const BOHR_Types = {
      * Open new vista
      */
     SERIAL: 0x24,
+
+
+    /*</byte> */
+
+
+
+    /* <boolean> */
+    BOOL8: 0x32,
+    BOOL8_BIT_ARRAY: 0x33,
+    BOOL64: 0x38,
+    /* </boolean> */
+
+
+    /* <unsigned-integer> */
+    UINT8: 0x41,
+    UINT16: 0x42,
+    UINT32: 0x44,
+    UINT64: 0x48,
+    /* </unsigned-integer> */
+
+
+    /* <signed-integer> */
+    INT8: 0x51,
+    INT16: 0x52,
+    INT32: 0x54,
+    INT64: 0x58,
+    /* </signed-integer> */
+
+
+    /* <float> */
+    FLOAT32: 0x62,
+    FLOAT64: 0x64,
+    /* </float> */
+
+    /* <string> */
+    STRING_UTF8: 0x72,
+    /* </string> */
+
+
+
+    /* <object> */
+
+    /**
+     * 
+     */
+    S8OBJECT: 0x82,
+
+    S8REF: 0x84,
+
+    S8TABLE: 0x86,
+    /* </object> */
+};
+
+
+export const BOHR_SerialTypes = {
 
 
 
@@ -175,55 +230,30 @@ export const BOHR_Types = {
     TURBOMACHINES: 0x36,
     TX_FLOW: 0x12,
 
-
-
-    /*</byte> */
-
-
-
-    /* <boolean> */
-    BOOL8: 0x32,
-    BOOL8_BIT_ARRAY: 0x33,
-    BOOL64: 0x38,
-    /* </boolean> */
-
-
-    /* <unsigned-integer> */
-    UINT8: 0x41,
-    UINT16: 0x42,
-    UINT32: 0x44,
-    UINT64: 0x48,
-    /* </unsigned-integer> */
-
-
-    /* <signed-integer> */
-    INT8: 0x51,
-    INT16: 0x52,
-    INT32: 0x54,
-    INT64: 0x58,
-    /* </signed-integer> */
-
-
-    /* <float> */
-    FLOAT32: 0x62,
-    FLOAT64: 0x64,
-    /* </float> */
-
-    /* <string> */
-    STRING_UTF8: 0x72,
-    /* </string> */
+}
 
 
 
-    /* <object> */
-
-    /**
-     * 
-     */
-    S8OBJECT: 0x82,
-
-    S8REF: 0x84,
-
-    S8TABLE: 0x86,
-    /* </object> */
+export const BOHR_Methods = {
+	
+	/**
+	 * 
+	 */
+	WEB_SIGN_UP : 0x15,
+	
+	/**
+	 * 
+	 */
+	WEB_LOG_IN : 0x16,
+	
+	/**
+	 * 
+	 */
+	WEB_RUN_FUNC : 0x17,
+	
+	/**
+	 * 
+	 */
+	WEB_DEBUG_BOOT : 0x26,
+	
 };

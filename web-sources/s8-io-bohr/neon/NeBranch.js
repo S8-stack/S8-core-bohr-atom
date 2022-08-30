@@ -3,10 +3,7 @@
 import { S8 } from '/s8-io-bohr/atom/S8.js';
 import { BOHR_Keywords } from '/s8-io-bohr/atom/BOHR_Protocol.js';
 
-
 import { NeObjectTypeHandler } from './NeObjectTypeHandler.js';
-import { NeBranchInbound } from './NeBranchInbound.js';
-import { NeBranchOutbound } from './NeBranchOutbound.js';
 import { NeVertex } from './NeVertex.js';
 import { NeObject } from './NeObject.js';
 
@@ -31,17 +28,6 @@ export class NeBranch {
 	 * @type {Map<string, NeVertex>}
 	 */
 	vertices = new Map();
-
-
-	/**
-	 * @type {NeBranchInbound}
-	 */
-	//inbound;
-
-	/**
-	 * @type {NeBranchOutbound}
-	 */
-	//outbound;
 
 
 	/**
