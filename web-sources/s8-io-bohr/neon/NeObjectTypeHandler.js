@@ -1,9 +1,12 @@
 
 import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
 
-import { NeFieldHandler } from "./NeFieldHandler.js";
-import { NeBranch } from "./NeBranch.js";
 import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol.js";
+
+
+import { NeFieldParser } from "./NeFieldParser.js";
+import { NeFieldComposer } from "./NeFieldComposer.js";
+import { NeBranch } from "./NeBranch.js";
 import { NeFieldEntry } from "./NeFieldEntry.js";
 import { NeObject } from "./NeObject.js";
 
@@ -51,10 +54,16 @@ export class NeObjectTypeHandler {
 
 
     /**
-     * @type {NeFieldHandler[]}
+     * @type {NeFieldParser[]}
      * Fields by code (map encoded as an array)
      */
-    fieldHandlers = new Array(4);
+    fieldParsers = new Array(4);
+
+
+    /**
+     * @type {Map<string, NeFieldComposer>}
+     */
+    fieldComposers = new Map();
 
 
     /**
@@ -120,10 +129,10 @@ export class NeObjectTypeHandler {
         if(disposeMethod == undefined){ throw this.classname+" is missing an S8_dispose() method."; }
 
         /* link fields */
-        let nFields = this.fieldHandlers.length;
+        let nFields = this.fieldParsers.length;
         let fieldHandler;
         for (let i = 0; i < nFields; i++) {
-            if ((fieldHandler = this.fieldHandlers[i]) != null) { fieldHandler.link(this._class); }
+            if ((fieldHandler = this.fieldParsers[i]) != null) { fieldHandler.link(this._class); }
         }
     }
 
@@ -140,7 +149,7 @@ export class NeObjectTypeHandler {
     set(instance, code, inflow, bindings) {
 
         // retrieve field
-        let field = this.fieldHandlers[code];
+        let field = this.fieldParsers[code];
 
         // set value
         field.setValue(instance, inflow, bindings);
@@ -192,7 +201,7 @@ export class NeObjectTypeHandler {
         let fieldName = inflow.getStringUTF8();
 
         /* build field */
-        let field = NeFieldHandler.consumeFormat(inflow);
+        let field = NeFieldParser.consumeFormat(inflow);
 
         /* retrieve code */
         let fieldCode = inflow.getUInt8();
@@ -203,7 +212,7 @@ export class NeObjectTypeHandler {
         /* link field immediately if possible */
         if (this.isClassLoaded) { field.link(this._class); }
 
-        this.appendField(fieldCode, field);
+        this.appendFieldParser(fieldCode, field);
     }
 
 
@@ -213,27 +222,27 @@ export class NeObjectTypeHandler {
      */
     consume_SET_VALUE(entries, inflow) {
         let fieldCode = inflow.getUInt8();
-        let fieldHanlder = this.fieldHandlers[fieldCode];
-        entries.push(fieldHanlder.retrieveValue(inflow));
+        let fieldParser = this.fieldParsers[fieldCode];
+        entries.push(fieldParser.retrieveValue(inflow));
     }
 
 
-    appendField(code, field) {
+    appendFieldParser(code, field) {
 
-        if (code >= this.fieldHandlers.length) {
-            let n = this.fieldHandlers.length, m = 2 * n;
+        if (code >= this.fieldParsers.length) {
+            let n = this.fieldParsers.length, m = 2 * n;
 
             // extend while code is not within range
             while (code >= m) { m = 2 * m; }
 
             let extendedFields = new Array(2 * n);
 
-            for (let i = 0; i < n; i++) { extendedFields[i] = this.fieldHandlers[i]; }
-            this.fieldHandlers = extendedFields;
+            for (let i = 0; i < n; i++) { extendedFields[i] = this.fieldParsers[i]; }
+            this.fieldParsers = extendedFields;
 
         }
 
-        this.fieldHandlers[code] = field;
+        this.fieldParsers[code] = field;
     }
 
 

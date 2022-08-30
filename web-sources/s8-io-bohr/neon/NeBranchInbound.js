@@ -31,42 +31,8 @@ export class NeBranchInbound {
 	}
 
 
-	/**
-	 * 
-	 * @param {ByteInflow} inflow 
-	 */
-	consume(inflow) {
-		let code = inflow.getUInt8();
-		if(code != BOHR_Keywords.OPEN_JUMP){
-			throw "Error: Can only start with a JUMP!!";
-		}
 
-		// perform jump
-		jump(this, inflow, function(){});
-		
-	}
-
-
-	/**
-	 * 
-	 * @param {ByteInflow} inflow 
-	 * @returns {NeObjectTypeHandler}
-	 */
-	declareType(inflow) {
-		let name = inflow.getStringUTF8();
-		let code = inflow.getUInt7x();
-
-		let objectType = new NeObjectTypeHandler(this.branch, name, code);
-
-		// register by name
-		this.branch.objectTypes.set(name, objectType);
-
-		// register by code
-		this.objectTypes.set(code, objectType);
-
-		return objectType;
-	}
-
+	
 	
 }
 

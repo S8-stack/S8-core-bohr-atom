@@ -1,7 +1,6 @@
 import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
 import { BOHR_Keywords } from "/s8-io-bohr/atom/BOHR_Protocol.js";
 import { NeBranch } from "./NeBranch.js";
-import { NeBranchInbound } from "./NeBranchInbound.js";
 import { NeFieldEntry } from "./NeFieldEntry.js";
 import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
 import { NeVertex } from "./NeVertex.js";
@@ -11,21 +10,21 @@ import { NeVertex } from "./NeVertex.js";
 
 /**
  * 
- * @param {NeBranchInbound} branchInbound 
+ * @param {NeBranch} branch 
  * @param {ByteInflow} inflow 
  * @param {Function} onBuilt 
  */
-export const jump = function (branchInbound, inflow, onBuilt) {
-    let jumpScope = new NeJumpScope(branchInbound);
+export const jump = function (branch, inflow, onBuilt) {
+    let jumpScope = new NeJumpScope(branch);
     jumpScope.consume(inflow, onBuilt);
 }
 
 class NeJumpScope {
 
     /**
-     * @type {NeBranchInbound}
+     * @type {NeBranch}
      */
-    branchInbound;
+    branch;
 
     /**
      * Object types for which this jump is waiting loading completion
@@ -51,10 +50,10 @@ class NeJumpScope {
     isBuilt = false;
 
     /**
-     * @type {NeBranchInbound}
+     * @type {NeBranch}
      */
-    constructor(branchInbound) {
-        this.branchInbound = branchInbound
+    constructor(branch) {
+        this.branch = branch;
     }
 
     /**
@@ -92,7 +91,7 @@ class NeJumpScope {
      * @param {Function} onBuilt
      */
     consume_DECLARE_TYPE(inflow, onBuilt) {
-        let objectType = this.branchInbound.declareType(inflow);
+        let objectType = this.branch.declareType(inflow);
 
         /* append to type loadings */
         let typeLoading = new NeObjectTypeHandlerLoading(this, objectType);
@@ -113,7 +112,7 @@ class NeJumpScope {
         let id = inflow.getStringUTF8();
 
         /** @type {NeObjectTypeHandler} */
-        let objectType = this.branchInbound.objectTypes.get(typeCode);
+        let objectType = this.branch.objectTypes.get(typeCode);
 
         let entries = objectType.consumeEntries(inflow);
 
@@ -136,15 +135,14 @@ class NeJumpScope {
      */
     consume_UPDATE_NODE(inflow) {
         let id = inflow.getStringUTF8();
-        let vertex = this.branchInbound.branch.getVertex(id);
+        let vertex = this.branch.getVertex(id);
         let objectType = vertex.type;
         let entries = objectType.consumeEntries(inflow);
 
         let updateObjectHandler = new UpdateNeObjectHandler(id, entries);
 
         /* retrieve objet */
-        let branch = this.branchInbound.branch;
-        updateObjectHandler.resolve(branch);
+        updateObjectHandler.resolve(this.branch);
 
         this.objectHandlers.push(updateObjectHandler);
     }
@@ -171,7 +169,7 @@ class NeJumpScope {
      */
     build(onBuilt) {
         if (!this.isBuilt && this.isConsumed && this.areAllTypesLoadingsTerminated()) {
-            let branch = this.branchInbound.branch;
+            let branch = this.branch;
 
             /* set field values */
             this.objectHandlers.forEach(handler => handler.setFieldValues(branch));
@@ -252,7 +250,7 @@ class NeObjectTypeHandlerLoading {
                 _this.isLoaded = true;
 
                 /* instantiate what's missing */
-                let branch = _this.jump.branchInbound.branch;
+                let branch = _this.jump.branch;
                 _this.instantiables.forEach(handler => handler.instantiate(branch, typeHandler));
 
                 _this.isTerminated = true;

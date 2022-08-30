@@ -1,19 +1,31 @@
 
+
+import { S8 } from '/s8-io-bohr/atom/S8.js';
+import { BOHR_Keywords } from '/s8-io-bohr/atom/BOHR_Protocol.js';
+
+
 import { NeObjectTypeHandler } from './NeObjectTypeHandler.js';
-import { S8 } from '../atom/S8.js';
 import { NeBranchInbound } from './NeBranchInbound.js';
+import { NeBranchOutbound } from './NeBranchOutbound.js';
 import { NeVertex } from './NeVertex.js';
 import { NeObject } from './NeObject.js';
+
+import { jump } from "./NeJump.js";
 
 
 export class NeBranch {
 
-
-
 	/**
 	 * @type {Map<string, NeObjectTypeHandler>}
 	 */
+	objectTypesByName = new Map();
+
+
+	/**
+	 * @type {Map<number, NeObjectTypeHandler>}
+	 */
 	objectTypes = new Map();
+
 
 	/**
 	 * @type {Map<string, NeVertex>}
@@ -24,7 +36,12 @@ export class NeBranch {
 	/**
 	 * @type {NeBranchInbound}
 	 */
-	inbound;
+	//inbound;
+
+	/**
+	 * @type {NeBranchOutbound}
+	 */
+	//outbound;
 
 
 	/**
@@ -41,9 +58,24 @@ export class NeBranch {
 		/* </screen> */
 
 		// create branch inbound
-		this.inbound = new NeBranchInbound(this);
+		//this.inbound = new NeBranchInbound(this);
 
 		this.isVerbose = false;
+	}
+
+	/**
+	 * 
+	 * @param {ByteInflow} inflow 
+	 */
+	consume(inflow) {
+		let code = inflow.getUInt8();
+		if (code != BOHR_Keywords.OPEN_JUMP) {
+			throw "Error: Can only start with a JUMP!!";
+		}
+
+		// perform jump
+		jump(this, inflow, function () { });
+
 	}
 
 
@@ -63,10 +95,9 @@ export class NeBranch {
 	 */
 	getObject(id) {
 		let vertex = this.vertices.get(id);
-		if(vertex == undefined){ throw `Failed to retrieve vertex for id=${id}`; }
+		if (vertex == undefined) { throw `Failed to retrieve vertex for id=${id}`; }
 		return vertex.object;
 	}
-
 
 	/**
 	 * 
@@ -116,6 +147,28 @@ export class NeBranch {
 		/* redraw screen */
 		this.screenNode.appendChild(object.getEnvelope());
 	}
+
+
+	/**
+	 * 
+	 * @param {ByteInflow} inflow 
+	 * @returns {NeObjectTypeHandler}
+	 */
+	declareType(inflow) {
+		let name = inflow.getStringUTF8();
+		let code = inflow.getUInt7x();
+
+		let objectType = new NeObjectTypeHandler(this.branch, name, code);
+
+		// register by name
+		this.objectTypesByName.set(name, objectType);
+
+		// register by code
+		this.objectTypes.set(code, objectType);
+
+		return objectType;
+	}
+
 
 }
 

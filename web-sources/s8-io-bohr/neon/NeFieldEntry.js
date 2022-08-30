@@ -1,5 +1,5 @@
 
-import { NeFieldHandler } from "./NeFieldHandler.js";
+import { NeFieldParser } from "./NeFieldParser.js";
 import { NeVertex } from "./NeVertex.js";
 
 
@@ -8,9 +8,9 @@ export class NeFieldEntry {
 
 
 	/**
-	 * @type {NeFieldHandler} 
+	 * @type {NeFieldParser} 
 	 */
-	fieldHandler;
+	fieldParser;
 
 	/**
 	 * @type { * }
@@ -19,11 +19,11 @@ export class NeFieldEntry {
 
 	/**
 	 * 
-	 * @param {NeFieldHandler} handler 
+	 * @param {NeFieldParser} handler 
 	 * @param {*} value 
 	 */
     constructor(fieldHandler, value){
-		this.fieldHandler = fieldHandler;
+		this.fieldParser = fieldHandler;
         this.value = value;
     }
 
@@ -31,6 +31,6 @@ export class NeFieldEntry {
 	 * @param {NeVertex} vertex 
 	 */
 	set(vertex){
-		this.fieldHandler.setValue(vertex, this.value);
+		this.fieldParser.setValue(vertex, this.value);
 	}
 }

@@ -8,7 +8,7 @@ import { NeVertex } from "./NeVertex.js";
 
 
 
-export class NeFieldHandler {
+export class NeFieldParser {
 
 
     /**
@@ -40,7 +40,7 @@ export class NeFieldHandler {
     /**
      * 
      * @param {ByteInflow} inflow 
-     * @returns {NeFieldHandler}
+     * @returns {NeFieldParser}
      */
     static consumeFormat(inflow) {
 
@@ -49,7 +49,7 @@ export class NeFieldHandler {
         switch (code) {
 
             /* <structure> */
-            case BOHR_Types.ARRAY: return NeFieldHandler.buildArray(inflow);
+            case BOHR_Types.ARRAY: return NeFieldParser.buildArray(inflow);
             /* </structure> */
 
             /* <bytes> */
@@ -58,34 +58,34 @@ export class NeFieldHandler {
 
 
             /* <booleans> */
-            case BOHR_Types.BOOL8: return new Bool8NeFieldHandler();
+            case BOHR_Types.BOOL8: return new Bool8NeFieldParser();
             /* </booleans> */
 
             /* <unsigned-integers> */
-            case BOHR_Types.UINT8: return new UInt8NeFieldHandler();
-            case BOHR_Types.UINT16: return new UInt16NeFieldHandler();
-            case BOHR_Types.UINT32: return new UInt32NeFieldHandler();
-            case BOHR_Types.UINT64: return new UInt64NeFieldHandler();
+            case BOHR_Types.UINT8: return new UInt8NeFieldParser();
+            case BOHR_Types.UINT16: return new UInt16NeFieldParser();
+            case BOHR_Types.UINT32: return new UInt32NeFieldParser();
+            case BOHR_Types.UINT64: return new UInt64NeFieldParser();
             /* </unsigned-integers> */
 
             /* <signed-integers> */
-            case BOHR_Types.INT8: return new Int8NeFieldHandler();
-            case BOHR_Types.INT16: return new Int16NeFieldHandler();
-            case BOHR_Types.INT32: return new Int32NeFieldHandler();
-            case BOHR_Types.INT64: return new Int64NeFieldHandler();
+            case BOHR_Types.INT8: return new Int8NeFieldParser();
+            case BOHR_Types.INT16: return new Int16NeFieldParser();
+            case BOHR_Types.INT32: return new Int32NeFieldParser();
+            case BOHR_Types.INT64: return new Int64NeFieldParser();
             /* </signed-integers> */
 
             /* <float> */
-            case BOHR_Types.FLOAT32: return new Float32NeFieldHandler();
-            case BOHR_Types.FLOAT64: return new Float64NeFieldHandler();
+            case BOHR_Types.FLOAT32: return new Float32NeFieldParser();
+            case BOHR_Types.FLOAT64: return new Float64NeFieldParser();
             /* </float> */
 
             /* <string> */
-            case BOHR_Types.STRING_UTF8: return new StringUTF8NeFieldHandler();
+            case BOHR_Types.STRING_UTF8: return new StringUTF8NeFieldParser();
             /* </string> */
 
             /* <object> */
-            case BOHR_Types.S8OBJECT: return new S8ObjectNeFieldHandler();
+            case BOHR_Types.S8OBJECT: return new S8ObjectNeFieldParser();
             /* </object> */
 
             default: throw "Unsupported BOHR type code: " + code;
@@ -96,23 +96,23 @@ export class NeFieldHandler {
         let code = inflow.getUInt8();
         switch (code) {
 
-            case BOHR_Types.BOOL8: return new Bool8ArrayNeFieldHandler();
+            case BOHR_Types.BOOL8: return new Bool8ArrayNeFieldParser();
 
-            case BOHR_Types.UINT8: return new UInt8ArrayNeFieldHandler();
-            case BOHR_Types.UINT16: return new UInt16ArrayNeFieldHandler();
+            case BOHR_Types.UINT8: return new UInt8ArrayNeFieldParser();
+            case BOHR_Types.UINT16: return new UInt16ArrayNeFieldParser();
             case BOHR_Types.UINT32: return new UInt32ArrayNeFieldHandler();
-            case BOHR_Types.UINT64: return new UInt64ArrayNeFieldHandler();
+            case BOHR_Types.UINT64: return new UInt64ArrayNeFieldParser();
 
             case BOHR_Types.INT8: return new Int8ArrayNeFieldHandler();
-            case BOHR_Types.INT16: return new Int16ArrayNeFieldHandler();
-            case BOHR_Types.INT32: return new Int32ArrayNeFieldHandler();
-            case BOHR_Types.INT64: return new Int64ArrayNeFieldHandler();
+            case BOHR_Types.INT16: return new Int16ArrayNeFieldParser();
+            case BOHR_Types.INT32: return new Int32ArrayNeFieldParser();
+            case BOHR_Types.INT64: return new Int64ArrayNeFieldParser();
 
-            case BOHR_Types.FLOAT32: return new Float32ArrayNeFieldHandler();
-            case BOHR_Types.FLOAT64: return new Float64ArrayNeFieldHandler();
+            case BOHR_Types.FLOAT32: return new Float32ArrayNeFieldParser();
+            case BOHR_Types.FLOAT64: return new Float64ArrayNeFieldParser();
 
-            case BOHR_Types.STRING_UTF8: return new StringUTF8ArrayNeFieldHandler();
-            case BOHR_Types.S8OBJECT: return new S8ObjectArrayNeFieldHandler();
+            case BOHR_Types.STRING_UTF8: return new StringUTF8ArrayNeFieldParser();
+            case BOHR_Types.S8OBJECT: return new S8ObjectArrayNeFieldParser();
 
             default: throw "Unsupported BOHR ARRAY type code: " + code;
         }
@@ -151,7 +151,7 @@ export class NeFieldHandler {
 
 
 
-class PrimitiveNeFieldHandler extends NeFieldHandler {
+class PrimitiveNeFieldParser extends NeFieldParser {
 
    /**
     * 
@@ -166,7 +166,7 @@ class PrimitiveNeFieldHandler extends NeFieldHandler {
 
 
 
-class Bool8NeFieldHandler extends PrimitiveNeFieldHandler {
+class Bool8NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -179,7 +179,7 @@ class Bool8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 }
 
-class Bool8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class Bool8ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -201,7 +201,7 @@ class Bool8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
 
 
-class UInt8NeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt8NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -214,7 +214,7 @@ class UInt8NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class UInt8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt8ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -235,7 +235,7 @@ class UInt8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class UInt16NeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt16NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -248,7 +248,7 @@ class UInt16NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class UInt16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt16ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -269,7 +269,7 @@ class UInt16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class UInt32NeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt32NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -282,7 +282,7 @@ class UInt32NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class UInt32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt32ArrayNeFieldHandler extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -303,7 +303,7 @@ class UInt32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class UInt64NeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt64NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -316,7 +316,7 @@ class UInt64NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class UInt64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class UInt64ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -337,7 +337,7 @@ class UInt64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Int8NeFieldHandler extends PrimitiveNeFieldHandler {
+class Int8NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -351,7 +351,7 @@ class Int8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 
 
-class Int8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class Int8ArrayNeFieldHandler extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -372,7 +372,7 @@ class Int8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Int16NeFieldHandler extends PrimitiveNeFieldHandler {
+class Int16NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -385,7 +385,7 @@ class Int16NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Int16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class Int16ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -406,7 +406,7 @@ class Int16ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Int32NeFieldHandler extends PrimitiveNeFieldHandler {
+class Int32NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -419,7 +419,7 @@ class Int32NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Int32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class Int32ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -440,7 +440,7 @@ class Int32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Int64NeFieldHandler extends PrimitiveNeFieldHandler {
+class Int64NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -453,7 +453,7 @@ class Int64NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Int64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class Int64ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -476,7 +476,7 @@ class Int64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
 
 
-class Float32NeFieldHandler extends PrimitiveNeFieldHandler {
+class Float32NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -489,7 +489,7 @@ class Float32NeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Float32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class Float32ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -510,7 +510,7 @@ class Float32ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class Float64NeFieldHandler extends PrimitiveNeFieldHandler {
+class Float64NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -525,7 +525,7 @@ class Float64NeFieldHandler extends PrimitiveNeFieldHandler {
 
 
 
-class Float64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class Float64ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -547,7 +547,7 @@ class Float64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
 
 
-class StringUTF8NeFieldHandler extends PrimitiveNeFieldHandler {
+class StringUTF8NeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -562,7 +562,7 @@ class StringUTF8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 
 
-class StringUTF8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
+class StringUTF8ArrayNeFieldParser extends PrimitiveNeFieldParser {
 
     /**
      * 
@@ -583,7 +583,7 @@ class StringUTF8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 }
 
 
-class S8ObjectNeFieldHandler extends NeFieldHandler {
+class S8ObjectNeFieldParser extends NeFieldParser {
 
     /**
     * 
@@ -611,7 +611,7 @@ class S8ObjectNeFieldHandler extends NeFieldHandler {
 
 
 
-class S8ObjectArrayNeFieldHandler extends NeFieldHandler {
+class S8ObjectArrayNeFieldParser extends NeFieldParser {
 
     /**
     * 
