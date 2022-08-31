@@ -1,8 +1,14 @@
 
+
+import { ByteInflow } from "/s8-io-bytes/ByteInflow.js";
+import { ByteOutflow } from "/s8-io-bytes/ByteOutflow.js";
+
+import { S8 } from "/s8-io-bohr/atom/S8.js";
+import { BOHR_Keywords, BOHR_Methods } from "/s8-io-bohr/atom/BOHR_Protocol.js";
+
 import { NeBranch } from "./NeBranch.js";
-import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
 import { NeObject } from "./NeObject.js";
-import { fire } from "./NeFire.js";
+import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
 
 /**
  * 
@@ -47,17 +53,11 @@ export class NeVertex {
     }
 
 
-    /**
-     * 
-     * @param {string} methodName 
-     * @param {string} argValue 
-     */
-    fire(methodName, argValue){
 
-    }
 
-    setVoid(methodName){
-
+    runVoid(methodName){
+        let methodRunner = this.type.getVoidMethodRunner(methodName);
+        this.shoot(methodRunner, argValue);
     }
 
 	/**
@@ -67,7 +67,7 @@ export class NeVertex {
 	 */
 	runBool8(methodName, argValue) {
 		let methodRunner = this.type.getBool8MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -78,7 +78,7 @@ export class NeVertex {
 	 */
 	runBool8Array(methodName, argValue) {
 		let methodRunner = this.type.getBool8ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -89,7 +89,7 @@ export class NeVertex {
 	 */
 	runUInt8(methodName, argValue) {
 		let methodRunner = this.type.getUInt8MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -98,9 +98,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-	setUInt8Array(methodName, argValue) {
+	runUInt8Array(methodName, argValue) {
 		let methodRunner = this.type.getUInt8ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -109,9 +109,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-	setUInt16(methodName, argValue) {
+	runUInt16(methodName, argValue) {
 		let methodRunner = this.type.getUInt16MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -121,9 +121,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-	setUInt16Array(methodName, argValue) {
+	runUInt16Array(methodName, argValue) {
 		let methodRunner = this.type.getUInt16ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -133,9 +133,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-	setUInt32(methodName, argValue) {
+	runUInt32(methodName, argValue) {
 		let methodRunner = this.type.getUInt32MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -144,9 +144,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-	setUInt32Array(methodName, argValue) {
+	runUInt32Array(methodName, argValue) {
 		let methodRunner = this.type.getUInt32ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -156,9 +156,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-	setUInt64(methodName, argValue) {
+	runUInt64(methodName, argValue) {
 		let methodRunner = this.type.getUInt64MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -167,9 +167,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-	setUInt64Array(methodName, argValue) {
+	runUInt64Array(methodName, argValue) {
 		let methodRunner = this.type.getUInt64ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -179,9 +179,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setInt8(methodName, argValue) {
+    runInt8(methodName, argValue) {
 		let methodRunner = this.type.getInt8MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -190,9 +190,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-    setInt8Array(methodName, argValue) {
+    runInt8Array(methodName, argValue) {
 		let methodRunner = this.type.getInt8ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -202,9 +202,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setInt16(methodName, argValue) {
+    runInt16(methodName, argValue) {
 		let methodRunner = this.type.getInt16MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -214,9 +214,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-    setInt16Array(methodName, argValue) {
+    runInt16Array(methodName, argValue) {
 		let methodRunner = this.type.getInt16ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -225,9 +225,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setInt32(methodName, argValue) {
+    runInt32(methodName, argValue) {
 		let methodRunner = this.type.getInt32MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -236,9 +236,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setInt32Array(methodName, argValue) {
+    runInt32Array(methodName, argValue) {
 		let methodRunner = this.type.getInt16ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -247,9 +247,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setInt64(methodName, argValue) {
+    runInt64(methodName, argValue) {
 		let methodRunner = this.type.getInt64ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -259,9 +259,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setInt64Array(methodName, argValue) {
+    runInt64Array(methodName, argValue) {
 		let methodRunner = this.type.getInt64MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -271,9 +271,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setFloat32(methodName, argValue) {
+    runFloat32(methodName, argValue) {
 		let methodRunner = this.type.getFloat32MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -283,9 +283,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-    setFloat32Array(methodName, argValue) {
+    runFloat32Array(methodName, argValue) {
 		let methodRunner = this.type.getFloat32ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -295,9 +295,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setFloat64(methodName, argValue) {
+    runFloat64(methodName, argValue) {
 		let methodRunner = this.type.getFloat64MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -307,9 +307,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-    setFloat64Array(methodName, argValue) {
+    runFloat64Array(methodName, argValue) {
 		let methodRunner = this.type.getFloat64ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 
@@ -318,9 +318,9 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {number} argValue 
 	 */
-    setStringUTF8(methodName, argValue) {
+    runStringUTF8(methodName, argValue) {
 		let methodRunner = this.type.getStringUTF8MethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
 	
@@ -329,9 +329,43 @@ export class NeVertex {
 	 * @param {string} methodName 
      * @param {Array} argValue 
 	 */
-    setStringUTF8Array(methodName, argValue) {
+    runStringUTF8Array(methodName, argValue) {
 		let methodRunner = this.type.getStringUTF8ArrayMethodRunner(methodName);
-        fire(id, methodRunner, argValue);
+        this.shoot(methodRunner, argValue);
 	}
 
+
+    /**
+     * 
+     * @param {*} method 
+     * @param {*} arg 
+     */
+    shoot(method, arg) {
+
+        let requestArrayBuffer = new ArrayBuffer(64);
+        let outflow = new ByteOutflow(requestArrayBuffer);
+        outflow.putUInt8(BOHR_Methods.WEB_RUN_FUNC);
+        
+        // publish method if necessary
+        method.publish_DECLARE_METHOD(outflow);
+    
+        // shoot id
+        outflow.putUInt8(BOHR_Keywords.RUN_METHOD);
+        
+        // object/vertex id
+        outflow.putStringUTF8(this.id);
+    
+        // method code
+        outflow.putUInt8(method.code);
+    
+        // pass args
+        method.produceValue(outflow, arg);
+    
+        outflow.putUInt8(BOHR_Keywords.CLOSE_JUMP);
+    
+        S8.sendRequest_HTTP2_POST(requestArrayBuffer, function(responseArrayBuffer){
+            let inflow = new ByteInflow(responseArrayBuffer);
+            S8.branch.consume(inflow);
+        });
+    };
 }

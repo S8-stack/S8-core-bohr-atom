@@ -119,12 +119,22 @@ class NeJumpScope {
         let createObjectHandler = new CreateNeObjectHandler(id, entries);
 
         /* test if a type loading is in progress */
-        let typeLoading = this.typeLoadings.get(typeCode);
-        if (typeLoading != undefined) {
-            /* will ultimately trigger object instantiation */
-            typeLoading.addInstantiable(createObjectHandler);
+        if(!objectType.isClassLoaded){
+            let typeLoading = this.typeLoadings.get(typeCode);
+            if (typeLoading != undefined) {
+                /* will ultimately trigger object instantiation */
+                typeLoading.addInstantiable(createObjectHandler);
+            }
+            else{
+                throw "A type loading SHOULD have been already launched at this point";
+            }
         }
+        else { // class already loaded
 
+            // instantiate immediately
+            createObjectHandler.instantiate(this.branch, objectType);
+        }
+      
         this.objectHandlers.push(createObjectHandler);
     }
 

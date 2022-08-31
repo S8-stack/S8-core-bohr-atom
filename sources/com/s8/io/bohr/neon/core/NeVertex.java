@@ -11,6 +11,8 @@ import com.s8.io.bohr.neon.core.NeObject.Float64ArrayLambda;
 import com.s8.io.bohr.neon.core.NeObject.Float64Lambda;
 import com.s8.io.bohr.neon.core.NeObject.Int64ArrayLambda;
 import com.s8.io.bohr.neon.core.NeObject.ListLambda;
+import com.s8.io.bohr.neon.core.NeObject.StringUTF8ArrayLambda;
+import com.s8.io.bohr.neon.core.NeObject.StringUTF8Lambda;
 import com.s8.io.bohr.neon.core.NeObject.VoidLambda;
 import com.s8.io.bohr.neon.fields.NeFieldComposer;
 import com.s8.io.bohr.neon.fields.NeFieldValue;
@@ -201,7 +203,7 @@ public class NeVertex {
 			else if(isUpdateUnpublished) {
 
 				// declare type
-				outflow.putUInt8(BOHR_Keywords.CREATE_NODE);
+				outflow.putUInt8(BOHR_Keywords.UPDATE_NODE);
 
 				/* publish index */
 				outflow.putStringUTF8(index);
@@ -860,7 +862,7 @@ public class NeVertex {
 
 
 
-	public void forStringUTF8(String name, StringUTF8NeMethodRunner.Lambda lambda) {
+	public void forStringUTF8(String name, StringUTF8Lambda lambda) {
 		StringUTF8NeMethodRunner method = prototype.getStringUTF8NeMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
@@ -897,7 +899,7 @@ public class NeVertex {
 	 * @param name
 	 * @param lambda
 	 */
-	public void forStringUTF8Array(String name, StringUTF8ArrayNeMethodRunner.Lambda lambda) {
+	public void forStringUTF8Array(String name, StringUTF8ArrayLambda lambda) {
 		StringUTF8ArrayNeMethodRunner method = prototype.getStringUTF8ArrayMethod(name);
 		NeFunc func = getFunc(method);
 		func.lambda = lambda;
