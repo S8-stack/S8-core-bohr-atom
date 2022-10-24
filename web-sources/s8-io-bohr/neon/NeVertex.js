@@ -57,7 +57,7 @@ export class NeVertex {
 
     runVoid(methodName){
         let methodRunner = this.type.getVoidMethodRunner(methodName);
-        this.shoot(methodRunner, argValue);
+        this.shoot(methodRunner);
     }
 
 	/**

@@ -90,6 +90,35 @@ class PrimitiveNeMethodRunner extends NeMethodRunner {
 
 
 
+export class VoidNeMethodRunner extends PrimitiveNeMethodRunner {
+    /**
+        * 
+        * @param {string} name 
+        * @param {number} code 
+        */
+    constructor(name, code) {
+        super(name, code);
+    }
+
+    getType() { return "void"; }
+
+    /** 
+     * @param {ByteOutflow} outflow 
+     */
+    produceFormat(outflow) {
+        outflow.putUInt8(BOHR_Types.VOID);
+    }
+
+    /**
+     * 
+     * @param {ByteOutflow} outflow 
+     * @param {*} value
+     */
+    produceValue() {
+        // do nothing
+    }
+}
+
 export class Bool8NeMethodRunner extends PrimitiveNeMethodRunner {
     /**
         * 
