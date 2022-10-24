@@ -38,12 +38,14 @@ public class NeInbound {
 	 * @throws IOException
 	 */
 	public void consume(ByteInflow inflow) throws IOException {
-
 		int code;
-		while((code = inflow.getUInt8()) != BOHR_Keywords.CLOSE_JUMP) {
-			switch(code) {
+		boolean isClosed = false;
+		while(!isClosed) {
+			switch(code = inflow.getUInt8()) {
 			case BOHR_Keywords.DECLARE_METHOD: declareMethod(inflow); break;
 			case BOHR_Keywords.RUN_METHOD : runFunc(inflow); break;
+			case BOHR_Keywords.CLOSE_JUMP : isClosed = true; break;
+			default: throw new IOException("[NeInbound] Code "+code+" is not supported");
 			}
 		}
 	}
@@ -85,7 +87,9 @@ public class NeInbound {
 		NeMethodRunner runner = object.prototype.methodRunners[code];
 		if(runner == null) { throw new IOException("No runner for code = "+code); }
 		
-		NeFunc func = object.funcs[code];
+		int ordinal = runner.ordinal;
+		
+		NeFunc func = object.funcs[ordinal];
 		if(func == null) { throw new IOException("Missing func @ code = "+code+", for index = "+index); }
 		
 		/* run function */

@@ -29,8 +29,8 @@ public class DoubleNeMethodRunner extends NeMethodRunner {
 	 * @param prototype
 	 * @param name
 	 */
-	public DoubleNeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public DoubleNeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 	
 

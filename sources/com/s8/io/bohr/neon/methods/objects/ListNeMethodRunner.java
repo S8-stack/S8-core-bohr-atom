@@ -35,8 +35,8 @@ public class ListNeMethodRunner<T extends NeObject> extends NeMethodRunner {
 	 * @param prototype
 	 * @param name
 	 */
-	public ListNeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public ListNeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 

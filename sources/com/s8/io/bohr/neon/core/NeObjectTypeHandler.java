@@ -90,10 +90,14 @@ public class NeObjectTypeHandler {
 	private Map<String, NeFieldComposer> fieldComposersByName;
 
 	
+	/**
+	 * Code-based. Code is defined by inbound
+	 */
 	public NeMethodRunner[] methodRunners;
 
 	private Map<String, NeMethodRunner> methodRunnersByName;
 
+	private int nextMethodOrdinal = 0;
 
 	public NeObjectTypeHandler(String name, long code) {
 		super();
@@ -116,6 +120,7 @@ public class NeObjectTypeHandler {
 
 
 	
+	
 	public VoidNeMethodRunner getVoidMethod(String name) {
 		NeMethodRunner method = methodRunnersByName.get(name);
 		if(method != null) {
@@ -125,7 +130,7 @@ public class NeObjectTypeHandler {
 			return (VoidNeMethodRunner) method;
 		}
 		else {
-			VoidNeMethodRunner newMethod = new VoidNeMethodRunner(this, name);
+			VoidNeMethodRunner newMethod = new VoidNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -163,7 +168,7 @@ public class NeObjectTypeHandler {
 			return (Bool8NeMethodRunner) method;
 		}
 		else {
-			Bool8NeMethodRunner newMethod = new Bool8NeMethodRunner(this, name);
+			Bool8NeMethodRunner newMethod = new Bool8NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -193,7 +198,7 @@ public class NeObjectTypeHandler {
 			return (Bool8ArrayNeMethodRunner) method;
 		}
 		else {
-			Bool8ArrayNeMethodRunner newMethod = new Bool8ArrayNeMethodRunner(this, name);
+			Bool8ArrayNeMethodRunner newMethod = new Bool8ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -235,7 +240,7 @@ public class NeObjectTypeHandler {
 			return (UInt8NeMethodRunner) method;
 		}
 		else {
-			UInt8NeMethodRunner newMethod = new UInt8NeMethodRunner(this, name);
+			UInt8NeMethodRunner newMethod = new UInt8NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -272,7 +277,7 @@ public class NeObjectTypeHandler {
 			return (UInt8ArrayNeMethodRunner) method;
 		}
 		else {
-			UInt8ArrayNeMethodRunner newMethod = new UInt8ArrayNeMethodRunner(this, name);
+			UInt8ArrayNeMethodRunner newMethod = new UInt8ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -314,7 +319,7 @@ public class NeObjectTypeHandler {
 			return (UInt16NeMethodRunner) method;
 		}
 		else {
-			UInt16NeMethodRunner newMethod = new UInt16NeMethodRunner(this, name);
+			UInt16NeMethodRunner newMethod = new UInt16NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -357,7 +362,7 @@ public class NeObjectTypeHandler {
 			return (UInt16ArrayNeMethodRunner) method;
 		}
 		else {
-			UInt16ArrayNeMethodRunner newMethod = new UInt16ArrayNeMethodRunner(this, name);
+			UInt16ArrayNeMethodRunner newMethod = new UInt16ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -398,7 +403,7 @@ public class NeObjectTypeHandler {
 			return (UInt32NeMethodRunner) method;
 		}
 		else {
-			UInt32NeMethodRunner newMethod = new UInt32NeMethodRunner(this, name);
+			UInt32NeMethodRunner newMethod = new UInt32NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -441,7 +446,7 @@ public class NeObjectTypeHandler {
 			return (UInt32ArrayNeMethodRunner) method;
 		}
 		else {
-			UInt32ArrayNeMethodRunner newMethod = new UInt32ArrayNeMethodRunner(this, name);
+			UInt32ArrayNeMethodRunner newMethod = new UInt32ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -485,7 +490,7 @@ public class NeObjectTypeHandler {
 			return (UInt64NeMethodRunner) method;
 		}
 		else {
-			UInt64NeMethodRunner newMethod = new UInt64NeMethodRunner(this, name);
+			UInt64NeMethodRunner newMethod = new UInt64NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -528,7 +533,7 @@ public class NeObjectTypeHandler {
 			return (UInt64ArrayNeMethodRunner) method;
 		}
 		else {
-			UInt64ArrayNeMethodRunner newMethod = new UInt64ArrayNeMethodRunner(this, name);
+			UInt64ArrayNeMethodRunner newMethod = new UInt64ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -546,7 +551,8 @@ public class NeObjectTypeHandler {
 	public Int8NeFieldComposer getInt8Field(String name) {
 		NeFieldComposer field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int8NeFieldComposer.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			if(field.getSignature() != Int8NeFieldComposer.SIGNATURE) { 
+				throw new RuntimeException("Cannot change field signature"); }
 			return (Int8NeFieldComposer) field;
 		}
 		else {
@@ -569,7 +575,7 @@ public class NeObjectTypeHandler {
 			return (Int8NeMethodRunner) method;
 		}
 		else {
-			Int8NeMethodRunner newMethod = new Int8NeMethodRunner(this, name);
+			Int8NeMethodRunner newMethod = new Int8NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -610,7 +616,7 @@ public class NeObjectTypeHandler {
 			return (Int8ArrayNeMethodRunner) method;
 		}
 		else {
-			Int8ArrayNeMethodRunner newMethod = new Int8ArrayNeMethodRunner(this, name);
+			Int8ArrayNeMethodRunner newMethod = new Int8ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -650,7 +656,7 @@ public class NeObjectTypeHandler {
 			return (Int16NeMethodRunner) method;
 		}
 		else {
-			Int16NeMethodRunner newMethod = new Int16NeMethodRunner(this, name);
+			Int16NeMethodRunner newMethod = new Int16NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -691,7 +697,7 @@ public class NeObjectTypeHandler {
 			return (Int16ArrayNeMethodRunner) method;
 		}
 		else {
-			Int16ArrayNeMethodRunner newMethod = new Int16ArrayNeMethodRunner(this, name);
+			Int16ArrayNeMethodRunner newMethod = new Int16ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -732,7 +738,7 @@ public class NeObjectTypeHandler {
 			return (Int32NeMethodRunner) method;
 		}
 		else {
-			Int32NeMethodRunner newMethod = new Int32NeMethodRunner(this, name);
+			Int32NeMethodRunner newMethod = new Int32NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -774,7 +780,7 @@ public class NeObjectTypeHandler {
 			return (Int32ArrayNeMethodRunner) method;
 		}
 		else {
-			Int32ArrayNeMethodRunner newMethod = new Int32ArrayNeMethodRunner(this, name);
+			Int32ArrayNeMethodRunner newMethod = new Int32ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -819,7 +825,7 @@ public class NeObjectTypeHandler {
 			return (Int64NeMethodRunner) method;
 		}
 		else {
-			Int64NeMethodRunner newMethod = new Int64NeMethodRunner(this, name);
+			Int64NeMethodRunner newMethod = new Int64NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -862,7 +868,7 @@ public class NeObjectTypeHandler {
 			return (Int64ArrayNeMethodRunner) method;
 		}
 		else {
-			Int64ArrayNeMethodRunner newMethod = new Int64ArrayNeMethodRunner(this, name);
+			Int64ArrayNeMethodRunner newMethod = new Int64ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -899,7 +905,7 @@ public class NeObjectTypeHandler {
 			return (Float32NeMethodRunner) method;
 		}
 		else {
-			Float32NeMethodRunner newMethod = new Float32NeMethodRunner(this, name);
+			Float32NeMethodRunner newMethod = new Float32NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -937,7 +943,7 @@ public class NeObjectTypeHandler {
 			return (Float32ArrayNeMethodRunner) method;
 		}
 		else {
-			Float32ArrayNeMethodRunner newMethod = new Float32ArrayNeMethodRunner(this, name);
+			Float32ArrayNeMethodRunner newMethod = new Float32ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -974,7 +980,7 @@ public class NeObjectTypeHandler {
 			return (Float64NeMethodRunner) method;
 		}
 		else {
-			Float64NeMethodRunner newMethod = new Float64NeMethodRunner(this, name);
+			Float64NeMethodRunner newMethod = new Float64NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1013,7 +1019,7 @@ public class NeObjectTypeHandler {
 			return (Float64ArrayNeMethodRunner) method;
 		}
 		else {
-			Float64ArrayNeMethodRunner newMethod = new Float64ArrayNeMethodRunner(this, name);
+			Float64ArrayNeMethodRunner newMethod = new Float64ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1057,7 +1063,7 @@ public class NeObjectTypeHandler {
 			return (StringUTF8NeMethodRunner) method;
 		}
 		else {
-			StringUTF8NeMethodRunner newMethod = new StringUTF8NeMethodRunner(this, name);
+			StringUTF8NeMethodRunner newMethod = new StringUTF8NeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1073,7 +1079,8 @@ public class NeObjectTypeHandler {
 	public StringUTF8ArrayNeFieldComposer getStringUTF8ArrayField(String name) {
 		NeFieldComposer field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != StringUTF8ArrayNeFieldComposer.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			if(field.getSignature() != StringUTF8ArrayNeFieldComposer.SIGNATURE) { 
+				throw new RuntimeException("Cannot change field signature"); }
 			return (StringUTF8ArrayNeFieldComposer) field;
 		}
 		else {
@@ -1096,7 +1103,7 @@ public class NeObjectTypeHandler {
 			return (StringUTF8ArrayNeMethodRunner) method;
 		}
 		else {
-			StringUTF8ArrayNeMethodRunner newMethod = new StringUTF8ArrayNeMethodRunner(this, name);
+			StringUTF8ArrayNeMethodRunner newMethod = new StringUTF8ArrayNeMethodRunner(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1108,7 +1115,8 @@ public class NeObjectTypeHandler {
 	public <T extends NeObject> ObjNeFieldComposer<T> getObjField(String name) {
 		NeFieldComposer field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != ObjNeFieldComposer.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			if(field.getSignature() != ObjNeFieldComposer.SIGNATURE) { 
+				throw new RuntimeException("Cannot change field signature"); }
 			return (ObjNeFieldComposer<T>) field;
 		}
 		else {
@@ -1131,7 +1139,7 @@ public class NeObjectTypeHandler {
 			return (ObjNeMethodRunner<T>) method;
 		}
 		else {
-			ObjNeMethodRunner<T> newMethod = new ObjNeMethodRunner<>(this, name);
+			ObjNeMethodRunner<T> newMethod = new ObjNeMethodRunner<>(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1164,7 +1172,7 @@ public class NeObjectTypeHandler {
 			return (ListNeMethodRunner<T>) method;
 		}
 		else {
-			ListNeMethodRunner<T> newMethod = new ListNeMethodRunner<T>(this, name);
+			ListNeMethodRunner<T> newMethod = new ListNeMethodRunner<T>(this, name, nextMethodOrdinal++);
 			appendMethod(newMethod);
 			return newMethod;
 		}
@@ -1207,11 +1215,6 @@ public class NeObjectTypeHandler {
 		if(methodRunnersByName.containsKey(name)) {
 			System.err.println("NE_COMPILE_ERROR: METHOD name conflict: "+name);
 		}
-
-		int position = methodRunnersByName.size();
-		
-		// set ordinal
-		methodRunner.ordinal = position;
 		
 		methodRunnersByName.put(name, methodRunner);
 	}

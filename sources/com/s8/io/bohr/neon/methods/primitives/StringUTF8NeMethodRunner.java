@@ -38,8 +38,8 @@ public class StringUTF8NeMethodRunner extends NeMethodRunner {
 	 * @param prototype
 	 * @param name
 	 */
-	public StringUTF8NeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public StringUTF8NeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 

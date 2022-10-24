@@ -22,8 +22,8 @@ public class Int8NeMethodRunner extends NeMethodRunner {
 	public @Override long getSignature() { return SIGNATURE; }
 
 	
-	public Int8NeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public Int8NeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 	@Override

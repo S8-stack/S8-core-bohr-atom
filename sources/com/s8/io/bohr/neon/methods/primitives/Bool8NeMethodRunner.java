@@ -29,8 +29,8 @@ public class Bool8NeMethodRunner extends NeMethodRunner {
 	 * @param prototype
 	 * @param name
 	 */
-	public Bool8NeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public Bool8NeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 

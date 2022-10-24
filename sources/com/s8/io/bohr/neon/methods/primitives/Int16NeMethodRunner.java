@@ -22,8 +22,8 @@ public class Int16NeMethodRunner extends NeMethodRunner {
 	public @Override long getSignature() { return SIGNATURE; }
 
 	
-	public Int16NeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public Int16NeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 	@Override

@@ -22,8 +22,8 @@ public class Float32NeMethodRunner extends NeMethodRunner {
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-	public Float32NeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public Float32NeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 	@Override

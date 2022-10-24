@@ -36,8 +36,8 @@ public class VoidNeMethodRunner extends NeMethodRunner {
 	 * @param prototype
 	 * @param name
 	 */
-	public VoidNeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public VoidNeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 

@@ -22,8 +22,8 @@ public class UInt32NeMethodRunner extends NeMethodRunner {
 	public @Override long getSignature() { return SIGNATURE; }
 
 	
-	public UInt32NeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public UInt32NeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 	@Override

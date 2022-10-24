@@ -28,8 +28,8 @@ public class Int32ArrayNeMethodRunner extends NeMethodRunner {
 	 * @param prototype
 	 * @param name
 	 */
-	public Int32ArrayNeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public Int32ArrayNeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 

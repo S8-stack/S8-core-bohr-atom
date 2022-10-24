@@ -36,8 +36,8 @@ public class ObjNeMethodRunner<T extends NeVertex> extends NeMethodRunner {
 	 * @param prototype
 	 * @param name
 	 */
-	public ObjNeMethodRunner(NeObjectTypeHandler prototype, String name) {
-		super(prototype, name);
+	public ObjNeMethodRunner(NeObjectTypeHandler prototype, String name, int ordinal) {
+		super(prototype, name, ordinal);
 	}
 
 
