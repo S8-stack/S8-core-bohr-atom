@@ -1,20 +1,20 @@
 package com.s8.io.bohr.demos.neodymium.repo3;
 
 
-import com.s8.io.bohr.atom.S8Ref;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.neodymium.object.NdObject;
+import com.s8.io.bohr.neodymium.object.NdRef;
 
 
 @S8ObjectType(name = "MyPick")
-public class MyPick extends LiObject2 {
+public class MyPick extends NdObject {
 
 	@S8Field(name = "item-quantity")
 	public int quantity;
 
 	@S8Field(name = "item-ref")
-	public S8Ref<MyProduct> product;
+	public NdRef<MyProduct> product;
 
 	public MyPick() {
 		super();

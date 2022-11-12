@@ -7,7 +7,7 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.GraphCrawler;
@@ -100,7 +100,7 @@ public abstract class LiField {
 	
 
 
-	public abstract void computeFootprint(LiObject2 object, MemoryFootprint weight) throws LiIOException;
+	public abstract void computeFootprint(LiS8Object object, MemoryFootprint weight) throws LiIOException;
 
 	/**
 	 * Collect all INTERNAL (belonging to this block) object not already in the
@@ -113,14 +113,14 @@ public abstract class LiField {
 	 * @throws IOException
 	 * @throws S8ShellStructureException 
 	 */
-	public abstract void sweep(LiObject2 object, GraphCrawler crawler) throws LiIOException;
+	public abstract void sweep(LiS8Object object, GraphCrawler crawler) throws LiIOException;
 
 	/**
 	 * Collect all external blocks with flag not already set to true
 	 * 
 	 * @param object
 	 */
-	public abstract void collectReferencedBlocks(LiObject2 object, Queue<String> references);
+	public abstract void collectReferencedBlocks(LiS8Object object, Queue<String> references);
 
 	
 
@@ -137,7 +137,7 @@ public abstract class LiField {
 	 * @param bindings
 	 * @throws LthSerialException
 	 */
-	public abstract void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException;
+	public abstract void deepClone(LiS8Object origin, LiS8Object clone, BuildScope scope) throws LiIOException;
 
 	/**
 	 * 
@@ -147,11 +147,11 @@ public abstract class LiField {
 	 * @throws LthSerialException
 	 * @throws IOException
 	 */
-	public abstract boolean hasDiff(LiObject2 base, LiObject2 update) throws IOException;
+	public abstract boolean hasDiff(LiS8Object base, LiS8Object update) throws IOException;
 
 
 
-	public void print(LiObject2 object, Writer writer) throws IOException, S8ShellStructureException {
+	public void print(LiS8Object object, Writer writer) throws IOException, S8ShellStructureException {
 		writer.append("(");
 		writer.append(printType());
 		writer.append(") ");
@@ -167,7 +167,7 @@ public abstract class LiField {
 	public abstract String printType();
 
 
-	protected abstract void printValue(LiObject2 object, Writer writer) throws LiIOException, 
+	protected abstract void printValue(LiS8Object object, Writer writer) throws LiIOException, 
 	IOException, S8ShellStructureException;
 
 	
@@ -178,7 +178,7 @@ public abstract class LiField {
 	 * @return true is the object has been resolved, false otherwise
 	 * @throws LthSerialException 
 	 */
-	public abstract boolean isValueResolved(LiObject2 object) throws LiIOException;
+	public abstract boolean isValueResolved(LiS8Object object) throws LiIOException;
 
 	
 }

@@ -1,6 +1,6 @@
 package com.s8.io.bohr.neodymium.fields.objects;
 
-import com.s8.io.bohr.atom.S8Table;
+import com.s8.io.bohr.beryllium.object.S8Table;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;

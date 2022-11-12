@@ -11,7 +11,7 @@ import com.s8.io.bohr.lithium.fields.LiField;
 import com.s8.io.bohr.lithium.fields.LiFieldBuilder;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties0T;
 import com.s8.io.bohr.lithium.type.GraphCrawler;
@@ -143,12 +143,12 @@ public abstract class PrimitiveLiField extends LiField {
 	
 
 	@Override
-	public void sweep(LiObject2 object, GraphCrawler crawler) {
+	public void sweep(LiS8Object object, GraphCrawler crawler) {
 		// nothing to collect
 	}
 
 	@Override
-	public void collectReferencedBlocks(LiObject2 object, Queue<String> references) {
+	public void collectReferencedBlocks(LiS8Object object, Queue<String> references) {
 		//no blocks to collect
 	}
 	
@@ -158,7 +158,7 @@ public abstract class PrimitiveLiField extends LiField {
 	}
 	
 	@Override
-	public boolean isValueResolved(LiObject2 object) {
+	public boolean isValueResolved(LiS8Object object) {
 		return true; // always resolved
 	}
 	

@@ -3,7 +3,7 @@ package com.s8.io.bohr.lithium.fields.arrays;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.s8.io.bohr.BOHR_Types;
+import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiField;
@@ -12,7 +12,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.fields.primitives.PrimitiveLiField;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -79,7 +79,7 @@ public class ShortArrayLiField extends PrimitiveArrayLiField {
 	
 
 	@Override
-	public void computeFootprint(LiObject2 object, MemoryFootprint weight) throws LiIOException {
+	public void computeFootprint(LiS8Object object, MemoryFootprint weight) throws LiIOException {
 		short[] array = (short[]) handler.get(object);
 		if(array!=null) {
 			weight.reportInstance(); // the array object itself	
@@ -89,13 +89,13 @@ public class ShortArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	public void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiS8Object origin, LiS8Object clone, BuildScope scope) throws LiIOException {
 		short[] array = (short[]) handler.get(origin);
 		handler.set(clone, clone(array));
 	}
 
 	@Override
-	public boolean hasDiff(LiObject2 base, LiObject2 update) throws LiIOException {
+	public boolean hasDiff(LiS8Object base, LiS8Object update) throws LiIOException {
 		short[] baseValue = (short[]) handler.get(base);
 		short[] updateValue = (short[]) handler.get(update);
 		return !areEqual(baseValue, updateValue);
@@ -152,7 +152,7 @@ public class ShortArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	protected void printValue(LiObject2 object, Writer writer) throws IOException {
+	protected void printValue(LiS8Object object, Writer writer) throws IOException {
 		short[] array = (short[]) handler.get(object);
 		if(array!=null) {
 			boolean isInitialized = false;
@@ -210,7 +210,7 @@ public class ShortArrayLiField extends PrimitiveArrayLiField {
 		}
 
 		@Override
-		public void parseValue(LiObject2 object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiS8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.set(object, deserialize(inflow));
 		}
 
@@ -303,7 +303,7 @@ public class ShortArrayLiField extends PrimitiveArrayLiField {
 
 
 		@Override
-		public void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiS8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			serialize(outflow, (short[]) handler.get(object));
 		}
 

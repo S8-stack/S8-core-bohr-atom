@@ -2,8 +2,8 @@ package com.s8.io.bohr.lithium.fields;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.atom.BOHR_Keywords;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.type.PublishScope;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -40,7 +40,7 @@ public abstract class LiFieldComposer {
 	 * 
 	 * }
 	 */
-	public abstract void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException;
+	public abstract void composeValue(LiS8Object object, ByteOutflow outflow, PublishScope scope) throws IOException;
 
 
 
@@ -95,7 +95,7 @@ public abstract class LiFieldComposer {
 	 * @param outflow
 	 * @throws IOException
 	 */
-	public void compose(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
+	public void compose(LiS8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
 		publishFieldHeader(outflow);
 		composeValue(object, outflow, scope);
 	}

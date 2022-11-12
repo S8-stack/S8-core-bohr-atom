@@ -2,7 +2,7 @@ package com.s8.io.bohr.demos.lithium.repo2;
 
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 
 
 
@@ -20,7 +20,7 @@ import com.s8.io.bohr.lithium.object.LiObject2;
 		MyCommercialBoxedWorkseat.class,
 		MyCommercialMeetingRoom.class
 })
-public abstract class MyCommercialFloorElement extends LiObject2 {
+public abstract class MyCommercialFloorElement extends LiS8Object {
 	
 
 	public final static long HAS_CHANGED = 0x02;

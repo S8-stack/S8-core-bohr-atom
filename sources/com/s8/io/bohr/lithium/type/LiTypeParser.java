@@ -1,8 +1,8 @@
 package com.s8.io.bohr.lithium.type;
 
-import static com.s8.io.bohr.BOHR_Keywords.CLOSE_NODE;
-import static com.s8.io.bohr.BOHR_Keywords.DECLARE_FIELD;
-import static com.s8.io.bohr.BOHR_Keywords.SET_VALUE;
+import static com.s8.io.bohr.atom.BOHR_Keywords.CLOSE_NODE;
+import static com.s8.io.bohr.atom.BOHR_Keywords.DECLARE_FIELD;
+import static com.s8.io.bohr.atom.BOHR_Keywords.SET_VALUE;
 
 import java.io.IOException;
 

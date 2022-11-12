@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.neodymium.object.NdObject;
 
 
 /**
@@ -19,7 +19,7 @@ import com.s8.io.bohr.lithium.object.LiObject2;
  * 
  */
 @S8ObjectType(name = "Basket")
-public class MyBasket extends LiObject2 {
+public class MyBasket extends NdObject {
 
 	
 	public @S8Field(name = "picks") List<MyPick> picks;

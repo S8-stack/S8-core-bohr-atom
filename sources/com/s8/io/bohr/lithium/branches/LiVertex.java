@@ -8,7 +8,7 @@ import com.s8.io.bohr.atom.S8Exception;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiFieldComposer;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.type.GraphCrawler;
 import com.s8.io.bohr.lithium.type.LiType;
 import com.s8.io.bohr.lithium.type.LiTypeComposer;
@@ -73,7 +73,7 @@ public class LiVertex {
 	
 	
 	
-	public final LiObject2 object;
+	public final LiS8Object object;
 	
 	/**
 	 * 
@@ -88,7 +88,7 @@ public class LiVertex {
 	 * @param type
 	 * @param object
 	 */
-	public LiVertex(LiBranch branch, LiObject2 object) {
+	public LiVertex(LiBranch branch, LiS8Object object) {
 		super();
 		this.branch = branch;
 		this.object = object;
@@ -104,7 +104,7 @@ public class LiVertex {
 	
 	
 	
-	public LiObject2 getObject() {
+	public LiS8Object getObject() {
 		return object;
 	}
 	

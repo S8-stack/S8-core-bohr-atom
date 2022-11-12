@@ -8,11 +8,11 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Queue;
 
-import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Table;
+import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
+import com.s8.io.bohr.beryllium.object.S8Table;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.EmbeddedTypeNature;

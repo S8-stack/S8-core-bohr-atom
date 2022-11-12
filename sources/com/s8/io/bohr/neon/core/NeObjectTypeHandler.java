@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.s8.io.bohr.BOHR_Keywords;
+import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.neon.fields.NeFieldComposer;
 import com.s8.io.bohr.neon.fields.NeFieldValue;
 import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeFieldComposer;

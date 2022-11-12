@@ -1,17 +1,17 @@
 package com.s8.io.bohr.lithium.branches;
 
-import static com.s8.io.bohr.BOHR_Keywords.CLOSE_JUMP;
-import static com.s8.io.bohr.BOHR_Keywords.CREATE_NODE;
-import static com.s8.io.bohr.BOHR_Keywords.DECLARE_TYPE;
-import static com.s8.io.bohr.BOHR_Keywords.EXPOSE_NODE;
-import static com.s8.io.bohr.BOHR_Keywords.REMOVE_NODE;
-import static com.s8.io.bohr.BOHR_Keywords.UPDATE_NODE;
+import static com.s8.io.bohr.atom.BOHR_Keywords.CLOSE_JUMP;
+import static com.s8.io.bohr.atom.BOHR_Keywords.CREATE_NODE;
+import static com.s8.io.bohr.atom.BOHR_Keywords.DECLARE_TYPE;
+import static com.s8.io.bohr.atom.BOHR_Keywords.EXPOSE_NODE;
+import static com.s8.io.bohr.atom.BOHR_Keywords.REMOVE_NODE;
+import static com.s8.io.bohr.atom.BOHR_Keywords.UPDATE_NODE;
 
 import java.io.IOException;
 
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.LiType;
 import com.s8.io.bohr.lithium.type.LiTypeParser;
@@ -36,11 +36,11 @@ public class LiBranchParser {
 	 */
 	private static class TypeListener implements LiTypeParser.DeltaListener {
 
-		public LiObject2 object;
+		public LiS8Object object;
 
 		public BuildScope scope;
 
-		public TypeListener(LiObject2 object, BuildScope scope) {
+		public TypeListener(LiS8Object object, BuildScope scope) {
 			super();
 			this.object = object;
 			this.scope = scope;
@@ -144,7 +144,7 @@ public class LiBranchParser {
 		LiType type = typeParser.getType();
 
 		/* create object */
-		LiObject2 object = type.createNewInstance();
+		LiS8Object object = type.createNewInstance();
 
 		/* clear spin */
 		object.S8_spin = false;

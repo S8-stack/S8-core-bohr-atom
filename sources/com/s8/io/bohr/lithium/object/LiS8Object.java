@@ -45,7 +45,7 @@ import com.s8.io.bohr.lithium.branches.LiVertex;
  * 
  */
 @S8ObjectType(name = "alpha/S8Object", sub= {})
-public class LiObject2 {
+public class LiS8Object {
 	
 	
 	/* <field-properties> */
@@ -86,7 +86,7 @@ public class LiObject2 {
 	 * Perform initial binding of object with vertex, vertex itself being bound to its shell
 	 * @param graph
 	 */
-	public LiObject2() {
+	public LiS8Object() {
 	}
 	
 	

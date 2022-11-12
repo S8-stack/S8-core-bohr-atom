@@ -6,10 +6,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Queue;
 
-import com.s8.io.bohr.BOHR_Properties;
-import com.s8.io.bohr.BOHR_Types;
+import com.s8.io.bohr.atom.BOHR_Properties;
+import com.s8.io.bohr.atom.BOHR_Types;
+import com.s8.io.bohr.atom.BohrSerializable;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Serializable;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
@@ -21,7 +21,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties0T;
 import com.s8.io.bohr.lithium.type.BuildScope;
@@ -49,7 +49,7 @@ public class S8SerializableLiField extends LiField {
 		@Override
 		public LiFieldProperties captureField(Field field) throws LiBuildException {
 			Class<?> fieldType = field.getType();
-			if(S8Serializable.class.isAssignableFrom(fieldType)){
+			if(BohrSerializable.class.isAssignableFrom(fieldType)){
 				S8Field annotation = field.getAnnotation(S8Field.class);
 				if(annotation != null) {
 					LiFieldProperties properties = new LiFieldProperties0T(this, LiFieldProperties.FIELD, fieldType);
@@ -67,7 +67,7 @@ public class S8SerializableLiField extends LiField {
 			Class<?> baseType = method.getParameterTypes()[0];
 			S8Setter annotation = method.getAnnotation(S8Setter.class);
 			if(annotation != null) {
-				if(S8Serializable.class.isAssignableFrom(baseType)) {
+				if(BohrSerializable.class.isAssignableFrom(baseType)) {
 					LiFieldProperties properties = new LiFieldProperties0T(this, LiFieldProperties.METHODS, baseType);
 					properties.setSetterAnnotation(annotation);
 					return properties;
@@ -86,7 +86,7 @@ public class S8SerializableLiField extends LiField {
 
 			S8Getter annotation = method.getAnnotation(S8Getter.class);
 			if(annotation != null) {
-				if(S8Serializable.class.isAssignableFrom(baseType)){
+				if(BohrSerializable.class.isAssignableFrom(baseType)){
 					LiFieldProperties properties = new LiFieldProperties0T(this, LiFieldProperties.METHODS, baseType);
 					properties.setGetterAnnotation(annotation);
 					return properties;
@@ -129,7 +129,7 @@ public class S8SerializableLiField extends LiField {
 
 
 
-	private S8Serializable.S8SerialPrototype<?> deserializer;
+	private BohrSerializable.S8SerialPrototype<?> deserializer;
 
 
 	
@@ -143,7 +143,7 @@ public class S8SerializableLiField extends LiField {
 		super(ordinal, properties, handler);
 		Class<?> baseType = properties.getBaseType();
 		try {
-			deserializer = S8Serializable.getDeserializer(baseType);
+			deserializer = BohrSerializable.getDeserializer(baseType);
 		} 
 		catch (S8Exception e) {
 			e.printStackTrace();
@@ -156,13 +156,13 @@ public class S8SerializableLiField extends LiField {
 
 
 	@Override
-	public void sweep(LiObject2 object, GraphCrawler crawler) {
+	public void sweep(LiS8Object object, GraphCrawler crawler) {
 		// no sweep
 	}
 
 
 	@Override
-	public void collectReferencedBlocks(LiObject2 object, Queue<String> references) {
+	public void collectReferencedBlocks(LiS8Object object, Queue<String> references) {
 		// No ext references
 	}
 
@@ -171,8 +171,8 @@ public class S8SerializableLiField extends LiField {
 
 
 	@Override
-	public void computeFootprint(LiObject2 object, MemoryFootprint weight) throws LiIOException {
-		S8Serializable value = (S8Serializable) handler.get(object);
+	public void computeFootprint(LiS8Object object, MemoryFootprint weight) throws LiIOException {
+		BohrSerializable value = (BohrSerializable) handler.get(object);
 		if(value!=null) {
 			weight.reportInstance();
 			weight.reportBytes(value.computeFootprint());	
@@ -180,8 +180,8 @@ public class S8SerializableLiField extends LiField {
 	}
 
 	@Override
-	public void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException {
-		S8Serializable value = (S8Serializable) handler.get(origin);
+	public void deepClone(LiS8Object origin, LiS8Object clone, BuildScope scope) throws LiIOException {
+		BohrSerializable value = (BohrSerializable) handler.get(origin);
 		handler.set(clone, value.deepClone());
 	}
 
@@ -193,15 +193,15 @@ public class S8SerializableLiField extends LiField {
 
 	
 	@Override
-	public boolean hasDiff(LiObject2 base, LiObject2 update) throws LiIOException {
-		S8Serializable baseValue = (S8Serializable) handler.get(base);
-		S8Serializable updateValue = (S8Serializable) handler.get(update);
+	public boolean hasDiff(LiS8Object base, LiS8Object update) throws LiIOException {
+		BohrSerializable baseValue = (BohrSerializable) handler.get(base);
+		BohrSerializable updateValue = (BohrSerializable) handler.get(update);
 		return (baseValue!=null && !baseValue.equals(updateValue)) || (baseValue==null && updateValue!=null);
 	}
 
 
 	@Override
-	protected void printValue(LiObject2 object, Writer writer) throws IOException {
+	protected void printValue(LiS8Object object, Writer writer) throws IOException {
 		Object value = handler.get(object);
 		if(value!=null) {
 			writer.write("(");
@@ -222,7 +222,7 @@ public class S8SerializableLiField extends LiField {
 
 
 	@Override
-	public boolean isValueResolved(LiObject2 object) {
+	public boolean isValueResolved(LiS8Object object) {
 		return true; // always resolved at resolve step in shell
 	}
 	
@@ -252,7 +252,7 @@ public class S8SerializableLiField extends LiField {
 	private class Parser extends LiFieldParser {
 
 		@Override
-		public void parseValue(LiObject2 object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiS8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.set(object, deserialize(inflow));
 		}
 
@@ -262,7 +262,7 @@ public class S8SerializableLiField extends LiField {
 			return S8SerializableLiField.this;
 		}
 		
-		private S8Serializable deserialize(ByteInflow inflow) throws IOException {
+		private BohrSerializable deserialize(ByteInflow inflow) throws IOException {
 			int props = inflow.getUInt8();
 			if(isNonNull(props)) {
 				return deserializer.deserialize(inflow);
@@ -308,8 +308,8 @@ public class S8SerializableLiField extends LiField {
 		}
 
 		@Override
-		public void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
-			S8Serializable value = (S8Serializable) handler.get(object);
+		public void composeValue(LiS8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
+			BohrSerializable value = (BohrSerializable) handler.get(object);
 			if(value != null) {
 				outflow.putUInt8(BOHR_Properties.IS_NON_NULL_PROPERTIES_BIT);
 				value.serialize(outflow);

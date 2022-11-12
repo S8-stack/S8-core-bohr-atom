@@ -2,7 +2,7 @@ package com.s8.io.bohr.neodymium.fields;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.BOHR_Properties;
+import com.s8.io.bohr.atom.BOHR_Properties;
 import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;

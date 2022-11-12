@@ -2,7 +2,7 @@ package com.s8.io.bohr.demos.neodymium.repo3;
 
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.neodymium.object.NdObject;
 
 /**
  * 
@@ -12,7 +12,7 @@ import com.s8.io.bohr.lithium.object.LiObject2;
  * 
  */
 @S8ObjectType(name = "item-stock")
-public class MyItemStock extends LiObject2 {
+public class MyItemStock extends NdObject {
 
 
 	public @S8Field(name = "n-items") int nItemsCurrentlyInWarehouse;

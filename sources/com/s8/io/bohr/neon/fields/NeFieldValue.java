@@ -2,7 +2,7 @@ package com.s8.io.bohr.neon.fields;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.BOHR_Keywords;
+import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.neon.core.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;

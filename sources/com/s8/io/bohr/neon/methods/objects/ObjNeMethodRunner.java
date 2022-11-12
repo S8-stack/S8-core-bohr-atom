@@ -2,7 +2,7 @@ package com.s8.io.bohr.neon.methods.objects;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.BOHR_Types;
+import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
 import com.s8.io.bohr.neon.core.NeVertex;

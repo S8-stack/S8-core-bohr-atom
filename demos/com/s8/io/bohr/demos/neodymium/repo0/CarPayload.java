@@ -1,8 +1,8 @@
 package com.s8.io.bohr.demos.neodymium.repo0;
 
-import com.s8.io.bohr.atom.S8Ref;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
+import com.s8.io.bohr.lithium.object.LiS8Ref;
 import com.s8.io.bytes.alpha.Bool64;
 
 
@@ -27,7 +27,7 @@ public class CarPayload extends MyProjectPayload {
 	public @S8Field(name="magnet-type") String magnetType;
 
 
-	public @S8Field(name="ref") S8Ref<MyTechModel> ref;
+	public @S8Field(name="ref") LiS8Ref<MyTechModel> ref;
 
 
 	public CarPayload() {

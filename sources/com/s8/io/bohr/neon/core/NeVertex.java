@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.BOHR_Keywords;
+import com.s8.io.bohr.atom.BOHR_Keywords;
 import com.s8.io.bohr.neon.core.NeObject.Float32ArrayLambda;
 import com.s8.io.bohr.neon.core.NeObject.Float32Lambda;
 import com.s8.io.bohr.neon.core.NeObject.Float64ArrayLambda;

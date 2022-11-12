@@ -3,7 +3,7 @@ package com.s8.io.bohr.lithium.fields.primitives;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.s8.io.bohr.BOHR_Types;
+import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
@@ -12,7 +12,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -74,12 +74,12 @@ public class BooleanLiField extends PrimitiveLiField {
 
 
 	@Override
-	public void computeFootprint(LiObject2 object, MemoryFootprint weight) {
+	public void computeFootprint(LiS8Object object, MemoryFootprint weight) {
 		weight.reportBytes(1);
 	}
 
 	@Override
-	public void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiS8Object origin, LiS8Object clone, BuildScope scope) throws LiIOException {
 		boolean value = handler.getBoolean(origin);
 		handler.setBoolean(clone, value);
 	}
@@ -91,7 +91,7 @@ public class BooleanLiField extends PrimitiveLiField {
 
 
 	@Override
-	public boolean hasDiff(LiObject2 base, LiObject2 update) throws IOException {
+	public boolean hasDiff(LiS8Object base, LiS8Object update) throws IOException {
 		boolean baseValue = handler.getBoolean(base);
 		boolean updateValue = handler.getBoolean(update);
 		return baseValue != updateValue;
@@ -99,7 +99,7 @@ public class BooleanLiField extends PrimitiveLiField {
 
 	
 	@Override
-	protected void printValue(LiObject2 object, Writer writer) throws IOException {
+	protected void printValue(LiS8Object object, Writer writer) throws IOException {
 		writer.write(Boolean.toString(handler.getBoolean(object)));
 	}
 
@@ -131,7 +131,7 @@ public class BooleanLiField extends PrimitiveLiField {
 		}
 
 		@Override
-		public void parseValue(LiObject2 object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiS8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.setBoolean(object, inflow.getBool8());
 		}
 	}
@@ -167,7 +167,7 @@ public class BooleanLiField extends PrimitiveLiField {
 		}
 
 		@Override
-		public void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiS8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			outflow.putBool8(handler.getBoolean(object));
 		}
 	}

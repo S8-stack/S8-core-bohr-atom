@@ -1,4 +1,4 @@
-package com.s8.io.bohr;
+package com.s8.io.bohr.atom;
 
 
 public class BOHR_Methods {

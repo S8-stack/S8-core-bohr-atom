@@ -1,9 +1,9 @@
 package com.s8.io.bohr.demos.neodymium.repo0;
 
-import com.s8.io.bohr.atom.S8Ref;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
+import com.s8.io.bohr.lithium.object.LiS8Ref;
 
 /**
  * 
@@ -11,7 +11,7 @@ import com.s8.io.bohr.lithium.object.LiObject2;
  *
  */
 @S8ObjectType(name = "Dclib/MyProject")
-public class MyProject extends LiObject2 {
+public class MyProject extends LiS8Object {
 
 
 	public MyProject() {
@@ -42,7 +42,7 @@ public class MyProject extends LiObject2 {
 
 
 
-	public @S8Field(name = "last") S8Ref<MyProject> last;
+	public @S8Field(name = "last") LiS8Ref<MyProject> last;
 
 
 

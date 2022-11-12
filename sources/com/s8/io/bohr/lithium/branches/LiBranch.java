@@ -1,7 +1,7 @@
 package com.s8.io.bohr.lithium.branches;
 
-import static com.s8.io.bohr.BOHR_Keywords.FRAME_FOOTER;
-import static com.s8.io.bohr.BOHR_Keywords.FRAME_HEADER;
+import static com.s8.io.bohr.atom.BOHR_Keywords.FRAME_FOOTER;
+import static com.s8.io.bohr.atom.BOHR_Keywords.FRAME_HEADER;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -12,7 +12,7 @@ import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
-import com.s8.io.bohr.lithium.object.LiObject2;
+import com.s8.io.bohr.lithium.object.LiS8Object;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
@@ -117,7 +117,7 @@ public class LiBranch {
 	}
 	
 
-	public LiObject2 retrieveObject(String index) {
+	public LiS8Object retrieveObject(String index) {
 		return vertices.get(index).object;
 	}
 
@@ -134,7 +134,7 @@ public class LiBranch {
 	public BuildScope createBuildScope() {
 		return new BuildScope() {
 			@Override
-			public LiObject2 retrieveObject(String index) {
+			public LiS8Object retrieveObject(String index) {
 				return vertices.get(index).object;
 			}
 		};
@@ -176,7 +176,7 @@ public class LiBranch {
 	 * @param object
 	 * @return
 	 */
-	public LiVertex append(LiObject2 object) {
+	public LiVertex append(LiS8Object object) {
 		
 		
 		/* retrieve object index */

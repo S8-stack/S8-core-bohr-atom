@@ -8,8 +8,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Queue;
 
-import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Ref;
+import com.s8.io.bohr.atom.BOHR_Types;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
@@ -23,6 +22,7 @@ import com.s8.io.bohr.neodymium.fields.NdFieldParser;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
 import com.s8.io.bohr.neodymium.object.NdObject;
+import com.s8.io.bohr.neodymium.object.NdRef;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties1T;
 import com.s8.io.bohr.neodymium.type.BuildScope;
@@ -48,7 +48,7 @@ public class S8RefNdField extends NdField {
 		@Override
 		public NdFieldProperties captureField(Field field) throws NdBuildException {
 			Class<?> fieldType = field.getType();
-			if(S8Ref.class.equals(fieldType)) {
+			if(NdRef.class.equals(fieldType)) {
 				S8Field annotation = field.getAnnotation(S8Field.class);
 				if(annotation != null) {
 
@@ -71,7 +71,7 @@ public class S8RefNdField extends NdField {
 			Class<?> baseType = method.getParameterTypes()[0];
 			S8Setter annotation = method.getAnnotation(S8Setter.class);
 			if(annotation != null) {
-				if(S8Ref.class.isAssignableFrom(baseType)) {
+				if(NdRef.class.isAssignableFrom(baseType)) {
 
 					Type parameterType = method.getGenericParameterTypes()[0];
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
@@ -96,7 +96,7 @@ public class S8RefNdField extends NdField {
 			S8Getter annotation = method.getAnnotation(S8Getter.class);
 			if(annotation != null) {
 
-				if(S8Ref.class.isAssignableFrom(baseType)) {
+				if(NdRef.class.isAssignableFrom(baseType)) {
 
 					Type parameterType = method.getGenericReturnType();
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
@@ -188,28 +188,28 @@ public class S8RefNdField extends NdField {
 
 	@Override
 	public void computeFootprint(NdObject object, MemoryFootprint weight) throws NdIOException {
-		S8Ref<?> value = (S8Ref<?>) handler.get(object);
+		NdRef<?> value = (NdRef<?>) handler.get(object);
 		weight.reportBytes(1 + value.address.length() + 8);
 	}
 
 
 	@Override
 	public void deepClone(NdObject origin, NdObject clone, BuildScope scope) throws NdIOException {
-		handler.set(clone, (S8Ref<?>) handler.get(origin));
+		handler.set(clone, (NdRef<?>) handler.get(origin));
 	}
 
 
 	@Override
 	public boolean hasDiff(NdObject base, NdObject update) throws NdIOException {
-		S8Ref<?> baseValue = (S8Ref<?>) handler.get(base);
-		S8Ref<?> updateValue = (S8Ref<?>) handler.get(update);
-		return !S8Ref.areEqual(baseValue, updateValue);
+		NdRef<?> baseValue = (NdRef<?>) handler.get(base);
+		NdRef<?> updateValue = (NdRef<?>) handler.get(update);
+		return !NdRef.areEqual(baseValue, updateValue);
 	}
 
 
 	@Override
 	public NdFieldDelta produceDiff(NdObject object) throws NdIOException {
-		return new S8RefNdFieldDelta(this, (S8Ref<?>) handler.get(object));
+		return new S8RefNdFieldDelta(this, (NdRef<?>) handler.get(object));
 	}
 
 
@@ -224,7 +224,7 @@ public class S8RefNdField extends NdField {
 
 	@Override
 	protected void printValue(NdObject object, Writer writer) throws IOException {
-		S8Ref<?> value = (S8Ref<?>) handler.get(object);
+		NdRef<?> value = (NdRef<?>) handler.get(object);
 		if(value!=null) {
 			writer.write(value.toString());
 		}
@@ -276,7 +276,7 @@ public class S8RefNdField extends NdField {
 		}
 
 
-		private S8Ref<?> deserialize(ByteInflow inflow) throws IOException {
+		private NdRef<?> deserialize(ByteInflow inflow) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length > 0) {
 				//byte[] bytes = inflow.getByteArray(length);
@@ -323,14 +323,14 @@ public class S8RefNdField extends NdField {
 
 		@Override
 		public void composeValue(NdObject object, ByteOutflow outflow) throws IOException {
-			S8Ref<?> value = (S8Ref<?>) handler.get(object);
-			S8Ref.write(value, outflow);
+			NdRef<?> value = (NdRef<?>) handler.get(object);
+			NdRef.write(value, outflow);
 		}
 
 		@Override
 		public void publishValue(NdFieldDelta delta, ByteOutflow outflow) throws IOException {
-			S8Ref<?> value = ((S8RefNdFieldDelta) delta).ref;
-			S8Ref.write(value, outflow);
+			NdRef<?> value = ((S8RefNdFieldDelta) delta).ref;
+			NdRef.write(value, outflow);
 		}
 	}
 	/* </IO-outflow-section> */

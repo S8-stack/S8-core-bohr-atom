@@ -18,7 +18,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
-public interface S8Serializable {
+public interface BohrSerializable {
 
 
 	/**
@@ -54,7 +54,7 @@ public interface S8Serializable {
 	 * restrain encoding to simply the one give by this specific factory.
 	 * </p>
 	 */
-	public static abstract class S8SerialPrototype<S extends S8Serializable> {
+	public static abstract class S8SerialPrototype<S extends BohrSerializable> {
 
 		
 		public final String signature;
@@ -106,7 +106,7 @@ public interface S8Serializable {
 	 * 
 	 * @return
 	 */
-	public S8Serializable deepClone();
+	public BohrSerializable deepClone();
 
 	
 	
@@ -121,7 +121,7 @@ public interface S8Serializable {
 				if(!Modifier.isFinal(modifiers)) {
 					throw new S8Exception("S8Serial prototype MUST be a final field");
 				}
-				if(!field.getType().equals(S8Serializable.S8SerialPrototype.class)) {
+				if(!field.getType().equals(BohrSerializable.S8SerialPrototype.class)) {
 					throw new S8Exception("S8Serial prototype MUST be of type S8Serializable.SerialPrototype");
 				}
 				try {
