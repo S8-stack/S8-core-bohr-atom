@@ -12,7 +12,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.fields.primitives.PrimitiveLiField;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -83,7 +83,7 @@ public class FloatArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	public void computeFootprint(LiObject object, MemoryFootprint weight) throws LiIOException {
+	public void computeFootprint(LiObject2 object, MemoryFootprint weight) throws LiIOException {
 		float[] array = (float[]) handler.get(object);
 		if(array!=null) {
 			weight.reportInstance(); // the array object itself	
@@ -93,13 +93,13 @@ public class FloatArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException {
 		float[] array = (float[]) handler.get(origin);
 		handler.set(clone, clone(array));
 	}
 
 	@Override
-	public boolean hasDiff(LiObject base, LiObject update) throws LiIOException {
+	public boolean hasDiff(LiObject2 base, LiObject2 update) throws LiIOException {
 		float[] baseValue = (float[]) handler.get(base);
 		float[] updateValue = (float[]) handler.get(update);
 		return !areEqual(baseValue, updateValue);
@@ -156,7 +156,7 @@ public class FloatArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	protected void printValue(LiObject object, Writer writer) throws IOException {
+	protected void printValue(LiObject2 object, Writer writer) throws IOException {
 		float[] array = (float[]) handler.get(object);
 		if(array!=null) {
 			boolean isInitialized = false;
@@ -210,7 +210,7 @@ public class FloatArrayLiField extends PrimitiveArrayLiField {
 		}
 
 		@Override
-		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject2 object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.set(object, deserialize(inflow));
 		}
 
@@ -270,7 +270,7 @@ public class FloatArrayLiField extends PrimitiveArrayLiField {
 
 
 		@Override
-		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			serialize(outflow, (float[]) handler.get(object));
 		}
 		

@@ -17,7 +17,7 @@ import com.s8.io.bohr.lithium.codebase.LiCodebaseBuilder;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.fields.LiField;
 import com.s8.io.bohr.lithium.fields.LiFieldBuilder;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 
 /**
@@ -147,7 +147,7 @@ public class LiTypeBuilder {
 
 		// is static ?
 		if(!baseType.isMemberClass() || (baseType.isMemberClass() && Modifier.isStatic(mods))) {
-			if(LiObject.class.isAssignableFrom(baseType)) {
+			if(LiObject2.class.isAssignableFrom(baseType)) {
 				isBuildable = true;
 			}
 			else if(isVerbose) {

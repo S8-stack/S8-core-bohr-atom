@@ -18,7 +18,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties1T;
 import com.s8.io.bohr.lithium.type.BuildScope;
@@ -46,7 +46,7 @@ public class S8ObjectLiField extends LiField {
 		@Override
 		public LiFieldProperties captureField(Field field) throws LiBuildException {
 			Class<?> fieldType = field.getType();
-			if(LiObject.class.isAssignableFrom(fieldType)){
+			if(LiObject2.class.isAssignableFrom(fieldType)){
 				S8Field annotation = field.getAnnotation(S8Field.class);
 				if(annotation != null) {
 					LiFieldProperties properties = new LiFieldProperties1T(this, LiFieldProperties.FIELD, fieldType);
@@ -64,7 +64,7 @@ public class S8ObjectLiField extends LiField {
 			Class<?> baseType = method.getParameterTypes()[0];
 			S8Setter annotation = method.getAnnotation(S8Setter.class);
 			if(annotation != null) {
-				if(LiObject.class.isAssignableFrom(baseType)) {
+				if(LiObject2.class.isAssignableFrom(baseType)) {
 					LiFieldProperties properties = new LiFieldProperties1T(this, LiFieldProperties.METHODS, baseType);
 					properties.setSetterAnnotation(annotation);
 					return properties;
@@ -83,7 +83,7 @@ public class S8ObjectLiField extends LiField {
 
 			S8Getter annotation = method.getAnnotation(S8Getter.class);
 			if(annotation != null) {
-				if(LiObject.class.isAssignableFrom(baseType)){
+				if(LiObject2.class.isAssignableFrom(baseType)){
 					LiFieldProperties properties = new LiFieldProperties1T(this, LiFieldProperties.METHODS, baseType);
 					properties.setGetterAnnotation(annotation);
 					return properties;
@@ -134,9 +134,9 @@ public class S8ObjectLiField extends LiField {
 
 
 	@Override
-	public void sweep(LiObject object, GraphCrawler crawler) {
+	public void sweep(LiObject2 object, GraphCrawler crawler) {
 		try {
-			LiObject fieldObject = (LiObject) handler.get(object);
+			LiObject2 fieldObject = (LiObject2) handler.get(object);
 			if(fieldObject!=null) {
 				crawler.accept(fieldObject);
 			}
@@ -148,7 +148,7 @@ public class S8ObjectLiField extends LiField {
 
 
 	@Override
-	public void collectReferencedBlocks(LiObject object, Queue<String> references) {
+	public void collectReferencedBlocks(LiObject2 object, Queue<String> references) {
 		// No ext references
 	}
 
@@ -159,14 +159,14 @@ public class S8ObjectLiField extends LiField {
 	}
 
 	@Override
-	public void computeFootprint(LiObject object, MemoryFootprint weight) throws LiIOException {
+	public void computeFootprint(LiObject2 object, MemoryFootprint weight) throws LiIOException {
 		weight.reportReference();
 	}
 
 
 	@Override
-	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
-		LiObject value = (LiObject) handler.get(origin);
+	public void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException {
+		LiObject2 value = (LiObject2) handler.get(origin);
 		if(value!=null) {
 			String index = value.S8_index;
 
@@ -176,7 +176,7 @@ public class S8ObjectLiField extends LiField {
 				public void resolve(BuildScope scope) throws LiIOException {
 
 					// no need to upcast to S8Object
-					LiObject indexedObject = scope.retrieveObject(index);
+					LiObject2 indexedObject = scope.retrieveObject(index);
 					if(indexedObject==null) {
 						throw new LiIOException("Fialed to retriev vertex");
 					}
@@ -191,9 +191,9 @@ public class S8ObjectLiField extends LiField {
 
 
 	@Override
-	public boolean hasDiff(LiObject base, LiObject update) throws LiIOException {
-		LiObject baseValue = (LiObject) handler.get(base);
-		LiObject updateValue = (LiObject) handler.get(update);
+	public boolean hasDiff(LiObject2 base, LiObject2 update) throws LiIOException {
+		LiObject2 baseValue = (LiObject2) handler.get(base);
+		LiObject2 updateValue = (LiObject2) handler.get(update);
 		if(baseValue == null && updateValue == null) {
 			return false;
 		}
@@ -207,8 +207,8 @@ public class S8ObjectLiField extends LiField {
 
 
 	@Override
-	protected void printValue(LiObject object, Writer writer) throws IOException {
-		LiObject value = (LiObject) handler.get(object);
+	protected void printValue(LiObject2 object, Writer writer) throws IOException {
+		LiObject2 value = (LiObject2) handler.get(object);
 		if(value!=null) {
 			writer.write("(");
 			writer.write(value.getClass().getCanonicalName());
@@ -225,7 +225,7 @@ public class S8ObjectLiField extends LiField {
 		return "S8Object";
 	}
 
-	public void setValue(Object object, LiObject struct) throws LiIOException {
+	public void setValue(Object object, LiObject2 struct) throws LiIOException {
 		handler.set(object, struct);
 	}
 
@@ -234,7 +234,7 @@ public class S8ObjectLiField extends LiField {
 
 
 	@Override
-	public boolean isValueResolved(LiObject object) {
+	public boolean isValueResolved(LiObject2 object) {
 		return true; // always resolved at resolve step in shell
 	}
 
@@ -285,7 +285,7 @@ public class S8ObjectLiField extends LiField {
 	private class Inflow extends LiFieldParser {
 
 		@Override
-		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject2 object, ByteInflow inflow, BuildScope scope) throws IOException {
 			String id = inflow.getStringUTF8();
 			if(id != null) {
 				/* append bindings */
@@ -337,8 +337,8 @@ public class S8ObjectLiField extends LiField {
 		}
 
 		@Override
-		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
-			LiObject value = (LiObject) handler.get(object);
+		public void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
+			LiObject2 value = (LiObject2) handler.get(object);
 			if(value != null) {
 				String index = scope.append(value);
 				outflow.putStringUTF8(index);

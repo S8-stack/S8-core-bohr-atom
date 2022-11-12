@@ -12,7 +12,7 @@ import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
@@ -117,7 +117,7 @@ public class LiBranch {
 	}
 	
 
-	public LiObject retrieveObject(String index) {
+	public LiObject2 retrieveObject(String index) {
 		return vertices.get(index).object;
 	}
 
@@ -134,7 +134,7 @@ public class LiBranch {
 	public BuildScope createBuildScope() {
 		return new BuildScope() {
 			@Override
-			public LiObject retrieveObject(String index) {
+			public LiObject2 retrieveObject(String index) {
 				return vertices.get(index).object;
 			}
 		};
@@ -176,7 +176,7 @@ public class LiBranch {
 	 * @param object
 	 * @return
 	 */
-	public LiVertex append(LiObject object) {
+	public LiVertex append(LiObject2 object) {
 		
 		
 		/* retrieve object index */

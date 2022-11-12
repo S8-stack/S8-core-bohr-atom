@@ -13,7 +13,6 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
-import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -87,7 +86,7 @@ public class S8ObjectListNdField<T extends NdObject> extends CollectionNdField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(LiObject.class.isAssignableFrom(typeArgument)) {
+					if(NdObject.class.isAssignableFrom(typeArgument)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.METHODS, typeArgument);
 						properties.setSetterAnnotation(annotation);
 						return properties;
@@ -112,7 +111,7 @@ public class S8ObjectListNdField<T extends NdObject> extends CollectionNdField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(LiObject.class.isAssignableFrom(typeArgument)) {
+					if(NdObject.class.isAssignableFrom(typeArgument)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.METHODS, typeArgument);
 						properties.setGetterAnnotation(annotation);
 						return properties;
@@ -245,7 +244,7 @@ public class S8ObjectListNdField<T extends NdObject> extends CollectionNdField {
 	public void computeFootprint(NdObject object, MemoryFootprint weight) throws NdIOException {
 
 		@SuppressWarnings("unchecked")
-		List<LiObject> list = (List<LiObject>) handler.get(object);
+		List<NdObject> list = (List<NdObject>) handler.get(object);
 		if(list!=null) {
 			weight.reportInstances(1+list.size()); // the array object itself	
 			weight.reportReferences(list.size());

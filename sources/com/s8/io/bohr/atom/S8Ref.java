@@ -2,7 +2,7 @@ package com.s8.io.bohr.atom;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -15,7 +15,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  *
  * @param <T>
  */
-public final class S8Ref<T extends LiObject> {
+public final class S8Ref<T extends LiObject2> {
 	
 	
 	/**
@@ -76,7 +76,7 @@ public final class S8Ref<T extends LiObject> {
 	
 
 	
-	public static <T extends LiObject> S8Ref<T> read(ByteInflow inflow) throws IOException {
+	public static <T extends LiObject2> S8Ref<T> read(ByteInflow inflow) throws IOException {
 		String address = inflow.getStringUTF8();
 		if(address != null) {
 			String branch = inflow.getStringUTF8();

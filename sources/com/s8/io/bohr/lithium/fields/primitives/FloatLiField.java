@@ -11,7 +11,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -73,20 +73,20 @@ public class FloatLiField extends PrimitiveLiField {
 
 
 	@Override
-	public void computeFootprint(LiObject object, MemoryFootprint weight) {
+	public void computeFootprint(LiObject2 object, MemoryFootprint weight) {
 		weight.reportBytes(4);
 	}
 
 
 	@Override
-	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException {
 		float value = handler.getFloat(origin);
 		handler.setFloat(clone, value);
 	}
 
 
 	@Override
-	public boolean hasDiff(LiObject base, LiObject update) throws IOException {
+	public boolean hasDiff(LiObject2 base, LiObject2 update) throws IOException {
 		float baseValue = handler.getFloat(base);
 		float updateValue = handler.getFloat(update);
 		return baseValue != updateValue;
@@ -99,7 +99,7 @@ public class FloatLiField extends PrimitiveLiField {
 
 
 	@Override
-	protected void printValue(LiObject object, Writer writer) throws IOException {
+	protected void printValue(LiObject2 object, Writer writer) throws IOException {
 		writer.write(Float.toString(handler.getFloat(object)));
 	}
 
@@ -130,7 +130,7 @@ public class FloatLiField extends PrimitiveLiField {
 		}
 
 		@Override
-		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject2 object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.setFloat(object, deserialize(inflow));
 		}
 
@@ -174,7 +174,7 @@ public class FloatLiField extends PrimitiveLiField {
 
 
 		@Override
-		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			serialize(outflow, handler.getFloat(object));
 		}
 

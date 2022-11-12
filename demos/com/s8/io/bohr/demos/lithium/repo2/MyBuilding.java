@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 
 
 /**
@@ -17,7 +17,7 @@ import com.s8.io.bohr.lithium.object.LiObject;
  * 
  */
 @S8ObjectType(name = "my-building")
-public class MyBuilding extends LiObject {
+public class MyBuilding extends LiObject2 {
 
 	public final static long HAS_CHANGED = 0x02;
 	

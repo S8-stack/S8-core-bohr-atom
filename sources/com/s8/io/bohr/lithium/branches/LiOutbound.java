@@ -12,7 +12,7 @@ import com.s8.io.bohr.atom.S8Exception;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bohr.lithium.type.LiType;
 import com.s8.io.bohr.lithium.type.LiTypeComposer;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -136,7 +136,7 @@ public class LiOutbound implements PublishScope {
 
 
 	@Override
-	public String append(LiObject object) {
+	public String append(LiObject2 object) {
 		
 		/* append to branch (-> under the hood, add to unpublished) */
 		

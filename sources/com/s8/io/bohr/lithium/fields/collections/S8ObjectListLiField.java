@@ -21,7 +21,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties1T;
 import com.s8.io.bohr.lithium.type.BuildScope;
@@ -42,7 +42,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
-public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
+public class S8ObjectListLiField<T extends LiObject2> extends CollectionLiField {
 
 
 
@@ -60,7 +60,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(LiObject.class.isAssignableFrom(typeArgument)) {
+					if(LiObject2.class.isAssignableFrom(typeArgument)) {
 						LiFieldProperties properties = new LiFieldProperties1T(this, LiFieldProperties.FIELD, typeArgument);
 						properties.setFieldAnnotation(annotation);
 						return properties;
@@ -87,7 +87,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(LiObject.class.isAssignableFrom(typeArgument)) {
+					if(LiObject2.class.isAssignableFrom(typeArgument)) {
 						LiFieldProperties properties = new LiFieldProperties1T(this, LiFieldProperties.METHODS, typeArgument);
 						properties.setSetterAnnotation(annotation);
 						return properties;
@@ -112,7 +112,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(LiObject.class.isAssignableFrom(typeArgument)) {
+					if(LiObject2.class.isAssignableFrom(typeArgument)) {
 						LiFieldProperties properties = new LiFieldProperties1T(this, LiFieldProperties.METHODS, typeArgument);
 						properties.setGetterAnnotation(annotation);
 						return properties;
@@ -197,7 +197,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 				if(graphId != null) {
 					// might be null
-					LiObject struct = scope.retrieveObject(graphId);
+					LiObject2 struct = scope.retrieveObject(graphId);
 					if(struct!=null) {
 						list.add((T) struct);		
 					}
@@ -217,14 +217,14 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 
 	@Override
-	public void sweep(LiObject object, GraphCrawler crawler) {
+	public void sweep(LiObject2 object, GraphCrawler crawler) {
 		try {
 			@SuppressWarnings("unchecked")
 			List<T> list = (List<T>) handler.get(object);
 
 
 			if(list!=null) {
-				for(LiObject item : list) {
+				for(LiObject2 item : list) {
 					if(item!=null) { crawler.accept(item); }
 				}
 			}
@@ -242,10 +242,10 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 
 	@Override
-	public void computeFootprint(LiObject object, MemoryFootprint weight) throws LiIOException {
+	public void computeFootprint(LiObject2 object, MemoryFootprint weight) throws LiIOException {
 
 		@SuppressWarnings("unchecked")
-		List<LiObject> list = (List<LiObject>) handler.get(object);
+		List<LiObject2> list = (List<LiObject2>) handler.get(object);
 		if(list!=null) {
 			weight.reportInstances(1+list.size()); // the array object itself	
 			weight.reportReferences(list.size());
@@ -254,7 +254,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 
 	@Override
-	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiObject2 origin, LiObject2 clone, BuildScope scope) throws LiIOException {
 
 		@SuppressWarnings("unchecked")
 		List<T> value = (List<T>) handler.get(origin);
@@ -277,7 +277,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 
 	@Override
-	public void collectReferencedBlocks(LiObject object, Queue<String> references) {
+	public void collectReferencedBlocks(LiObject2 object, Queue<String> references) {
 		/* not referencing external values */
 	}
 
@@ -289,7 +289,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean hasDiff(LiObject base, LiObject update) throws LiIOException {
+	public boolean hasDiff(LiObject2 base, LiObject2 update) throws LiIOException {
 		List<T> baseValue = (List<T>) handler.get(base);
 		List<T> updateValue = (List<T>) handler.get(update);
 		return !areEqual(baseValue, updateValue);
@@ -312,7 +312,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 		if(n0!=n1) { return false; }
 
 		// check values
-		LiObject obj0, obj1;
+		LiObject2 obj0, obj1;
 		for(int i=0; i<n0; i++) {
 			obj0 = array0.get(i);
 			obj1 = array1.get(i);
@@ -327,7 +327,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 
 	@Override
-	protected void printValue(LiObject object, Writer writer) throws IOException {
+	protected void printValue(LiObject2 object, Writer writer) throws IOException {
 		@SuppressWarnings("unchecked")
 		List<T> list = (List<T>) handler.get(object);
 		if(list!=null) {
@@ -342,7 +342,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 					isInitialized = true;
 				}
 
-				LiObject value = list.get(i);
+				LiObject2 value = list.get(i);
 				if(value!=null) {
 					writer.write("(");
 					writer.write(value.getClass().getCanonicalName());
@@ -382,7 +382,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 	}
 
 	@Override
-	public boolean isValueResolved(LiObject object) {
+	public boolean isValueResolved(LiObject2 object) {
 		return false; // never resolved
 	}
 
@@ -404,7 +404,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 
 
 		@Override
-		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject2 object, ByteInflow inflow, BuildScope scope) throws IOException {
 			String[] indices = deserializeIndices(inflow);
 			if(indices != null) {
 				List<T> list = new ArrayList<T>(indices.length);
@@ -488,7 +488,7 @@ public class S8ObjectListLiField<T extends LiObject> extends CollectionLiField {
 		}
 
 		@Override
-		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiObject2 object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			@SuppressWarnings("unchecked")
 			List<T> list = (List<T>) handler.get(object);
 

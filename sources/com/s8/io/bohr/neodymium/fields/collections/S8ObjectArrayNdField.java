@@ -8,7 +8,6 @@ import java.util.Queue;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
-import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -49,7 +48,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				S8Field annotation = field.getAnnotation(S8Field.class);
 				if(annotation != null) {
 					Class<?> componentType = baseType.getComponentType();
-					if(LiObject.class.isAssignableFrom(componentType)) {
+					if(NdObject.class.isAssignableFrom(componentType)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, componentType);
 						properties.setFieldAnnotation(annotation);
 						return properties;
@@ -72,7 +71,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				S8Setter annotation = method.getAnnotation(S8Setter.class);
 				if(annotation != null) {
 					Class<?> componentType = baseType.getComponentType();
-					if(LiObject.class.isAssignableFrom(componentType)) {
+					if(NdObject.class.isAssignableFrom(componentType)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, componentType);
 						properties.setSetterAnnotation(annotation);
 						return properties;
@@ -95,7 +94,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				S8Getter annotation = method.getAnnotation(S8Getter.class);
 				if(annotation != null) {
 					Class<?> componentType = baseType.getComponentType();
-					if(LiObject.class.isAssignableFrom(componentType)) {
+					if(NdObject.class.isAssignableFrom(componentType)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, componentType);
 						properties.setGetterAnnotation(annotation);
 						return properties;

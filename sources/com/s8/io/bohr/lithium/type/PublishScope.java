@@ -1,6 +1,6 @@
 package com.s8.io.bohr.lithium.type;
 
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 
 
 /**
@@ -20,6 +20,6 @@ public interface PublishScope {
 	 * @param object
 	 * @return
 	 */
-	public String append(LiObject object);
+	public String append(LiObject2 object);
 
 }

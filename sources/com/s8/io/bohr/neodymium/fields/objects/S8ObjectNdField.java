@@ -10,7 +10,6 @@ import com.s8.io.bohr.BOHR_Types;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
-import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -47,7 +46,7 @@ public class S8ObjectNdField extends NdField {
 		@Override
 		public NdFieldProperties captureField(Field field) throws NdBuildException {
 			Class<?> fieldType = field.getType();
-			if(LiObject.class.isAssignableFrom(fieldType)){
+			if(NdObject.class.isAssignableFrom(fieldType)){
 				S8Field annotation = field.getAnnotation(S8Field.class);
 				if(annotation != null) {
 					NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, fieldType);
@@ -65,7 +64,7 @@ public class S8ObjectNdField extends NdField {
 			Class<?> baseType = method.getParameterTypes()[0];
 			S8Setter annotation = method.getAnnotation(S8Setter.class);
 			if(annotation != null) {
-				if(LiObject.class.isAssignableFrom(baseType)) {
+				if(NdObject.class.isAssignableFrom(baseType)) {
 					NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.METHODS, baseType);
 					properties.setSetterAnnotation(annotation);
 					return properties;
@@ -84,7 +83,7 @@ public class S8ObjectNdField extends NdField {
 
 			S8Getter annotation = method.getAnnotation(S8Getter.class);
 			if(annotation != null) {
-				if(LiObject.class.isAssignableFrom(baseType)){
+				if(NdObject.class.isAssignableFrom(baseType)){
 					NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.METHODS, baseType);
 					properties.setGetterAnnotation(annotation);
 					return properties;

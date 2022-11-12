@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
-import com.s8.io.bohr.lithium.object.LiObject;
+import com.s8.io.bohr.lithium.object.LiObject2;
 
 
 /**
@@ -37,7 +37,7 @@ public abstract class BuildScope {
 	 * @param index
 	 * @return
 	 */
-	public abstract LiObject retrieveObject(String index);
+	public abstract LiObject2 retrieveObject(String index);
 	
 	/**
 	 * <p><b>ALWAYS RESOLVE AFTER DESERIALIZATION</b></p>
