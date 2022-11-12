@@ -57,10 +57,10 @@ public interface S8Serializable {
 	public static abstract class S8SerialPrototype<S extends S8Serializable> {
 
 		
-		public final int[] signature;
+		public final String signature;
 		
 		
-		public S8SerialPrototype(int[] signature) {
+		public S8SerialPrototype(String signature) {
 			super();
 			this.signature = signature;
 		}

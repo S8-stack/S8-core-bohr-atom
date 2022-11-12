@@ -40,7 +40,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * 
  */
 public class S8SerializableNdField extends NdField {
-	
+
 
 
 	public final static NdFieldPrototype PROTOTYPE = new NdFieldPrototype() {
@@ -132,7 +132,7 @@ public class S8SerializableNdField extends NdField {
 	private S8Serializable.S8SerialPrototype<?> deserializer;
 
 
-	
+
 	/**
 	 * 
 	 * @param properties
@@ -191,7 +191,7 @@ public class S8SerializableNdField extends NdField {
 		System.out.println(indent+name+": (ByteSerializableFieldHandler)");
 	}
 
-	
+
 	@Override
 	public boolean hasDiff(S8Object base, S8Object update) throws NdIOException {
 		S8Serializable baseValue = (S8Serializable) handler.get(base);
@@ -231,8 +231,8 @@ public class S8SerializableNdField extends NdField {
 	public boolean isValueResolved(S8Object object) {
 		return true; // always resolved at resolve step in shell
 	}
-	
-	
+
+
 
 
 	/* <IO-inflow-section> */
@@ -243,18 +243,16 @@ public class S8SerializableNdField extends NdField {
 		if(code != BOHR_Types.SERIAL) {
 			throw new IOException("only array accepted");
 		}
-		
-		int[] signature = deserializer.signature;
-		for(int i=0; i<signature.length; i++) {
-			if(signature[i] != inflow.getUInt8()) {
-				throw new NdIOException("Unsupported SERIAL: "+printType());
-			}
+
+		String signature = deserializer.signature;
+		if(signature != deserializer.signature) {
+			throw new NdIOException("Unsupported SERIAL: "+printType());
 		}
-		
+
 		// in fine, create parser
 		return new Parser();
 	}
-	
+
 
 	private class Parser extends NdFieldParser {
 
@@ -273,7 +271,7 @@ public class S8SerializableNdField extends NdField {
 		public NdFieldDelta deserializeDelta(ByteInflow inflow) throws IOException {
 			return new S8SerializableNdFieldDelta(S8SerializableNdField.this, deserialize(inflow));
 		}
-		
+
 		private S8Serializable deserialize(ByteInflow inflow) throws IOException {
 			int props = inflow.getUInt8();
 			if(isNonNull(props)) {
@@ -285,13 +283,13 @@ public class S8SerializableNdField extends NdField {
 		}
 
 	}
-	
+
 	/* </IO-inflow-section> */
 
-	
+
 
 	/* <IO-outflow-section> */
-		
+
 	@Override
 	public NdFieldComposer createComposer(int code) throws NdIOException {
 		switch(flow) {
@@ -314,9 +312,8 @@ public class S8SerializableNdField extends NdField {
 
 		@Override
 		public void publishFlowEncoding(ByteOutflow outflow) throws IOException {
-			int[] signature = deserializer.signature;
 			outflow.putUInt8(BOHR_Types.SERIAL);
-			for(int i = 0; i < signature.length; i++) { outflow.putUInt8(signature[i]); }
+			outflow.putStringUTF8(deserializer.signature);
 		}
 
 		@Override
@@ -330,7 +327,7 @@ public class S8SerializableNdField extends NdField {
 				outflow.putUInt8(0x00);
 			}
 		}
-		
+
 		@Override
 		public void publishValue(NdFieldDelta delta, ByteOutflow outflow) throws IOException {
 			S8Serializable value = ((S8SerializableNdFieldDelta) delta).value;
@@ -344,6 +341,6 @@ public class S8SerializableNdField extends NdField {
 		}
 	}
 	/* </IO-outflow-section> */
-	
+
 
 }
