@@ -37,66 +37,7 @@ public class BOHR_Types {
 	/**
 	 * Open new vista
 	 */
-	public final static int SERIAL = 0x24;
-	
-
-	
-	/* <SERIAL> */
-	public final static int SOUND = 0x20;
-	
-	public final static int IMAGE = 0x22;
-	
-	/**
-	 * <h1>Engineering (SERIAL - level 1)</h1>
-	 * Engineering
-	 */
-	public final static int NG = 0x64;
-
-	/* <SERIAL> */
-
-	
-	/**
-	 * <h1>Math (SERIAL > NG - level 2)</h1>
-	 * Math for engineering
-	 */
-	public final static int LINEAR_MATH = 0x24;
-	
-	/**
-	 * <h1>Vector (SERIAL > NG > LINEAR_MATH - level 3)</h1>
-	 * Math for engineering
-	 */
-	public final static int VECTOR2 = 0x22;
-	public final static int MATRIX2 = 0x23;
-	public final static int AFFINE2 = 0x24;
-	
-	public final static int VECTOR3 = 0x32;
-	public final static int MATRIX3 = 0x33;
-	public final static int AFFINE3 = 0x34;
-	
-	public final static int VECTOR4 = 0x42;
-	public final static int MATRIX4 = 0x43;
-	public final static int AFFINE4 = 0x44;
-	
-	public final static int VECTORN = 0x52;
-	public final static int MATRIXN = 0x53;
-	public final static int AFFINEN = 0x54;
-	
-	/**
-	 * <h1>Math (SERIAL > NG - level 2)</h1>
-	 * Math for engineering
-	 */
-	public final static int THERMODYNAMICS = 0x32;
-	
-	
-	public final static int TH_FLUID = 0x22;
-	public final static int TH_STATE = 0x24;
-	
-	
-	public final static int TURBOMACHINES = 0x36;
-	public final static int TX_FLOW = 0x12;
-
-	
-	
+	public final static int SERIAL = 0x24;	
 	/*</byte> */
 	
 	
