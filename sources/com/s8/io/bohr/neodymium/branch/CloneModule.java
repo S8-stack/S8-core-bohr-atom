@@ -1,10 +1,10 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
-import com.s8.io.bohr.neodymium.objects.NdVertex;
+import com.s8.io.bohr.neodymium.object.NdObject;
+import com.s8.io.bohr.neodymium.object.NdVertex;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 
 
@@ -41,7 +41,7 @@ public class CloneModule {
 		NdBranch branchClone = new NdBranch(
 				branch.codebase, 
 				branch.address, 
-				branch.getIdentifier(), 
+				branch.id, 
 				branch.version);
 		
 	
@@ -53,7 +53,7 @@ public class CloneModule {
 		/* vertices */
 		branch.vertices.forEach((index, vertex) -> {
 			try {
-				S8Object objectClone = vertex.type.deepClone(vertex.object, scope);
+				NdObject objectClone = vertex.type.deepClone(vertex.object, scope);
 				objectClone.S8_index = index;
 				NdVertex vertexClone = new NdVertex(branchClone, vertex.type);
 				vertexClone.object = objectClone;
@@ -72,7 +72,7 @@ public class CloneModule {
 		// copy exposure
 		int range = branch.getExposureRange();
 		NdVertex[] exposureClone = new NdVertex[range];
-		S8Object exposed;
+		NdObject exposed;
 		for(int slot = 0; slot < range; slot++) {
 			if((exposed = branch.access(slot)) != null) {
 				exposureClone[slot] = branchClone.vertices.get(exposed.S8_index);

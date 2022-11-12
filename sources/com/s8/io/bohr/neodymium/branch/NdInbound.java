@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 import static com.s8.io.bohr.BOHR_Keywords.CLOSE_SEQUENCE;
 import static com.s8.io.bohr.BOHR_Keywords.OPEN_JUMP;

@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 
 import java.io.IOException;
@@ -12,12 +12,11 @@ import java.util.Map;
 import java.util.Queue;
 
 import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.neodymium.codebase.NdCodebase;
-import com.s8.io.bohr.neodymium.objects.NdVertex;
+import com.s8.io.bohr.neodymium.object.NdObject;
+import com.s8.io.bohr.neodymium.object.NdVertex;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bohr.neodymium.type.GraphCrawler;
 import com.s8.io.bohr.neodymium.type.NdType;
@@ -51,8 +50,27 @@ import com.s8.io.bytes.base64.Base64Generator;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class NdBranch extends S8Branch {
+public class NdBranch {
+	
+	
 
+	/**
+	 * 
+	 */
+	public final static int EXPOSURE_RANGE = 8;
+
+
+
+	/**
+	 * like hyuanday.cn.com/main-ref/orc/project0273
+	 */
+	public final String address;
+	
+	
+	/**
+	 * branch id (like 'master', 'main', 'dev', 'bug-fix-ticket08909808')
+	 */
+	public final String id;
 
 	/**
 	 * codebase
@@ -117,7 +135,9 @@ public class NdBranch extends S8Branch {
 	 * @throws IOException 
 	 */
 	public NdBranch(NdCodebase codebase, String address, String id, long version) {
-		super(address, id);
+		super();
+		this.address = address;
+		this.id = id;
 		this.codebase = codebase;
 		this.version = version;
 
@@ -157,13 +177,13 @@ public class NdBranch extends S8Branch {
 	 * @throws  
 	 * @throws IOException 
 	 */
-	public void update(long version, S8Object[] objects) throws IOException {
+	public void update(long version, NdObject[] objects) throws IOException {
 		
 		if(objects == null) {
 			throw new IOException("Must defined objects");
 		}
 		
-		if(objects.length > S8Branch.EXPOSURE_RANGE) {
+		if(objects.length > EXPOSURE_RANGE) {
 			throw new IOException("Cannot exceed exposure range");
 		}
 		
@@ -178,17 +198,19 @@ public class NdBranch extends S8Branch {
 		
 	
 		Queue<NdVertex> queue = new LinkedList<NdVertex>();
-		List<S8Object> rollback = new ArrayList<S8Object>();
+		List<NdObject> rollback = new ArrayList<NdObject>();
 		
 
 		GraphCrawler crawler = new GraphCrawler() {
 			
 			@Override
-			public void accept(S8Object object) {
+			public void accept(NdObject object) {
 				if(!object.S8_spin) {
 					
 					/* retrieve type */
 					NdType type = codebase.getType(object);
+					
+					String index = object.S8_index;
 
 					/* create vertex */
 					NdVertex vertex = new NdVertex(NdBranch.this, type);
@@ -197,7 +219,7 @@ public class NdBranch extends S8Branch {
 					vertex.object = object;
 					object.S8_vertex = vertex;
 
-					String index = object.S8_index;
+					
 
 					// else, object already known from update branch base
 					if(index == null) {
@@ -227,7 +249,7 @@ public class NdBranch extends S8Branch {
 		exposure = new NdVertex[range];
 		for(int port = 0; port < range; port ++) {
 
-			S8Object object = objects[port];
+			NdObject object = objects[port];
 
 			if(object!=null) {
 
@@ -255,7 +277,7 @@ public class NdBranch extends S8Branch {
 	}
 
 
-	public S8Object retrieveObject(String index) {
+	public NdObject retrieveObject(String index) {
 		return vertices.get(index).object;
 	}
 
@@ -278,16 +300,10 @@ public class NdBranch extends S8Branch {
 	}
 
 
-	@Override
-	public long getBaseVersion() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 
 	@SuppressWarnings("unchecked")
-	@Override
-	public <T extends S8Object> T access(int port) throws S8Exception {
+	public <T extends NdObject> T access(int port) throws S8Exception {
 		NdVertex vertex = exposure[port];
 		return  vertex != null ? (T) vertex.object : null;
 	}
@@ -374,7 +390,7 @@ public class NdBranch extends S8Branch {
 	public BuildScope createBuildScope() {
 		return new BuildScope() {
 			@Override
-			public S8Object retrieveObject(String index) {
+			public NdObject retrieveObject(String index) {
 				return vertices.get(index).object;
 			}
 		};

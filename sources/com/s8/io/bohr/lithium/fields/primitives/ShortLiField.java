@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiField;
@@ -12,6 +11,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -80,26 +80,26 @@ public class ShortLiField extends PrimitiveLiField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(LiObject object, Writer writer) throws IOException {
 		writer.write(Short.toString(handler.getShort(object)));
 	}
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) {
+	public void computeFootprint(LiObject object, MemoryFootprint weight) {
 		weight.reportBytes(2);
 	}
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
 		short value = handler.getShort(origin);
 		handler.setShort(clone, value);
 	}
 
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws IOException {
+	public boolean hasDiff(LiObject base, LiObject update) throws IOException {
 		short baseValue = handler.getShort(base);
 		short updateValue = handler.getShort(update);
 		return baseValue != updateValue;
@@ -134,7 +134,7 @@ public class ShortLiField extends PrimitiveLiField {
 		}
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.setShort(object, deserialize(inflow));
 		}
 
@@ -199,7 +199,7 @@ public class ShortLiField extends PrimitiveLiField {
 
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			serialize(outflow, handler.getShort(object));
 		}
 		

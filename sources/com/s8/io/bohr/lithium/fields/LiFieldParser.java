@@ -3,7 +3,7 @@ package com.s8.io.bohr.lithium.fields;
 import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Properties;
-import com.s8.io.bohr.atom.S8Object;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
 
@@ -29,7 +29,7 @@ public abstract class LiFieldParser {
 	 * @param bindings
 	 * @throws BkException
 	 */
-	public abstract void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException;
+	public abstract void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException;
 	
 
 	

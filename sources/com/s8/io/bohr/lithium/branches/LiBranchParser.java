@@ -9,9 +9,9 @@ import static com.s8.io.bohr.BOHR_Keywords.UPDATE_NODE;
 
 import java.io.IOException;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.LiType;
 import com.s8.io.bohr.lithium.type.LiTypeParser;
@@ -36,11 +36,11 @@ public class LiBranchParser {
 	 */
 	private static class TypeListener implements LiTypeParser.DeltaListener {
 
-		public S8Object object;
+		public LiObject object;
 
 		public BuildScope scope;
 
-		public TypeListener(S8Object object, BuildScope scope) {
+		public TypeListener(LiObject object, BuildScope scope) {
 			super();
 			this.object = object;
 			this.scope = scope;
@@ -144,7 +144,7 @@ public class LiBranchParser {
 		LiType type = typeParser.getType();
 
 		/* create object */
-		S8Object object = type.createNewInstance();
+		LiObject object = type.createNewInstance();
 
 		/* clear spin */
 		object.S8_spin = false;

@@ -1,15 +1,12 @@
-package com.s8.io.bohr.neodymium.objects;
+package com.s8.io.bohr.neodymium.object;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Branch;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
-import com.s8.io.bohr.atom.S8Vertex;
-import com.s8.io.bohr.neodymium.branches.NdBranch;
+import com.s8.io.bohr.neodymium.branch.NdBranch;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
@@ -34,7 +31,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class NdVertex implements S8Vertex {
+public class NdVertex {
 
 
 
@@ -49,7 +46,7 @@ public class NdVertex implements S8Vertex {
 	public final NdType type;
 
 
-	public S8Object object;
+	public NdObject object;
 
 
 
@@ -128,36 +125,26 @@ public class NdVertex implements S8Vertex {
 	}
 
 
-	@Override
+	
 	public void advertise(long event) {
 		this.event |= event;
 	}
 
 
-	@Override
-	public S8Branch getBranch() {
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public NdBranch getBranch() {
 		return branch;
 	}
 
 
-	@Override
-	public void expose(int slot) {
-		
-	}
-
-
-	@Override
-	public S8Object getObject() {
+	
+	public NdObject getObject() {
 		return object;
 	}
-
-
-	@Override
-	public void unexpose() {
-		// TODO Auto-generated method stub
-
-	}
-
 
 	/**
 	 * 
@@ -195,7 +182,7 @@ public class NdVertex implements S8Vertex {
 	 */
 	public void publishUpdate(List<NdObjectDelta> objectDeltas, NdVertex base) throws NdIOException {
 		
-		S8Object baseObject = base.object;
+		NdObject baseObject = base.object;
 		List<NdFieldDelta> deltas = null;
 
 		NdField[] fields = type.fields;

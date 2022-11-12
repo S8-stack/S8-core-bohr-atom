@@ -3,10 +3,10 @@ package com.s8.io.bohr.lithium.type;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.branches.LiVertex;
 import com.s8.io.bohr.lithium.fields.LiField;
+import com.s8.io.bohr.lithium.object.LiObject;
 
 
 /**
@@ -43,7 +43,7 @@ public class DebugModule {
 	 * @throws IOException
 	 * @throws S8ShellStructureException 
 	 */
-	public void print(S8Object object, Writer writer) throws IOException, S8ShellStructureException {
+	public void print(LiObject object, Writer writer) throws IOException, S8ShellStructureException {
 		
 		// advertise class
 		writer.write('(');
@@ -74,7 +74,7 @@ public class DebugModule {
 	 * @throws IOException
 	 * @throws S8ShellStructureException 
 	 */
-	public void deepCompare(S8Object left, S8Object right, Writer writer) throws IOException, S8ShellStructureException {
+	public void deepCompare(LiObject left, LiObject right, Writer writer) throws IOException, S8ShellStructureException {
 
 		if(left!=null && right==null) {
 			// advertise class

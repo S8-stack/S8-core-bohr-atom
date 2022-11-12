@@ -1,10 +1,10 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 import java.io.IOException;
 
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
-import com.s8.io.bohr.neodymium.objects.NdVertex;
+import com.s8.io.bohr.neodymium.object.NdVertex;
 
 
 /**

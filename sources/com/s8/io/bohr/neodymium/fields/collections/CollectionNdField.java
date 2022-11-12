@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.neodymium.fields.NdField;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 
 
@@ -40,7 +41,7 @@ public abstract class CollectionNdField extends NdField {
 
 	public interface ItemConsumer {
 
-		public void consume(S8Object item) throws IOException;
+		public void consume(NdObject item) throws IOException;
 	}
 
 
@@ -60,7 +61,7 @@ public abstract class CollectionNdField extends NdField {
 		}
 
 		@Override
-		public void consume(S8Object item) throws IOException {
+		public void consume(NdObject item) throws IOException {
 			if(isInitialized) {
 				writer.write(" ,");	
 			}
@@ -82,8 +83,8 @@ public abstract class CollectionNdField extends NdField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
-		S8Object[] array = (S8Object[]) handler.get(object);
+	protected void printValue(NdObject object, Writer writer) throws IOException {
+		LiObject[] array = (LiObject[]) handler.get(object);
 		if(array!=null) {
 			writer.write('[');
 			forEach(object, new Printer(writer));

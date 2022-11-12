@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 import static com.s8.io.bohr.BOHR_Keywords.CLOSE_JUMP;
 import static com.s8.io.bohr.BOHR_Keywords.CREATE_NODE;
@@ -17,11 +17,11 @@ import java.util.List;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.fields.NdFieldParser;
-import com.s8.io.bohr.neodymium.objects.CreateNdObjectDelta;
-import com.s8.io.bohr.neodymium.objects.ExposeNdObjectDelta;
-import com.s8.io.bohr.neodymium.objects.NdVertex;
-import com.s8.io.bohr.neodymium.objects.RemoveNdObjectDelta;
-import com.s8.io.bohr.neodymium.objects.UpdateNdObjectDelta;
+import com.s8.io.bohr.neodymium.object.CreateNdObjectDelta;
+import com.s8.io.bohr.neodymium.object.ExposeNdObjectDelta;
+import com.s8.io.bohr.neodymium.object.NdVertex;
+import com.s8.io.bohr.neodymium.object.RemoveNdObjectDelta;
+import com.s8.io.bohr.neodymium.object.UpdateNdObjectDelta;
 import com.s8.io.bohr.neodymium.type.NdTypeParser;
 import com.s8.io.bytes.alpha.ByteInflow;
 

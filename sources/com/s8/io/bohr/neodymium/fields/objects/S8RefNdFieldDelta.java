@@ -1,10 +1,10 @@
 package com.s8.io.bohr.neodymium.fields.objects;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Ref;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bytes.alpha.MemoryFootprint;
 
@@ -39,7 +39,7 @@ public class S8RefNdFieldDelta extends NdFieldDelta {
 
 	
 	@Override
-	public void consume(S8Object object, BuildScope scope) throws NdIOException {
+	public void consume(NdObject object, BuildScope scope) throws NdIOException {
 		field.handler.set(object, ref);
 	}
 

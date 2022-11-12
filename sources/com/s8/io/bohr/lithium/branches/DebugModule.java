@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.s8.io.bohr.atom.S8Graph;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.type.LiType;
 
 
@@ -47,7 +47,7 @@ public class DebugModule {
 					writer.append("Object replacement");
 				}
 				else {
-					S8Object baseObject = baseVertex.getObject();
+					LiObject baseObject = baseVertex.getObject();
 					type.deepCompare(baseObject, vertex.getObject(), writer);	
 				}
 			} 
@@ -93,7 +93,7 @@ public class DebugModule {
 		branch.vertices.forEach((index, vertex) -> {
 			try {
 				LiType type = vertex.getType();
-				S8Object object = vertex.getObject();
+				LiObject object = vertex.getObject();
 				type.print(object, writer);
 			} 
 			catch (LiIOException e) {

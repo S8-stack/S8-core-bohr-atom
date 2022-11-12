@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
@@ -12,6 +11,7 @@ import com.s8.io.bohr.lithium.fields.LiField;
 import com.s8.io.bohr.lithium.fields.LiFieldBuilder;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties0T;
 import com.s8.io.bohr.lithium.type.GraphCrawler;
@@ -143,12 +143,12 @@ public abstract class PrimitiveLiField extends LiField {
 	
 
 	@Override
-	public void sweep(S8Object object, GraphCrawler crawler) {
+	public void sweep(LiObject object, GraphCrawler crawler) {
 		// nothing to collect
 	}
 
 	@Override
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(LiObject object, Queue<String> references) {
 		//no blocks to collect
 	}
 	
@@ -158,7 +158,7 @@ public abstract class PrimitiveLiField extends LiField {
 	}
 	
 	@Override
-	public boolean isValueResolved(S8Object object) {
+	public boolean isValueResolved(LiObject object) {
 		return true; // always resolved
 	}
 	

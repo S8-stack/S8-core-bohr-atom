@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 import static com.s8.io.bohr.BOHR_Keywords.CLOSE_JUMP;
 import static com.s8.io.bohr.BOHR_Keywords.DEFINE_JUMP_COMMENT;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
-import com.s8.io.bohr.neodymium.objects.NdObjectDelta;
+import com.s8.io.bohr.neodymium.object.NdObjectDelta;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteOutflow;
 import com.s8.io.bytes.alpha.MemoryFootprint;

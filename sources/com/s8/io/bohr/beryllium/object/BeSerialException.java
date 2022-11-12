@@ -1,4 +1,4 @@
-package com.s8.io.bohr.beryllium;
+package com.s8.io.bohr.beryllium.object;
 
 import java.io.IOException;
 

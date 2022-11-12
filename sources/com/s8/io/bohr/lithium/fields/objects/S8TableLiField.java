@@ -9,7 +9,6 @@ import java.lang.reflect.Type;
 import java.util.Queue;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Table;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
@@ -23,6 +22,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.GraphCrawler;
@@ -180,11 +180,11 @@ public class S8TableLiField extends LiField {
 
 
 	@Override
-	public void sweep(S8Object object, GraphCrawler crawler) throws LiIOException {	
+	public void sweep(LiObject object, GraphCrawler crawler) throws LiIOException {	
 	}
 
 	@Override
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(LiObject object, Queue<String> references) {
 		/*
 		try {
 			BkRef<?> ref = (BkRef<?>) field.get(object);
@@ -210,21 +210,21 @@ public class S8TableLiField extends LiField {
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws LiIOException {
+	public void computeFootprint(LiObject object, MemoryFootprint weight) throws LiIOException {
 		S8Table<?> value = (S8Table<?>) handler.get(object);
 		weight.reportBytes(1 + value.address.length() + 8);
 	}
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
 		S8Table<?> value = (S8Table<?>) handler.get(origin);
 		handler.set(clone, value);
 	}
 
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws LiIOException {
+	public boolean hasDiff(LiObject base, LiObject update) throws LiIOException {
 		S8Table<?> baseValue = (S8Table<?>) handler.get(base);
 		S8Table<?> updateValue = (S8Table<?>) handler.get(update);
 		return !S8Table.areEqual(baseValue, updateValue);
@@ -238,7 +238,7 @@ public class S8TableLiField extends LiField {
 	
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(LiObject object, Writer writer) throws IOException {
 		S8Table<?> value = (S8Table<?>) handler.get(object);
 		if(value!=null) {
 			writer.write("(");
@@ -277,7 +277,7 @@ public class S8TableLiField extends LiField {
 	private class Inflow extends LiFieldParser {
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.set(object, deserialize(inflow));
 		}
 
@@ -321,7 +321,7 @@ public class S8TableLiField extends LiField {
 		}
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			S8Table<?> value = (S8Table<?>) handler.get(object);
 			S8Table.write(value, outflow);
 		}
@@ -332,7 +332,7 @@ public class S8TableLiField extends LiField {
 
 
 	@Override
-	public boolean isValueResolved(S8Object object) throws LiIOException {
+	public boolean isValueResolved(LiObject object) throws LiIOException {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -3,14 +3,12 @@ package com.s8.io.bohr.lithium.branches;
 import java.io.IOException;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
-import com.s8.io.bohr.atom.S8Vertex;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiFieldComposer;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.type.GraphCrawler;
 import com.s8.io.bohr.lithium.type.LiType;
 import com.s8.io.bohr.lithium.type.LiTypeComposer;
@@ -33,7 +31,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
-public class LiVertex implements S8Vertex {
+public class LiVertex {
 
 	
 	
@@ -75,7 +73,7 @@ public class LiVertex implements S8Vertex {
 	
 	
 	
-	public final S8Object object;
+	public final LiObject object;
 	
 	/**
 	 * 
@@ -90,7 +88,7 @@ public class LiVertex implements S8Vertex {
 	 * @param type
 	 * @param object
 	 */
-	public LiVertex(LiBranch branch, S8Object object) {
+	public LiVertex(LiBranch branch, LiObject object) {
 		super();
 		this.branch = branch;
 		this.object = object;
@@ -105,8 +103,8 @@ public class LiVertex implements S8Vertex {
 	}
 	
 	
-	@Override
-	public S8Object getObject() {
+	
+	public LiObject getObject() {
 		return object;
 	}
 	
@@ -160,7 +158,7 @@ public class LiVertex implements S8Vertex {
 	}
 	
 	
-	@Override
+	
 	public void advertise(long event) {
 		this.event |= event;
 		
@@ -242,13 +240,13 @@ public class LiVertex implements S8Vertex {
 	}
 
 	
-	@Override
-	public S8Branch getBranch() {
+	
+	public LiBranch getBranch() {
 		return branch;
 	}
 
 
-	@Override
+	
 	public void expose(int slot) {
 		this.isExposeUnpublished = true;
 		this.isUnpublished = true;
@@ -257,7 +255,7 @@ public class LiVertex implements S8Vertex {
 	}
 	
 	
-	@Override
+	
 	public void unexpose() {
 		this.isExposeUnpublished = true;
 		this.isUnpublished = true;

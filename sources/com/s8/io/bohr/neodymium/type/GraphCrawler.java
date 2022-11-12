@@ -1,7 +1,7 @@
 package com.s8.io.bohr.neodymium.type;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
+import com.s8.io.bohr.neodymium.object.NdObject;
 
 /**
  * 
@@ -18,7 +18,7 @@ public interface GraphCrawler {
 	 * @param object
 	 * @throws NdIOException
 	 */
-	public void accept(S8Object object);
+	public void accept(NdObject object);
 	
 	
 }

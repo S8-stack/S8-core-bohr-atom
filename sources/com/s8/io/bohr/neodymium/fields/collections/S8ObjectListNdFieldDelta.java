@@ -3,10 +3,10 @@ package com.s8.io.bohr.neodymium.fields.collections;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bohr.neodymium.type.BuildScope.Binding;
 import com.s8.io.bytes.alpha.MemoryFootprint;
@@ -21,7 +21,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class S8ObjectListNdFieldDelta<T extends S8Object> extends NdFieldDelta {
+public class S8ObjectListNdFieldDelta<T extends NdObject> extends NdFieldDelta {
 
 	
 	public final S8ObjectListNdField<T> field;
@@ -44,7 +44,7 @@ public class S8ObjectListNdFieldDelta<T extends S8Object> extends NdFieldDelta {
 
 
 	@Override
-	public void consume(S8Object object, BuildScope scope) throws NdIOException {
+	public void consume(NdObject object, BuildScope scope) throws NdIOException {
 
 		if(indices!=null) {
 			int n = indices.length;

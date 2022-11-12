@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -13,6 +12,7 @@ import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.fields.NdFieldParser;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
@@ -73,27 +73,27 @@ public class DoubleNdField extends PrimitiveNdField {
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) {
+	public void computeFootprint(NdObject object, MemoryFootprint weight) {
 		weight.reportBytes(8);
 	}
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws NdIOException {
+	public void deepClone(NdObject origin, NdObject clone, BuildScope scope) throws NdIOException {
 		double value = handler.getDouble(origin);
 		handler.setDouble(clone, value);
 	}
 
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws NdIOException {
+	public boolean hasDiff(NdObject base, NdObject update) throws NdIOException {
 		double baseValue = handler.getDouble(base);
 		double updateValue = handler.getDouble(update);
 		return baseValue != updateValue;
 	}
 
 	@Override
-	public NdFieldDelta produceDiff(S8Object object) throws NdIOException {
+	public NdFieldDelta produceDiff(NdObject object) throws NdIOException {
 		return new Delta(handler.getDouble(object));
 	}
 
@@ -105,7 +105,7 @@ public class DoubleNdField extends PrimitiveNdField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(NdObject object, Writer writer) throws IOException {
 		writer.write(Double.toString(handler.getDouble(object)));
 	}
 
@@ -124,7 +124,7 @@ public class DoubleNdField extends PrimitiveNdField {
 		}
 
 		@Override
-		public void consume(S8Object object, BuildScope scope) throws NdIOException {
+		public void consume(NdObject object, BuildScope scope) throws NdIOException {
 			handler.setDouble(object, value);
 		}
 
@@ -168,7 +168,7 @@ public class DoubleNdField extends PrimitiveNdField {
 		}
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(NdObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.setDouble(object, deserialize(inflow));
 		}
 
@@ -223,7 +223,7 @@ public class DoubleNdField extends PrimitiveNdField {
 
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow) throws IOException {
+		public void composeValue(NdObject object, ByteOutflow outflow) throws IOException {
 			serialize(outflow, handler.getDouble(object));
 		}
 		

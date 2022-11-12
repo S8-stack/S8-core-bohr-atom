@@ -9,10 +9,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiField;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bytes.alpha.MemoryFootprint;
 
 
@@ -114,7 +114,7 @@ public class LiType {
 	 * @param object
 	 * @param footprint
 	 */
-	public void computeFootprint(S8Object object, MemoryFootprint footprint) {
+	public void computeFootprint(LiObject object, MemoryFootprint footprint) {
 		footprint.reportInstance();
 		fieldsByName.forEach((name, handler) -> {  
 			try {
@@ -134,9 +134,9 @@ public class LiType {
 	 * @return
 	 * @throws LthSerialException
 	 */
-	public S8Object createNewInstance() throws LiIOException {
+	public LiObject createNewInstance() throws LiIOException {
 		try {
-			return (S8Object) constructor.newInstance(new Object[]{});
+			return (LiObject) constructor.newInstance(new Object[]{});
 		}
 		catch (InstantiationException 
 				| IllegalAccessException 
@@ -163,7 +163,7 @@ public class LiType {
 	 * @throws IOException 
 	 * @throws S8ShellStructureException 
 	 */
-	public void sweep(S8Object object, GraphCrawler crawler) throws LiIOException {
+	public void sweep(LiObject object, GraphCrawler crawler) throws LiIOException {
 		int nFields = fields.length;
 		for(int i = 0; i<nFields; i++) { fields[i].sweep(object, crawler); }
 	}
@@ -187,7 +187,7 @@ public class LiType {
 	 * @param object
 	 * @param references
 	 */
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(LiObject object, Queue<String> references) {
 		for(LiField entryHandler : fieldsByName.values()) {
 			entryHandler.collectReferencedBlocks(object, references);	
 		}
@@ -201,8 +201,8 @@ public class LiType {
 	 * @return
 	 * @throws LthSerialException
 	 */
-	public S8Object deepClone(S8Object origin, BuildScope scope) throws LiIOException {
-		S8Object clone = createNewInstance();
+	public LiObject deepClone(LiObject origin, BuildScope scope) throws LiIOException {
+		LiObject clone = createNewInstance();
 		for(LiField field : fields) {
 			field.deepClone(origin, clone, scope);
 		}
@@ -233,7 +233,7 @@ public class LiType {
 	 * @throws IOException
 	 * @throws S8ShellStructureException 
 	 */
-	public void print(S8Object object, Writer writer) throws IOException, S8ShellStructureException {
+	public void print(LiObject object, Writer writer) throws IOException, S8ShellStructureException {
 		debugModule.print(object, writer);
 	}
 
@@ -246,7 +246,7 @@ public class LiType {
 	 * @throws IOException
 	 * @throws S8ShellStructureException 
 	 */
-	public void deepCompare(S8Object left, S8Object right, Writer writer) throws IOException, S8ShellStructureException {
+	public void deepCompare(LiObject left, LiObject right, Writer writer) throws IOException, S8ShellStructureException {
 		debugModule.deepCompare(left, right, writer);
 	}
 	

@@ -1,15 +1,15 @@
 package com.s8.io.bohr.demos.neodymium.repo0;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
+import com.s8.io.bohr.lithium.object.LiObject;
 
 @S8ObjectType(name = "project-payload", 
 sub= {
 		PlanePayload.class,
 		CarPayload.class
 })
-public abstract class MyProjectPayload extends S8Object {
+public abstract class MyProjectPayload extends LiObject {
 
 	public @S8Field(name="viscosity") double visc;
 	

@@ -1,12 +1,11 @@
-package com.s8.io.bohr.neodymium.objects;
+package com.s8.io.bohr.neodymium.object;
 
 import java.io.IOException;
 import java.util.List;
 
 import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Object;
-import com.s8.io.bohr.neodymium.branches.NdBranch;
-import com.s8.io.bohr.neodymium.branches.NdOutbound;
+import com.s8.io.bohr.neodymium.branch.NdBranch;
+import com.s8.io.bohr.neodymium.branch.NdOutbound;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.type.BuildScope;
@@ -68,7 +67,7 @@ public class CreateNdObjectDelta extends NdObjectDelta {
 	public void consume(NdBranch branch, BuildScope scope) throws NdIOException {
 
 		// create object
-		S8Object object = type.createNewInstance();
+		NdObject object = type.createNewInstance();
 
 		/* clear spin */
 		object.S8_spin = false;

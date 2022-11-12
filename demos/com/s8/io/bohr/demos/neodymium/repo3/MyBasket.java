@@ -3,9 +3,9 @@ package com.s8.io.bohr.demos.neodymium.repo3;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
+import com.s8.io.bohr.lithium.object.LiObject;
 
 
 /**
@@ -19,7 +19,7 @@ import com.s8.io.bohr.atom.annotations.S8ObjectType;
  * 
  */
 @S8ObjectType(name = "Basket")
-public class MyBasket extends S8Object {
+public class MyBasket extends LiObject {
 
 	
 	public @S8Field(name = "picks") List<MyPick> picks;

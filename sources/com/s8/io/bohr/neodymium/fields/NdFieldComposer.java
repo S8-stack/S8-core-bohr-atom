@@ -3,7 +3,7 @@ package com.s8.io.bohr.neodymium.fields;
 import java.io.IOException;
 
 import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Object;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
 
@@ -39,7 +39,7 @@ public abstract class NdFieldComposer {
 	 * 
 	 * }
 	 */
-	public abstract void composeValue(S8Object object, ByteOutflow outflow) throws IOException;
+	public abstract void composeValue(NdObject object, ByteOutflow outflow) throws IOException;
 
 
 
@@ -103,17 +103,25 @@ public abstract class NdFieldComposer {
 
 	public abstract void publishValue(NdFieldDelta delta, ByteOutflow outflow) throws IOException;
 
+	
 	/**
 	 * 
 	 * @param object
 	 * @param outflow
 	 * @throws IOException
 	 */
-	public void compose(S8Object object, ByteOutflow outflow) throws IOException {
+	public void compose(NdObject object, ByteOutflow outflow) throws IOException {
 		publishFieldHeader(outflow);
 		composeValue(object, outflow);
 	}
 
+	
+	/**
+	 * 
+	 * @param delta
+	 * @param outflow
+	 * @throws IOException
+	 */
 	public void serializeDelta(NdFieldDelta delta, ByteOutflow outflow) throws IOException {
 		publishFieldHeader(outflow);
 		publishValue(delta, outflow);

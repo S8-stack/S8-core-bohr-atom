@@ -1,4 +1,4 @@
-package com.s8.io.bohr.atom;
+package com.s8.io.bohr.neodymium.object;
 
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
 
@@ -44,7 +44,7 @@ import com.s8.io.bohr.atom.annotations.S8ObjectType;
  * 
  */
 @S8ObjectType(name = "alpha/S8Object", sub= {})
-public class S8Object {
+public class NdObject {
 	
 	
 	/* <field-properties> */
@@ -78,14 +78,14 @@ public class S8Object {
 	/**
 	 * Object listeners
 	 */
-	public S8Vertex S8_vertex;
+	public NdVertex S8_vertex;
 	
 	
 	/**
 	 * Perform initial binding of object with vertex, vertex itself being bound to its shell
 	 * @param graph
 	 */
-	public S8Object() {
+	public NdObject() {
 	}
 	
 	
@@ -101,12 +101,5 @@ public class S8Object {
 	
 	
 
-	/**
-	 * 
-	 * @param slot
-	 */
-	public void expose(int slot) {
-		if(S8_vertex!=null) { S8_vertex.expose(slot); }
-	}
 	
 }

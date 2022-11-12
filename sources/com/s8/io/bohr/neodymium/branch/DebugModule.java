@@ -1,12 +1,12 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 import java.io.IOException;
 import java.io.Writer;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
-import com.s8.io.bohr.neodymium.objects.NdVertex;
+import com.s8.io.bohr.neodymium.object.NdObject;
+import com.s8.io.bohr.neodymium.object.NdVertex;
 import com.s8.io.bohr.neodymium.type.NdType;
 
 
@@ -46,7 +46,7 @@ public class DebugModule {
 					writer.append("Object replacement: "+index+"\n");
 				}
 				else {
-					S8Object baseObject = shell.vertices.get(index).getObject();
+					NdObject baseObject = shell.vertices.get(index).getObject();
 					type.deepCompare(baseObject, vertex.getObject(), writer);
 					
 					if(baseVertex.port != vertex.port) {
@@ -85,7 +85,7 @@ public class DebugModule {
 		shell.vertices.forEach((index, vertex) -> {
 			try {
 				NdType type = vertex.type;
-				S8Object object = vertex.getObject();
+				NdObject object = vertex.getObject();
 				type.print(object, writer);
 			} 
 			catch (NdIOException e) {

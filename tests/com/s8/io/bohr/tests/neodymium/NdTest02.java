@@ -4,13 +4,13 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import com.s8.io.bohr.atom.S8BuildException;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.demos.neodymium.repo2.MyBuilding;
-import com.s8.io.bohr.neodymium.branches.NdBranch;
+import com.s8.io.bohr.neodymium.branch.NdBranch;
 import com.s8.io.bohr.neodymium.codebase.NdCodebase;
 import com.s8.io.bohr.neodymium.codebase.NdCodebaseBuilder;
 import com.s8.io.bohr.neodymium.codebase.NdCodebaseBuilder.UpperLevel;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bytes.linked.LinkedByteInflow;
 import com.s8.io.bytes.linked.LinkedByteOutflow;
 
@@ -37,7 +37,7 @@ public class NdTest02 {
 		
 	
 		MyBuilding building = MyBuilding.create();
-		workingBranch.update(0x25, new S8Object[] { null, building});
+		workingBranch.update(0x25, new NdObject[] { null, building});
 		
 		// test copy
 		NdBranch testCopy = workingBranch.deepClone();

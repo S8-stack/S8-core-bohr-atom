@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.util.Queue;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
@@ -20,6 +19,7 @@ import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.fields.NdFieldParser;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties1T;
 import com.s8.io.bohr.neodymium.type.BuildScope;
@@ -120,9 +120,9 @@ public class InterfaceNdField extends NdField {
 
 
 	@Override
-	public void sweep(S8Object object, GraphCrawler crawler) {
+	public void sweep(NdObject object, GraphCrawler crawler) {
 		try {
-			S8Object fieldObject = (S8Object) handler.get(object);
+			NdObject fieldObject = (NdObject) handler.get(object);
 			if(fieldObject!=null) {
 				crawler.accept(fieldObject);
 			}
@@ -134,7 +134,7 @@ public class InterfaceNdField extends NdField {
 
 
 	@Override
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(NdObject object, Queue<String> references) {
 		// No ext references
 	}
 
@@ -145,14 +145,14 @@ public class InterfaceNdField extends NdField {
 	}
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws NdIOException {
+	public void computeFootprint(NdObject object, MemoryFootprint weight) throws NdIOException {
 		weight.reportReference();
 	}
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws NdIOException {
-		S8Object value = (S8Object) handler.get(origin);
+	public void deepClone(NdObject origin, NdObject clone, BuildScope scope) throws NdIOException {
+		NdObject value = (NdObject) handler.get(origin);
 		if(value!=null) {
 			String index = value.S8_index;
 
@@ -162,7 +162,7 @@ public class InterfaceNdField extends NdField {
 				public void resolve(BuildScope scope) throws NdIOException {
 
 					// no need to upcast to S8Object
-					S8Object indexedObject = scope.retrieveObject(index);
+					NdObject indexedObject = scope.retrieveObject(index);
 					if(indexedObject==null) {
 						throw new NdIOException("Fialed to retriev vertex");
 					}
@@ -177,9 +177,9 @@ public class InterfaceNdField extends NdField {
 
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws NdIOException {
-		S8Object baseValue = (S8Object) handler.get(base);
-		S8Object updateValue = (S8Object) handler.get(update);
+	public boolean hasDiff(NdObject base, NdObject update) throws NdIOException {
+		NdObject baseValue = (NdObject) handler.get(base);
+		NdObject updateValue = (NdObject) handler.get(update);
 		if(baseValue == null && updateValue == null) {
 			return false;
 		}
@@ -194,8 +194,8 @@ public class InterfaceNdField extends NdField {
 
 
 	@Override
-	public NdFieldDelta produceDiff(S8Object object) throws NdIOException {
-		S8Object value = (S8Object) handler.get(object);
+	public NdFieldDelta produceDiff(NdObject object) throws NdIOException {
+		NdObject value = (NdObject) handler.get(object);
 		if(value != null) {
 			return new InterfaceNdFieldDelta(this, value.S8_index);
 		}
@@ -208,8 +208,8 @@ public class InterfaceNdField extends NdField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
-		S8Object value = (S8Object) handler.get(object);
+	protected void printValue(NdObject object, Writer writer) throws IOException {
+		NdObject value = (NdObject) handler.get(object);
 		if(value!=null) {
 			writer.write("(");
 			writer.write(value.getClass().getCanonicalName());
@@ -226,7 +226,7 @@ public class InterfaceNdField extends NdField {
 		return "S8Object";
 	}
 
-	public void setValue(Object object, S8Object struct) throws NdIOException {
+	public void setValue(Object object, NdObject struct) throws NdIOException {
 		handler.set(object, struct);
 	}
 
@@ -235,7 +235,7 @@ public class InterfaceNdField extends NdField {
 
 
 	@Override
-	public boolean isValueResolved(S8Object object) {
+	public boolean isValueResolved(NdObject object) {
 		return true; // always resolved at resolve step in shell
 	}
 
@@ -282,7 +282,7 @@ public class InterfaceNdField extends NdField {
 	private class Inflow extends NdFieldParser {
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(NdObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			String id = inflow.getStringUTF8();
 			if(id != null) {
 				/* append bindings */
@@ -341,8 +341,8 @@ public class InterfaceNdField extends NdField {
 		}
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow) throws IOException {
-			S8Object value = (S8Object) handler.get(object);
+		public void composeValue(NdObject object, ByteOutflow outflow) throws IOException {
+			NdObject value = (NdObject) handler.get(object);
 			outflow.putStringUTF8(value != null ? value.S8_index : null);
 		}
 		

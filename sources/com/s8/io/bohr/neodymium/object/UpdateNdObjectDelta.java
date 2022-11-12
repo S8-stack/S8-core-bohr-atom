@@ -1,13 +1,12 @@
-package com.s8.io.bohr.neodymium.objects;
+package com.s8.io.bohr.neodymium.object;
 
 import java.io.IOException;
 import java.util.List;
 
 import com.s8.io.bohr.BOHR_Keywords;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Object;
-import com.s8.io.bohr.neodymium.branches.NdBranch;
-import com.s8.io.bohr.neodymium.branches.NdOutbound;
+import com.s8.io.bohr.neodymium.branch.NdBranch;
+import com.s8.io.bohr.neodymium.branch.NdOutbound;
 import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bohr.neodymium.type.NdType;
@@ -86,7 +85,7 @@ public class UpdateNdObjectDelta extends NdObjectDelta {
 			}
 
 			// retrieve object
-			S8Object object = vertex.object;
+			NdObject object = vertex.object;
 
 			// consume diff
 			type.consumeDiff(object, deltas, scope);	

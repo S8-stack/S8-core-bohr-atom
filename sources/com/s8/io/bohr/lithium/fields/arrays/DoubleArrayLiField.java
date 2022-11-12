@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiField;
@@ -13,6 +12,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.fields.primitives.PrimitiveLiField;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -74,7 +74,7 @@ public class DoubleArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws LiIOException {
+	public void computeFootprint(LiObject object, MemoryFootprint weight) throws LiIOException {
 		double[] array = (double[]) handler.get(object);
 		if(array!=null) {
 			weight.reportInstance(); // the array object itself	
@@ -84,13 +84,13 @@ public class DoubleArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
 		double[] array = (double[]) handler.get(origin);
 		handler.set(clone, clone(array));
 	}
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws LiIOException {
+	public boolean hasDiff(LiObject base, LiObject update) throws LiIOException {
 		double[] baseValue = (double[]) handler.get(base);
 		double[] updateValue = (double[]) handler.get(update);
 		return !areEqual(baseValue, updateValue);
@@ -148,7 +148,7 @@ public class DoubleArrayLiField extends PrimitiveArrayLiField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(LiObject object, Writer writer) throws IOException {
 		double[] array = (double[]) handler.get(object);
 		if(array!=null) {
 			boolean isInitialized = false;
@@ -200,7 +200,7 @@ public class DoubleArrayLiField extends PrimitiveArrayLiField {
 		}
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.set(object, deserialize(inflow));
 		}
 
@@ -260,7 +260,7 @@ public class DoubleArrayLiField extends PrimitiveArrayLiField {
 
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			serialize(outflow, (double[]) handler.get(object));
 		}
 

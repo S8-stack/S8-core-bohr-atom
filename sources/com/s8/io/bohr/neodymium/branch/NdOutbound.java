@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neodymium.branches;
+package com.s8.io.bohr.neodymium.branch;
 
 import java.io.IOException;
 import java.util.HashMap;

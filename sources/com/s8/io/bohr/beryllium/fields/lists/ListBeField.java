@@ -8,8 +8,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.beryllium.BeSerialException;
 import com.s8.io.bohr.beryllium.fields.ScreenedBeField;
+import com.s8.io.bohr.beryllium.object.BeSerialException;
 import com.s8.io.bohr.beryllium.syntax.BerylliumEncoding;
 import com.s8.io.bohr.beryllium.types.BeTypeBuildException;
 import com.s8.io.bytes.alpha.ByteInflow;

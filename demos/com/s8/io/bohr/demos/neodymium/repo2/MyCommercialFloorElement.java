@@ -1,8 +1,8 @@
 package com.s8.io.bohr.demos.neodymium.repo2;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
+import com.s8.io.bohr.neodymium.object.NdObject;
 
 
 
@@ -20,7 +20,7 @@ import com.s8.io.bohr.atom.annotations.S8ObjectType;
 		MyCommercialBoxedWorkseat.class,
 		MyCommercialMeetingRoom.class
 })
-public abstract class MyCommercialFloorElement extends S8Object {
+public abstract class MyCommercialFloorElement extends NdObject {
 	
 
 	public @S8Field(name = "tag") String tag;

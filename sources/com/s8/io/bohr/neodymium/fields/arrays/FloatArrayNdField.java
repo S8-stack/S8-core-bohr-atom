@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -14,6 +13,7 @@ import com.s8.io.bohr.neodymium.fields.NdFieldParser;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.fields.primitives.PrimitiveNdField;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
@@ -83,7 +83,7 @@ public class FloatArrayNdField extends PrimitiveArrayNdField {
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws NdIOException {
+	public void computeFootprint(NdObject object, MemoryFootprint weight) throws NdIOException {
 		float[] array = (float[]) handler.get(object);
 		if(array!=null) {
 			weight.reportInstance(); // the array object itself	
@@ -93,20 +93,20 @@ public class FloatArrayNdField extends PrimitiveArrayNdField {
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws NdIOException {
+	public void deepClone(NdObject origin, NdObject clone, BuildScope scope) throws NdIOException {
 		float[] array = (float[]) handler.get(origin);
 		handler.set(clone, clone(array));
 	}
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws NdIOException {
+	public boolean hasDiff(NdObject base, NdObject update) throws NdIOException {
 		float[] baseValue = (float[]) handler.get(base);
 		float[] updateValue = (float[]) handler.get(update);
 		return !areEqual(baseValue, updateValue);
 	}
 
 	@Override
-	public NdFieldDelta produceDiff(S8Object object) throws NdIOException {
+	public NdFieldDelta produceDiff(NdObject object) throws NdIOException {
 		return new FloatArrayNdFieldDelta(this, (float[]) handler.get(object));
 	}
 
@@ -161,7 +161,7 @@ public class FloatArrayNdField extends PrimitiveArrayNdField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(NdObject object, Writer writer) throws IOException {
 		float[] array = (float[]) handler.get(object);
 		if(array!=null) {
 			boolean isInitialized = false;
@@ -216,7 +216,7 @@ public class FloatArrayNdField extends PrimitiveArrayNdField {
 		}
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(NdObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.set(object, deserialize(inflow));
 		}
 
@@ -281,7 +281,7 @@ public class FloatArrayNdField extends PrimitiveArrayNdField {
 
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow) throws IOException {
+		public void composeValue(NdObject object, ByteOutflow outflow) throws IOException {
 			serialize(outflow, (float[]) handler.get(object));
 		}
 

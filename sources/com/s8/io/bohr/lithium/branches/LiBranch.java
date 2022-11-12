@@ -8,12 +8,11 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
@@ -27,8 +26,20 @@ import com.s8.io.bytes.base64.Base64Generator;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class LiBranch extends S8Branch {
+public class LiBranch {
+	
+	
 
+	/**
+	 * 
+	 */
+	public final static int EXPOSURE_RANGE = 8;
+
+
+	
+	public final String address;
+	
+	public final String id;
 
 	public final LiCodebase codebase;
 	
@@ -86,12 +97,14 @@ public class LiBranch extends S8Branch {
 	 * @param deltas
 	 */
 	public LiBranch(String address, String id, LiCodebase codebase) {
-		super(address, id);
+		super();
+		this.address = address;
+		this.id = id;
 		
 		this.codebase = codebase;
 		
 		// exposure
-		exposure = new LiVertex[S8Branch.EXPOSURE_RANGE];
+		exposure = new LiVertex[EXPOSURE_RANGE];
 		
 		vertices = new HashMap<String, LiVertex>();
 		
@@ -104,7 +117,7 @@ public class LiBranch extends S8Branch {
 	}
 	
 
-	public S8Object retrieveObject(String index) {
+	public LiObject retrieveObject(String index) {
 		return vertices.get(index).object;
 	}
 
@@ -121,7 +134,7 @@ public class LiBranch extends S8Branch {
 	public BuildScope createBuildScope() {
 		return new BuildScope() {
 			@Override
-			public S8Object retrieveObject(String index) {
+			public LiObject retrieveObject(String index) {
 				return vertices.get(index).object;
 			}
 		};
@@ -163,7 +176,7 @@ public class LiBranch extends S8Branch {
 	 * @param object
 	 * @return
 	 */
-	public LiVertex append(S8Object object) {
+	public LiVertex append(LiObject object) {
 		
 		
 		/* retrieve object index */
@@ -197,21 +210,6 @@ public class LiBranch extends S8Branch {
 		return vertex;
 	}
 
-
-	@Override
-	public long getBaseVersion() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
-
-	@Override
-	public <T extends S8Object> T access(int port) throws S8Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 

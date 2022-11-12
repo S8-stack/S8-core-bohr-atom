@@ -9,7 +9,6 @@ import java.lang.reflect.Type;
 import java.util.Queue;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Ref;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
@@ -23,6 +22,7 @@ import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.fields.NdFieldParser;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties1T;
 import com.s8.io.bohr.neodymium.type.BuildScope;
@@ -156,7 +156,7 @@ public class S8RefNdField extends NdField {
 
 
 	@Override
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(NdObject object, Queue<String> references) {
 		/*
 		try {
 			BkRef<?> ref = (BkRef<?>) field.get(object);
@@ -180,27 +180,27 @@ public class S8RefNdField extends NdField {
 	}
 
 	@Override
-	public void sweep(S8Object object, GraphCrawler crawler) {
+	public void sweep(NdObject object, GraphCrawler crawler) {
 		// nothing to collect here
 	}
 
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws NdIOException {
+	public void computeFootprint(NdObject object, MemoryFootprint weight) throws NdIOException {
 		S8Ref<?> value = (S8Ref<?>) handler.get(object);
 		weight.reportBytes(1 + value.address.length() + 8);
 	}
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws NdIOException {
+	public void deepClone(NdObject origin, NdObject clone, BuildScope scope) throws NdIOException {
 		handler.set(clone, (S8Ref<?>) handler.get(origin));
 	}
 
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws NdIOException {
+	public boolean hasDiff(NdObject base, NdObject update) throws NdIOException {
 		S8Ref<?> baseValue = (S8Ref<?>) handler.get(base);
 		S8Ref<?> updateValue = (S8Ref<?>) handler.get(update);
 		return !S8Ref.areEqual(baseValue, updateValue);
@@ -208,7 +208,7 @@ public class S8RefNdField extends NdField {
 
 
 	@Override
-	public NdFieldDelta produceDiff(S8Object object) throws NdIOException {
+	public NdFieldDelta produceDiff(NdObject object) throws NdIOException {
 		return new S8RefNdFieldDelta(this, (S8Ref<?>) handler.get(object));
 	}
 
@@ -223,7 +223,7 @@ public class S8RefNdField extends NdField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(NdObject object, Writer writer) throws IOException {
 		S8Ref<?> value = (S8Ref<?>) handler.get(object);
 		if(value!=null) {
 			writer.write(value.toString());
@@ -260,7 +260,7 @@ public class S8RefNdField extends NdField {
 	private class Inflow extends NdFieldParser {
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(NdObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.set(object, deserialize(inflow));
 		}
 
@@ -322,7 +322,7 @@ public class S8RefNdField extends NdField {
 		}
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow) throws IOException {
+		public void composeValue(NdObject object, ByteOutflow outflow) throws IOException {
 			S8Ref<?> value = (S8Ref<?>) handler.get(object);
 			S8Ref.write(value, outflow);
 		}
@@ -339,7 +339,7 @@ public class S8RefNdField extends NdField {
 
 
 	@Override
-	public boolean isValueResolved(S8Object object) throws NdIOException {
+	public boolean isValueResolved(NdObject object) throws NdIOException {
 		// TODO Auto-generated method stub
 		return false;
 	}

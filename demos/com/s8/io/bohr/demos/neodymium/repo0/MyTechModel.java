@@ -3,10 +3,10 @@ package com.s8.io.bohr.demos.neodymium.repo0;
 import java.util.List;
 
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8Ref;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
+import com.s8.io.bohr.lithium.object.LiObject;
 
 
 /**
@@ -17,7 +17,7 @@ import com.s8.io.bohr.atom.annotations.S8ObjectType;
  * 
  */
 @S8ObjectType(name = "Dclib/MyTechModel")
-public class MyTechModel extends S8Object {
+public class MyTechModel extends LiObject {
 
 
 	/**

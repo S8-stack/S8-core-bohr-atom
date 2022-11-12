@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8ObjectType;
@@ -18,6 +17,7 @@ import com.s8.io.bohr.neodymium.codebase.NdCodebaseBuilder;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.fields.NdField;
 import com.s8.io.bohr.neodymium.fields.NdFieldBuilder;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 
 /**
@@ -148,7 +148,7 @@ public class NdTypeBuilder {
 
 		// is static ?
 		if(!baseType.isMemberClass() || (baseType.isMemberClass() && Modifier.isStatic(mods))) {
-			if(S8Object.class.isAssignableFrom(baseType)) {
+			if(NdObject.class.isAssignableFrom(baseType)) {
 				isBuildable = true;
 			}
 			else if(isVerbose) {

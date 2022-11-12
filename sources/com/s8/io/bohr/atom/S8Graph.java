@@ -1,5 +1,7 @@
 package com.s8.io.bohr.atom;
 
+import com.s8.io.bohr.lithium.object.LiObject;
+
 /**
  * 
  * 
@@ -52,7 +54,7 @@ public interface S8Graph {
 	 * @param object
 	 * @throws S8Exception 
 	 */
-	public void expose(int port, S8Object object);
+	public void expose(int port, LiObject object);
 
 	
 	/**
@@ -68,7 +70,7 @@ public interface S8Graph {
 	 * @return
 	 * @throws S8Exception 
 	 */
-	public <T extends S8Object> T access(int port) throws S8Exception;
+	public <T extends LiObject> T access(int port) throws S8Exception;
 
 	
 	
@@ -78,7 +80,7 @@ public interface S8Graph {
 	 * @return
 	 * @throws S8Exception 
 	 */
-	public void attach(S8Object object) throws S8Exception;
+	public void attach(LiObject object) throws S8Exception;
 
 
 }

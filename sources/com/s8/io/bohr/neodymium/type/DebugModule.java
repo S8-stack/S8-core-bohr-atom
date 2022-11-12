@@ -3,9 +3,9 @@ package com.s8.io.bohr.neodymium.type;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
 import com.s8.io.bohr.neodymium.fields.NdField;
+import com.s8.io.bohr.neodymium.object.NdObject;
 
 
 /**
@@ -43,7 +43,7 @@ public class DebugModule {
 	 * @throws IOException
 	 * @throws S8ShellStructureException 
 	 */
-	public void print(S8Object object, Writer writer) throws IOException, S8ShellStructureException {
+	public void print(NdObject object, Writer writer) throws IOException, S8ShellStructureException {
 		
 		// advertise class
 		writer.write('(');
@@ -74,7 +74,7 @@ public class DebugModule {
 	 * @throws IOException
 	 * @throws S8ShellStructureException 
 	 */
-	public void deepCompare(S8Object left, S8Object right, Writer writer) throws IOException, S8ShellStructureException {
+	public void deepCompare(NdObject left, NdObject right, Writer writer) throws IOException, S8ShellStructureException {
 
 		if(left!=null && right==null) {
 			// advertise class

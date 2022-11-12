@@ -10,10 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -23,6 +23,7 @@ import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.fields.NdFieldParser;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties1T;
 import com.s8.io.bohr.neodymium.type.BuildScope;
@@ -41,7 +42,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
+public class S8ObjectListNdField<T extends NdObject> extends CollectionNdField {
 
 
 
@@ -59,7 +60,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(S8Object.class.isAssignableFrom(typeArgument)) {
+					if(NdObject.class.isAssignableFrom(typeArgument)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, typeArgument);
 						properties.setFieldAnnotation(annotation);
 						return properties;
@@ -86,7 +87,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(S8Object.class.isAssignableFrom(typeArgument)) {
+					if(LiObject.class.isAssignableFrom(typeArgument)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.METHODS, typeArgument);
 						properties.setSetterAnnotation(annotation);
 						return properties;
@@ -111,7 +112,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 					ParameterizedType parameterizedType = (ParameterizedType) parameterType; 
 					Class<?> typeArgument = (Class<?>) parameterizedType.getActualTypeArguments()[0];
 
-					if(S8Object.class.isAssignableFrom(typeArgument)) {
+					if(LiObject.class.isAssignableFrom(typeArgument)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.METHODS, typeArgument);
 						properties.setGetterAnnotation(annotation);
 						return properties;
@@ -196,7 +197,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 				if(graphId != null) {
 					// might be null
-					S8Object struct = scope.retrieveObject(graphId);
+					NdObject struct = scope.retrieveObject(graphId);
 					if(struct!=null) {
 						list.add((T) struct);		
 					}
@@ -216,14 +217,14 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 
 	@Override
-	public void sweep(S8Object object, GraphCrawler crawler) {
+	public void sweep(NdObject object, GraphCrawler crawler) {
 		try {
 			@SuppressWarnings("unchecked")
 			List<T> list = (List<T>) handler.get(object);
 
 
 			if(list!=null) {
-				for(S8Object item : list) {
+				for(NdObject item : list) {
 					if(item!=null) { crawler.accept(item); }
 				}
 			}
@@ -241,10 +242,10 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws NdIOException {
+	public void computeFootprint(NdObject object, MemoryFootprint weight) throws NdIOException {
 
 		@SuppressWarnings("unchecked")
-		List<S8Object> list = (List<S8Object>) handler.get(object);
+		List<LiObject> list = (List<LiObject>) handler.get(object);
 		if(list!=null) {
 			weight.reportInstances(1+list.size()); // the array object itself	
 			weight.reportReferences(list.size());
@@ -253,7 +254,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws NdIOException {
+	public void deepClone(NdObject origin, NdObject clone, BuildScope scope) throws NdIOException {
 
 		@SuppressWarnings("unchecked")
 		List<T> value = (List<T>) handler.get(origin);
@@ -276,7 +277,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 
 	@Override
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(NdObject object, Queue<String> references) {
 		/* not referencing external values */
 	}
 
@@ -288,7 +289,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws NdIOException {
+	public boolean hasDiff(NdObject base, NdObject update) throws NdIOException {
 		List<T> baseValue = (List<T>) handler.get(base);
 		List<T> updateValue = (List<T>) handler.get(update);
 		return !areEqual(baseValue, updateValue);
@@ -297,14 +298,14 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 
 	@Override
-	public NdFieldDelta produceDiff(S8Object object) throws NdIOException {
+	public NdFieldDelta produceDiff(NdObject object) throws NdIOException {
 		@SuppressWarnings("unchecked")
 		List<T> array = (List<T>) handler.get(object);
 		String[] indices = null;
 		if(array!=null) {
 			int n = array.size();
 			indices = new String[n];
-			S8Object item;
+			NdObject item;
 			for(int i=0; i<n; i++) {
 				item = array.get(i);
 				indices[i] = (item != null ? item.S8_index : null);	
@@ -328,7 +329,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 		if(n0!=n1) { return false; }
 
 		// check values
-		S8Object obj0, obj1;
+		NdObject obj0, obj1;
 		for(int i=0; i<n0; i++) {
 			obj0 = array0.get(i);
 			obj1 = array1.get(i);
@@ -343,7 +344,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(NdObject object, Writer writer) throws IOException {
 		@SuppressWarnings("unchecked")
 		List<T> list = (List<T>) handler.get(object);
 		if(list!=null) {
@@ -358,7 +359,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 					isInitialized = true;
 				}
 
-				S8Object value = list.get(i);
+				NdObject value = list.get(i);
 				if(value!=null) {
 					writer.write("(");
 					writer.write(value.getClass().getCanonicalName());
@@ -398,7 +399,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 	}
 
 	@Override
-	public boolean isValueResolved(S8Object object) {
+	public boolean isValueResolved(NdObject object) {
 		return false; // never resolved
 	}
 
@@ -425,7 +426,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(NdObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			String[] indices = deserializeIndices(inflow);
 			if(indices != null) {
 				List<T> list = new ArrayList<T>(indices.length);
@@ -514,7 +515,7 @@ public class S8ObjectListNdField<T extends S8Object> extends CollectionNdField {
 		}
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow) throws IOException {
+		public void composeValue(NdObject object, ByteOutflow outflow) throws IOException {
 			@SuppressWarnings("unchecked")
 			List<T> list = (List<T>) handler.get(object);
 

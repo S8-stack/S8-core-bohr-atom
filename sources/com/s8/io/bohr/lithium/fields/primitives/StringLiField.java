@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import com.s8.io.bohr.BOHR_Types;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
 import com.s8.io.bohr.lithium.fields.LiField;
@@ -12,6 +11,7 @@ import com.s8.io.bohr.lithium.fields.LiFieldComposer;
 import com.s8.io.bohr.lithium.fields.LiFieldParser;
 import com.s8.io.bohr.lithium.fields.LiFieldPrototype;
 import com.s8.io.bohr.lithium.handlers.LiHandler;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.properties.LiFieldProperties;
 import com.s8.io.bohr.lithium.type.BuildScope;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -75,7 +75,7 @@ public class StringLiField extends PrimitiveLiField {
 
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws LiIOException {
+	public void computeFootprint(LiObject object, MemoryFootprint weight) throws LiIOException {
 		String value = handler.getString(object);
 		if(value!=null) {
 			weight.reportInstance();
@@ -84,14 +84,14 @@ public class StringLiField extends PrimitiveLiField {
 	}
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws LiIOException {
+	public void deepClone(LiObject origin, LiObject clone, BuildScope scope) throws LiIOException {
 		String value = handler.getString(origin);
 		handler.setString(clone, value);
 	}
 
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws IOException {
+	public boolean hasDiff(LiObject base, LiObject update) throws IOException {
 		String baseValue = handler.getString(base);
 		String updateValue = handler.getString(update);
 		if(baseValue==null && updateValue==null) {
@@ -114,7 +114,7 @@ public class StringLiField extends PrimitiveLiField {
 
 
 	@Override
-	protected void printValue(S8Object object, Writer writer) throws IOException {
+	protected void printValue(LiObject object, Writer writer) throws IOException {
 		String val = handler.getString(object);
 		writer.write(val!=null ? val : "<null>");
 	}
@@ -144,7 +144,7 @@ public class StringLiField extends PrimitiveLiField {
 		}
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(LiObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			handler.setString(object, inflow.getStringUTF8());
 		}
 	}
@@ -180,7 +180,7 @@ public class StringLiField extends PrimitiveLiField {
 		}
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow, PublishScope scope) throws IOException {
+		public void composeValue(LiObject object, ByteOutflow outflow, PublishScope scope) throws IOException {
 			outflow.putStringUTF8(handler.getString(object));
 		}
 	}

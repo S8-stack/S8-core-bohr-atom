@@ -7,13 +7,12 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import com.s8.io.bohr.BOHR_Keywords;
-import com.s8.io.bohr.atom.S8Branch;
 import com.s8.io.bohr.atom.S8BuildException;
 import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
 import com.s8.io.bohr.lithium.exceptions.LiBuildException;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.lithium.type.LiType;
 import com.s8.io.bohr.lithium.type.LiTypeComposer;
 import com.s8.io.bohr.lithium.type.PublishScope;
@@ -137,7 +136,7 @@ public class LiOutbound implements PublishScope {
 
 
 	@Override
-	public String append(S8Object object) {
+	public String append(LiObject object) {
 		
 		/* append to branch (-> under the hood, add to unpublished) */
 		
@@ -178,7 +177,7 @@ public class LiOutbound implements PublishScope {
 
 
 
-	public S8Branch getBranch() {
+	public LiBranch getBranch() {
 		return branch;
 	}
 

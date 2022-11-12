@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
@@ -12,6 +11,7 @@ import com.s8.io.bohr.neodymium.fields.NdField;
 import com.s8.io.bohr.neodymium.fields.NdFieldBuilder;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties0T;
 import com.s8.io.bohr.neodymium.type.GraphCrawler;
@@ -143,12 +143,12 @@ public abstract class PrimitiveNdField extends NdField {
 	
 
 	@Override
-	public void sweep(S8Object object, GraphCrawler crawler) {
+	public void sweep(NdObject object, GraphCrawler crawler) {
 		// nothing to collect
 	}
 
 	@Override
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(NdObject object, Queue<String> references) {
 		//no blocks to collect
 	}
 	
@@ -158,7 +158,7 @@ public abstract class PrimitiveNdField extends NdField {
 	}
 	
 	@Override
-	public boolean isValueResolved(S8Object object) {
+	public boolean isValueResolved(NdObject object) {
 		return true; // always resolved
 	}
 	

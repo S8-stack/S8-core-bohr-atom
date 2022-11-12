@@ -5,8 +5,8 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 
 import com.s8.io.bohr.atom.S8Ref;
-import com.s8.io.bohr.beryllium.BeSerialException;
 import com.s8.io.bohr.beryllium.fields.MappedBeField;
+import com.s8.io.bohr.beryllium.object.BeSerialException;
 import com.s8.io.bohr.beryllium.syntax.BerylliumEncoding;
 import com.s8.io.bohr.beryllium.types.BeTypeBuildException;
 import com.s8.io.bytes.alpha.ByteInflow;

@@ -3,9 +3,6 @@ package com.s8.io.bohr.neon.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.s8.io.bohr.atom.S8Branch;
-import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bytes.base64.Base64Generator;
 
 /**
@@ -16,8 +13,12 @@ import com.s8.io.bytes.base64.Base64Generator;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
-public class NeBranch extends S8Branch {
+public class NeBranch {
 	
+	
+	public final String address;
+	
+	public final String id;
 	
 	
 	final Map<String, NeObjectTypeHandler> prototypesByName;
@@ -48,7 +49,10 @@ public class NeBranch extends S8Branch {
 	private final Base64Generator idxGen;
 	
 	public NeBranch(String address, String id) {
-		super(address, id);
+		super();
+		this.address = address;
+		this.id = id;
+		
 		prototypesByName = new HashMap<>();
 		prototypesByCode = new HashMap<>();
 		vertices = new HashMap<>();
@@ -71,18 +75,6 @@ public class NeBranch extends S8Branch {
 		return idxGen.generate(++highestObjectId);
 	}
 	
-	@Override
-	public long getBaseVersion() {
-		return 0;
-	}
-
-
-	@Override
-	public <T extends S8Object> T access(int port) throws S8Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 	
 	

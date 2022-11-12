@@ -3,8 +3,8 @@ package com.s8.io.bohr.lithium.type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.lithium.exceptions.LiIOException;
+import com.s8.io.bohr.lithium.object.LiObject;
 
 
 /**
@@ -37,7 +37,7 @@ public abstract class BuildScope {
 	 * @param index
 	 * @return
 	 */
-	public abstract S8Object retrieveObject(String index);
+	public abstract LiObject retrieveObject(String index);
 	
 	/**
 	 * <p><b>ALWAYS RESOLVE AFTER DESERIALIZATION</b></p>

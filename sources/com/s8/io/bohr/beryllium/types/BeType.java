@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.s8.io.bohr.beryllium.BeSerialException;
 import com.s8.io.bohr.beryllium.fields.BeField;
+import com.s8.io.bohr.beryllium.object.BeSerialException;
 
 
 /**

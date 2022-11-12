@@ -37,9 +37,11 @@ module com.s8.io.bohr {
 	exports com.s8.io.bohr.lithium.codebase;
 	exports com.s8.io.bohr.lithium.fields;
 	exports com.s8.io.bohr.lithium.handlers;
+	exports com.s8.io.bohr.lithium.object;
 	exports com.s8.io.bohr.lithium.properties;
 	exports com.s8.io.bohr.lithium.branches;
 	exports com.s8.io.bohr.lithium.type;
+	
 
 	/* </lithium> */
 
@@ -48,8 +50,8 @@ module com.s8.io.bohr {
 
 	exports com.s8.io.bohr.neodymium.codebase;
 	exports com.s8.io.bohr.neodymium.type;
-	exports com.s8.io.bohr.neodymium.branches;
-	exports com.s8.io.bohr.neodymium.objects;
+	exports com.s8.io.bohr.neodymium.branch;
+	exports com.s8.io.bohr.neodymium.object;
 	exports com.s8.io.bohr.neodymium.handlers;
 	exports com.s8.io.bohr.neodymium.properties;
 	exports com.s8.io.bohr.neodymium.exceptions;
@@ -64,9 +66,9 @@ module com.s8.io.bohr {
 	
 	
 	/* <beryllium> */
-	exports com.s8.io.bohr.beryllium;
 	exports com.s8.io.bohr.beryllium.codebase;
 	exports com.s8.io.bohr.beryllium.fields;
+	exports com.s8.io.bohr.beryllium.object;
 	exports com.s8.io.bohr.beryllium.syntax;
 	exports com.s8.io.bohr.beryllium.tables;
 	exports com.s8.io.bohr.beryllium.types;

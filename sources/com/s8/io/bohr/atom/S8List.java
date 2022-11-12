@@ -2,6 +2,8 @@ package com.s8.io.bohr.atom;
 
 import java.util.ArrayList;
 
+import com.s8.io.bohr.lithium.object.LiObject;
+
 
 /**
  * List of references
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class S8List<T extends S8Object> extends ArrayList<S8Ref<T>>{
+public class S8List<T extends LiObject> extends ArrayList<S8Ref<T>>{
 
 	/**
 	 * 

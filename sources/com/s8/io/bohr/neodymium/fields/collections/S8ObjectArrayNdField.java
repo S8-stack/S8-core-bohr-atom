@@ -5,10 +5,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Queue;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.annotations.S8Field;
 import com.s8.io.bohr.atom.annotations.S8Getter;
 import com.s8.io.bohr.atom.annotations.S8Setter;
+import com.s8.io.bohr.lithium.object.LiObject;
 import com.s8.io.bohr.neodymium.exceptions.NdBuildException;
 import com.s8.io.bohr.neodymium.exceptions.NdIOException;
 import com.s8.io.bohr.neodymium.fields.NdField;
@@ -18,6 +18,7 @@ import com.s8.io.bohr.neodymium.fields.NdFieldDelta;
 import com.s8.io.bohr.neodymium.fields.NdFieldParser;
 import com.s8.io.bohr.neodymium.fields.NdFieldPrototype;
 import com.s8.io.bohr.neodymium.handlers.NdHandler;
+import com.s8.io.bohr.neodymium.object.NdObject;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties;
 import com.s8.io.bohr.neodymium.properties.NdFieldProperties1T;
 import com.s8.io.bohr.neodymium.type.BuildScope;
@@ -48,7 +49,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				S8Field annotation = field.getAnnotation(S8Field.class);
 				if(annotation != null) {
 					Class<?> componentType = baseType.getComponentType();
-					if(S8Object.class.isAssignableFrom(componentType)) {
+					if(LiObject.class.isAssignableFrom(componentType)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, componentType);
 						properties.setFieldAnnotation(annotation);
 						return properties;
@@ -71,7 +72,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				S8Setter annotation = method.getAnnotation(S8Setter.class);
 				if(annotation != null) {
 					Class<?> componentType = baseType.getComponentType();
-					if(S8Object.class.isAssignableFrom(componentType)) {
+					if(LiObject.class.isAssignableFrom(componentType)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, componentType);
 						properties.setSetterAnnotation(annotation);
 						return properties;
@@ -94,7 +95,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				S8Getter annotation = method.getAnnotation(S8Getter.class);
 				if(annotation != null) {
 					Class<?> componentType = baseType.getComponentType();
-					if(S8Object.class.isAssignableFrom(componentType)) {
+					if(LiObject.class.isAssignableFrom(componentType)) {
 						NdFieldProperties properties = new NdFieldProperties1T(this, NdFieldProperties.FIELD, componentType);
 						properties.setGetterAnnotation(annotation);
 						return properties;
@@ -143,10 +144,10 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 
 	@Override
-	public void sweep(S8Object object, GraphCrawler crawler) throws NdIOException {
-		S8Object[] array = (S8Object[]) handler.get(object);
+	public void sweep(NdObject object, GraphCrawler crawler) throws NdIOException {
+		NdObject[] array = (NdObject[]) handler.get(object);
 		if(array!=null) {
-			for(S8Object item : array) {
+			for(NdObject item : array) {
 				if(item!=null) {
 					crawler.accept(item);
 				}
@@ -156,7 +157,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 
 	@Override
-	public void collectReferencedBlocks(S8Object object, Queue<String> references) {
+	public void collectReferencedBlocks(NdObject object, Queue<String> references) {
 		// No ext references
 	}
 
@@ -167,8 +168,8 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 	}
 
 	@Override
-	public void computeFootprint(S8Object object, MemoryFootprint weight) throws NdIOException {
-		S8Object[] array = (S8Object[]) handler.get(object);
+	public void computeFootprint(NdObject object, MemoryFootprint weight) throws NdIOException {
+		NdObject[] array = (NdObject[]) handler.get(object);
 		if(array!=null) {
 			weight.reportInstance();
 			weight.reportReferences(array.length);	
@@ -177,12 +178,12 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 
 	@Override
-	public void deepClone(S8Object origin, S8Object clone, BuildScope scope) throws NdIOException {
-		S8Object[] value = (S8Object[]) handler.get(origin);
+	public void deepClone(NdObject origin, NdObject clone, BuildScope scope) throws NdIOException {
+		NdObject[] value = (NdObject[]) handler.get(origin);
 		if(value!=null) {
 			int n = value.length;
 
-			S8Object[] clonedArray = new S8Object[n];
+			NdObject[] clonedArray = new NdObject[n];
 			String[] indices = new String[n];
 			for(int i=0; i<n; i++) {
 				indices[i] = value[i].S8_index;
@@ -196,7 +197,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 				public void resolve(BuildScope scope) throws NdIOException {
 					for(int i=0; i<n; i++) {
 						// no need to upcast to S8Object
-						S8Object indexedObject = scope.retrieveObject(indices[i]);
+						NdObject indexedObject = scope.retrieveObject(indices[i]);
 						if(indexedObject==null) {
 							throw new NdIOException("Fialed to retriev vertex");
 						}
@@ -213,20 +214,20 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 
 	@Override
-	public boolean hasDiff(S8Object base, S8Object update) throws NdIOException {
-		S8Object[] baseValue = (S8Object[]) handler.get(base);
-		S8Object[] updateValue = (S8Object[]) handler.get(update);
+	public boolean hasDiff(NdObject base, NdObject update) throws NdIOException {
+		NdObject[] baseValue = (NdObject[]) handler.get(base);
+		NdObject[] updateValue = (NdObject[]) handler.get(update);
 		return !areEqual(baseValue, updateValue);
 	}
 
 	@Override
-	public NdFieldDelta produceDiff(S8Object object) throws NdIOException {
-		S8Object[] array = (S8Object[]) handler.get(object);
+	public NdFieldDelta produceDiff(NdObject object) throws NdIOException {
+		NdObject[] array = (NdObject[]) handler.get(object);
 		String[] indices = null;
 		if(array!=null) {
 			int n = array.length;
 			indices = new String[n];
-			S8Object item;
+			NdObject item;
 			for(int i=0; i<n; i++) {
 				item = array[i];
 				indices[i] = item != null ? item.S8_index : null;
@@ -238,7 +239,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 
 
-	private static boolean areEqual(S8Object[] array0, S8Object[] array1) {
+	private static boolean areEqual(NdObject[] array0, NdObject[] array1) {
 
 		// check nulls
 		if(array0 == null) { return array1==null; }
@@ -250,7 +251,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 		if(n0!=n1) { return false; }
 
 		// check values
-		S8Object obj0, obj1;
+		NdObject obj0, obj1;
 		for(int i=0; i<n0; i++) {
 			obj0 = array0[i];
 			obj1 = array1[i];
@@ -277,7 +278,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 	@Override
 	public void forEach(Object iterable, ItemConsumer consumer) throws IOException {
-		S8Object[] array = (S8Object[]) iterable;
+		NdObject[] array = (NdObject[]) iterable;
 		if(array!=null) {
 			int n = array.length;
 			for(int i=0; i<n; i++) {
@@ -287,7 +288,7 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 	}
 
 	@Override
-	public boolean isValueResolved(S8Object object) {
+	public boolean isValueResolved(NdObject object) {
 		return false; // never resolved
 	}
 
@@ -302,12 +303,12 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 	 */
 	private static class Binding implements BuildScope.Binding {
 
-		private S8Object[] array;
+		private NdObject[] array;
 
 		private String[] identifiers;
 
 
-		public Binding(S8Object[] array, String[] indices) {
+		public Binding(NdObject[] array, String[] indices) {
 			super();
 			this.array = array;
 			this.identifiers = indices;
@@ -342,10 +343,10 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 
 
 		@Override
-		public void parseValue(S8Object object, ByteInflow inflow, BuildScope scope) throws IOException {
+		public void parseValue(NdObject object, ByteInflow inflow, BuildScope scope) throws IOException {
 			String[] indices = deserializeIndices(inflow);
 			if(indices != null) {
-				S8Object[] array = new S8Object[indices.length];
+				NdObject[] array = new NdObject[indices.length];
 				/* append bindings */
 				scope.appendBinding(new Binding(array, indices));
 				// set list
@@ -427,15 +428,15 @@ public class S8ObjectArrayNdField extends CollectionNdField {
 		}
 
 		@Override
-		public void composeValue(S8Object object, ByteOutflow outflow) throws IOException {
+		public void composeValue(NdObject object, ByteOutflow outflow) throws IOException {
 
 			// array
-			S8Object[] array = (S8Object[]) handler.get(object);
+			NdObject[] array = (NdObject[]) handler.get(object);
 			if(array!=null) {
 				int length = array.length;
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
-					S8Object itemObject = array[i];
+					NdObject itemObject = array[i];
 					outflow.putStringUTF8(itemObject != null ? itemObject.S8_index : null);
 				}
 			}

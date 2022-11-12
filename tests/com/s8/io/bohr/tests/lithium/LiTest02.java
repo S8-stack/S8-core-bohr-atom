@@ -3,7 +3,7 @@ package com.s8.io.bohr.tests.lithium;
 import java.io.OutputStreamWriter;
 
 import com.s8.io.bohr.atom.S8BuildException;
-import com.s8.io.bohr.demos.neodymium.repo2.MyBuilding;
+import com.s8.io.bohr.demos.lithium.repo2.MyBuilding;
 import com.s8.io.bohr.lithium.branches.LiBranch;
 import com.s8.io.bohr.lithium.codebase.LiCodebase;
 import com.s8.io.bohr.lithium.codebase.LiCodebaseBuilder;

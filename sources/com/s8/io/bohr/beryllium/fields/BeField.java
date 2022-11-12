@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 
-import com.s8.io.bohr.atom.S8Object;
 import com.s8.io.bohr.atom.S8ShellStructureException;
-import com.s8.io.bohr.beryllium.BeSerialException;
+import com.s8.io.bohr.beryllium.object.BeObject;
+import com.s8.io.bohr.beryllium.object.BeSerialException;
 import com.s8.io.bytes.alpha.Bool64;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
@@ -108,7 +108,7 @@ public abstract class BeField {
 	
 	
 	
-	public void print(S8Object object, Writer writer) throws IOException, S8ShellStructureException {
+	public void print(BeObject object, Writer writer) throws IOException, S8ShellStructureException {
 		writer.append("(");
 		writer.append(getPrototype().getTypeName());
 		writer.append(") ");
