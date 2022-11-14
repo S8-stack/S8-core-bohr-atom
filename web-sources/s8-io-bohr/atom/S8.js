@@ -68,7 +68,7 @@ class S8Context {
 		}
 		else {
 			let _this = this;
-			this.sendRequest_GET(`/air/icon/${name}.svg`, "text", function (svgSource1) {
+			this.sendRequest_HTTP2_GET(`${name}.svg`, "text", function (svgSource1) {
 				_this.map_SVG_sources.set(name, svgSource1);
 				injector(svgSource1);
 			});
