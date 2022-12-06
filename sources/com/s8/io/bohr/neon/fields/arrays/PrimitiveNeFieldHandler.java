@@ -1,7 +1,7 @@
 package com.s8.io.bohr.neon.fields.arrays;
 
 import com.s8.io.bohr.neon.core.NeObjectTypeHandler;
-import com.s8.io.bohr.neon.fields.NeFieldComposer;
+import com.s8.io.bohr.neon.fields.NeFieldHandler;
 import com.s8.io.bohr.neon.fields.NeFieldValue;
 
 /**
@@ -12,7 +12,7 @@ import com.s8.io.bohr.neon.fields.NeFieldValue;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public abstract class PrimitiveNeFieldHandler extends NeFieldComposer {
+public abstract class PrimitiveNeFieldHandler extends NeFieldHandler {
 
 	
 	/**

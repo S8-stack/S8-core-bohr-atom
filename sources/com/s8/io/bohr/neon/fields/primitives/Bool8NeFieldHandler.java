@@ -17,32 +17,37 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Int32NeFieldComposer extends PrimitiveNeFieldComposer {
+public class Bool8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
-	public final static long SIGNATURE = BOHR_Types.INT32;
+	public final static long SIGNATURE = BOHR_Types.BOOL8;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
 
-	public Int32NeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	/**
+	 * 
+	 * @param name
+	 */
+	public Bool8NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
+	
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.INT32);
+		outflow.putUInt8(BOHR_Types.BOOL8);
 	}
-
 	
+
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	public int get(NeFieldValue wrapper) {
+	public boolean get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -52,10 +57,20 @@ public class Int32NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, int value) {
+	public void set(NeFieldValue wrapper, boolean value) {
 		((Value) wrapper).setValue(value);
 	}
 	
+
+	/***
+	 * 
+	 * @param inflow
+	 * @return
+	 * @throws IOException
+	 */
+	public static Boolean parse(ByteInflow inflow) throws IOException {
+		return inflow.getBool8();
+	}
 	
 
 	@Override
@@ -63,34 +78,35 @@ public class Int32NeFieldComposer extends PrimitiveNeFieldComposer {
 		return new Value();
 	}
 
-	
-	
+
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeFieldComposer.Value {
-		
-		private int value;
-	
+	public static class Value extends PrimitiveNeFieldHandler.Value {
+
+		private boolean value;
+
 		public Value() {
 			super();
 		}
 		
-		public void setValue(int value) {
+		public void setValue(boolean value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			outflow.putInt32(value);
+			outflow.putBool8(value);
 		}
-
+		
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			value = inflow.getInt32();
+			value = inflow.getBool8();
 		}
 	}
+
+
 }

@@ -17,15 +17,14 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class UInt16ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
+public class StringUTF8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.UINT16;
+	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.STRING_UTF8;
 
 	public @Override long getSignature() { return SIGNATURE; }
-	
 
 
-	public UInt16ArrayNeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public StringUTF8ArrayNeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -33,7 +32,7 @@ public class UInt16ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
 		outflow.putUInt8(BOHR_Types.ARRAY);
-		outflow.putUInt8(BOHR_Types.UINT16);
+		outflow.putUInt8(BOHR_Types.STRING_UTF8);
 	}
 
 	/**
@@ -41,7 +40,7 @@ public class UInt16ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @return
 	 */
-	public int[] get(NeFieldValue wrapper) {
+	public String[] get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -51,18 +50,18 @@ public class UInt16ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, int[] value) {
+	public void set(NeFieldValue wrapper, String[] value) {
 		((Value) wrapper).setValue(value);
 	}
 	
-
+	
 	@Override
 	public NeFieldValue createValue() {
 		return new Value();
 	}
 
-	
-	
+
+
 	/**
 	 * 
 	 * @author pierreconvert
@@ -70,18 +69,16 @@ public class UInt16ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 */
 	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private int[] value;
+		private String[] value;
 	
 		public Value() {
 			super();
 		}
-		
-		
-		public void setValue(int[] value) {
+
+		public void setValue(String[] value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
-
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
@@ -89,7 +86,7 @@ public class UInt16ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 				int length = value.length;
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
-					outflow.putUInt16(value[i]);		
+					outflow.putStringUTF8(value[i]);		
 				}
 			}
 			else {
@@ -101,9 +98,9 @@ public class UInt16ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length >=0 ) {
-				value = new int[length];
+				value = new String[length];
 				for(int i=0; i<length; i++) {
-					value[i] = inflow.getUInt16();
+					value[i] = inflow.getStringUTF8();
 				}
 			}
 			else {

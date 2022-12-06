@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neon.fields.primitives;
+package com.s8.io.bohr.neon.fields.arrays;
 
 import java.io.IOException;
 
@@ -17,23 +17,22 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class UInt32NeFieldComposer extends PrimitiveNeFieldComposer {
+public class Int8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
-	
-	public final static long SIGNATURE = BOHR_Types.UINT32;
+	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.INT8;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-
-	public UInt32NeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public Int8ArrayNeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.UINT32);
+		outflow.putUInt8(BOHR_Types.ARRAY);
+		outflow.putUInt8(BOHR_Types.UINT8);
 	}
 
 	/**
@@ -41,7 +40,7 @@ public class UInt32NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @param values
 	 * @return
 	 */
-	public long get(NeFieldValue wrapper) {
+	public int[] get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -51,13 +50,11 @@ public class UInt32NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, long value) {
+	public void set(NeFieldValue wrapper, int[] value) {
 		((Value) wrapper).setValue(value);
 	}
 	
-	
 
-	
 	@Override
 	public NeFieldValue createValue() {
 		return new Value();
@@ -70,27 +67,45 @@ public class UInt32NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeFieldComposer.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private long value;
+		private int[] value;
 	
 		public Value() {
 			super();
 		}
-		
-		public void setValue(long value){
+
+		public void setValue(int[] value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			outflow.putUInt32(value);
+			if(value != null) {
+				int length = value.length;
+				outflow.putUInt7x(length);
+				for(int i=0; i<length; i++) {
+					outflow.putInt8((byte) value[i]);		
+				}
+			}
+			else {
+				outflow.putUInt7x(-1);
+			}
 		}
 
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			value = inflow.getUInt32();
+			int length = (int) inflow.getUInt7x();
+			if(length >=0 ) {
+				value = new int[length];
+				for(int i=0; i<length; i++) {
+					value[i] = inflow.getInt8();
+				}
+			}
+			else {
+				value = null;
+			}
 		}
 	}
 }

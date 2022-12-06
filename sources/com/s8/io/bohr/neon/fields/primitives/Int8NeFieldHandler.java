@@ -17,21 +17,16 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class UInt8NeFieldComposer extends PrimitiveNeFieldComposer {
+public class Int8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
-	public final static long SIGNATURE = BOHR_Types.UINT8;
+	public final static long SIGNATURE = BOHR_Types.INT8;
 
 	public @Override long getSignature() { return SIGNATURE; }
+	
 
 
-
-	/**
-	 * 
-	 * @param prototype
-	 * @param name
-	 */
-	public UInt8NeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public Int8NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -74,14 +69,14 @@ public class UInt8NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeFieldComposer.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
 		private int value;
 	
 		public Value() {
 			super();
 		}
-
+		
 		public void setValue(int value) {
 			this.value = value;
 			this.hasDelta = true;

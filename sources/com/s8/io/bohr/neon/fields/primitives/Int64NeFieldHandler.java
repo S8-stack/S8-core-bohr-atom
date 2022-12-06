@@ -17,7 +17,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Int64NeFieldComposer extends PrimitiveNeFieldComposer {
+public class Int64NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
 	public final static long SIGNATURE = BOHR_Types.INT64;
@@ -26,7 +26,7 @@ public class Int64NeFieldComposer extends PrimitiveNeFieldComposer {
 
 
 
-	public Int64NeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public Int64NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -68,7 +68,7 @@ public class Int64NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeFieldComposer.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
 		private long value;
 	

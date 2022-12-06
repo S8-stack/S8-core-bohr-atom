@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neon.fields.arrays;
+package com.s8.io.bohr.neon.fields.primitives;
 
 import java.io.IOException;
 
@@ -17,22 +17,23 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Int8ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
+public class UInt16NeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.INT8;
+	
+	public final static long SIGNATURE = BOHR_Types.UINT16;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-	public Int8ArrayNeFieldComposer(NeObjectTypeHandler prototype, String name) {
+
+	public UInt16NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.ARRAY);
-		outflow.putUInt8(BOHR_Types.UINT8);
+		outflow.putUInt8(BOHR_Types.UINT16);
 	}
 
 	/**
@@ -40,7 +41,7 @@ public class Int8ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @return
 	 */
-	public int[] get(NeFieldValue wrapper) {
+	public int get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -50,7 +51,7 @@ public class Int8ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, int[] value) {
+	public void set(NeFieldValue wrapper, int value) {
 		((Value) wrapper).setValue(value);
 	}
 	
@@ -67,45 +68,27 @@ public class Int8ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeFieldHandler.Value {
+	private static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private int[] value;
+		private int value;
 	
 		public Value() {
 			super();
 		}
-
-		public void setValue(int[] value) {
+		
+		public void setValue(int value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			if(value != null) {
-				int length = value.length;
-				outflow.putUInt7x(length);
-				for(int i=0; i<length; i++) {
-					outflow.putInt8((byte) value[i]);		
-				}
-			}
-			else {
-				outflow.putUInt7x(-1);
-			}
+			outflow.putUInt16(value);
 		}
 
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			int length = (int) inflow.getUInt7x();
-			if(length >=0 ) {
-				value = new int[length];
-				for(int i=0; i<length; i++) {
-					value[i] = inflow.getInt8();
-				}
-			}
-			else {
-				value = null;
-			}
+			value = inflow.getUInt16();
 		}
 	}
 }

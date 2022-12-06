@@ -13,35 +13,43 @@ import com.s8.io.bytes.alpha.ByteOutflow;
 /**
  * 
  *
+ *
  * @author Pierre Convert
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Int32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
+public class Bool8ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.INT32;
+	
+	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.BOOL8;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-	public Int32ArrayNeFieldComposer(NeObjectTypeHandler prototype, String name) {
+
+	/**
+	 * 
+	 * @param name
+	 */
+	public Bool8ArrayNeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
+	
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
 		outflow.putUInt8(BOHR_Types.ARRAY);
-		outflow.putUInt8(BOHR_Types.INT32);
+		outflow.putUInt8(BOHR_Types.BOOL8);
 	}
-
 	
+
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	public int[] get(NeFieldValue wrapper) {
+	public boolean[] get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -51,8 +59,28 @@ public class Int32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, int[] value) {
+	public void set(NeFieldValue wrapper, boolean[] value) {
 		((Value) wrapper).setValue(value);
+	}
+	
+
+
+	/***
+	 * 
+	 * @param inflow
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean[] parse(ByteInflow inflow) throws IOException {
+		int n = (int) inflow.getUInt7x();
+		if(n >= 0) {
+			boolean[] value = new boolean[n];
+			for(int i = 0; i<n; i++) { value[i] = inflow.getBool8(); }
+			return value;
+		}
+		else {
+			return null;
+		}
 	}
 	
 
@@ -61,53 +89,50 @@ public class Int32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 		return new Value();
 	}
 
-	
-	
+
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
 	public static class Value extends PrimitiveNeFieldHandler.Value {
-		
-		private int[] value;
-	
+
+		private boolean[] value;
+
 		public Value() {
 			super();
 		}
 		
-		public void setValue(int[] value) {
+		public void setValue(boolean[] value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
 
-
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
 			if(value != null) {
-				int length = value.length;
-				outflow.putUInt7x(length);
-				for(int i=0; i<length; i++) {
-					outflow.putInt32(value[i]);		
-				}
+				int n = value.length;
+				outflow.putUInt7x(n);
+				for(int i = 0; i<n; i++) { outflow.putBool8(value[i]); }
 			}
 			else {
 				outflow.putUInt7x(-1);
 			}
 		}
-
+		
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			int length = (int) inflow.getUInt7x();
-			if(length >=0 ) {
-				value = new int[length];
-				for(int i=0; i<length; i++) {
-					value[i] = inflow.getInt32();
-				}
+			int n = (int) inflow.getUInt7x();
+			if(n >= 0) {
+				value = new boolean[n];
+				for(int i = 0; i<n; i++) { value[i] = inflow.getBool8(); }
 			}
 			else {
 				value = null;
 			}
 		}
 	}
+
+
+
 }

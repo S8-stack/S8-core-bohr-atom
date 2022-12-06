@@ -17,14 +17,14 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class UInt32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
+public class Int64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.UINT32;
+	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.INT64;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-	public UInt32ArrayNeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public Int64ArrayNeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -32,7 +32,7 @@ public class UInt32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
 		outflow.putUInt8(BOHR_Types.ARRAY);
-		outflow.putUInt8(BOHR_Types.UINT32);
+		outflow.putUInt8(BOHR_Types.INT64);
 	}
 
 	/**
@@ -62,7 +62,6 @@ public class UInt32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	}
 
 	
-	
 	/**
 	 * 
 	 * @author pierreconvert
@@ -88,7 +87,7 @@ public class UInt32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 				int length = value.length;
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
-					outflow.putUInt32(value[i]);		
+					outflow.putInt64(value[i]);		
 				}
 			}
 			else {
@@ -102,7 +101,7 @@ public class UInt32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 			if(length >=0 ) {
 				value = new long[length];
 				for(int i=0; i<length; i++) {
-					value[i] = inflow.getUInt32();
+					value[i] = inflow.getInt64();
 				}
 			}
 			else {

@@ -13,7 +13,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public abstract class NeFieldComposer {
+public abstract class NeFieldHandler {
 	
 	
 	public NeObjectTypeHandler prototype;
@@ -39,7 +39,7 @@ public abstract class NeFieldComposer {
 	 * 
 	 * @param name
 	 */
-	public NeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super();
 		this.prototype = prototype;
 		this.name = name;

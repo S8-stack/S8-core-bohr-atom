@@ -17,33 +17,31 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Float64NeFieldComposer extends PrimitiveNeFieldComposer {
+public class UInt64NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
-	public final static long SIGNATURE = BOHR_Types.FLOAT64;
+	public final static long SIGNATURE = BOHR_Types.UINT64;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
-	
 
 
-	public Float64NeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public UInt64NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.FLOAT64);
+		outflow.putUInt8(BOHR_Types.UINT64);
 	}
-	
 
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	public double get(NeFieldValue wrapper) {
+	public long get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -53,17 +51,16 @@ public class Float64NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, double value) {
+	public void set(NeFieldValue wrapper, long value) {
 		((Value) wrapper).setValue(value);
 	}
 	
 	
+
 	@Override
 	public NeFieldValue createValue() {
 		return new Value();
 	}
-
-	
 
 	
 	
@@ -72,27 +69,27 @@ public class Float64NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @author pierreconvert
 	 *
 	 */
-	public static class Value extends PrimitiveNeFieldComposer.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private double value;
+		private long value;
 	
 		public Value() {
 			super();
 		}
 		
-		public void setValue(double value) {
+		public void setValue(long value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			outflow.putFloat64(value);
+			outflow.putUInt64(value);
 		}
 
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			value = inflow.getFloat64();
+			value = inflow.getUInt64();
 		}
 	}
 }

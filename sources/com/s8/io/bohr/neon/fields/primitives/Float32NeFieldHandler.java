@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neon.fields.arrays;
+package com.s8.io.bohr.neon.fields.primitives;
 
 import java.io.IOException;
 
@@ -13,26 +13,27 @@ import com.s8.io.bytes.alpha.ByteOutflow;
 /**
  * 
  *
- *
  * @author Pierre Convert
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class Float32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
+public class Float32NeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.FLOAT32;
+	
+	
+	public final static long SIGNATURE = BOHR_Types.FLOAT32;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-	public Float32ArrayNeFieldComposer(NeObjectTypeHandler prototype, String name) {
+
+	public Float32NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.ARRAY);
 		outflow.putUInt8(BOHR_Types.FLOAT32);
 	}
 	
@@ -42,7 +43,7 @@ public class Float32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @return
 	 */
-	public float[] get(NeFieldValue wrapper) {
+	public float get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -52,7 +53,7 @@ public class Float32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, float[] value) {
+	public void set(NeFieldValue wrapper, float value) {
 		((Value) wrapper).setValue(value);
 	}
 	
@@ -71,43 +72,25 @@ public class Float32ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 */
 	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private float[] value;
+		private float value;
 	
 		public Value() {
 			super();
 		}
 		
-		public void setValue(float[] value) {
+		public void setValue(float value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			if(value != null) {
-				int length = value.length;
-				outflow.putUInt7x(length);
-				for(int i=0; i<length; i++) {
-					outflow.putFloat32(value[i]);		
-				}
-			}
-			else {
-				outflow.putUInt7x(-1);
-			}
+			outflow.putFloat32(value);
 		}
 
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			int length = (int) inflow.getUInt7x();
-			if(length >=0 ) {
-				value = new float[length];
-				for(int i=0; i<length; i++) {
-					value[i] = inflow.getFloat32();
-				}
-			}
-			else {
-				value = null;
-			}
+			value = inflow.getFloat32();
 		}
 	}
 }

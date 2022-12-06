@@ -17,14 +17,14 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class UInt64ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
+public class Float64ArrayNeFieldHandler extends PrimitiveNeFieldHandler {
 
-	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.UINT64;
+	public final static long SIGNATURE =  BOHR_Types.ARRAY << 8 & BOHR_Types.FLOAT64;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
 
-	public UInt64ArrayNeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public Float64ArrayNeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
@@ -32,15 +32,17 @@ public class UInt64ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
 		outflow.putUInt8(BOHR_Types.ARRAY);
-		outflow.putUInt8(BOHR_Types.UINT64);
+		outflow.putUInt8(BOHR_Types.FLOAT64);
 	}
+	
 
+	
 	/**
 	 * 
 	 * @param values
 	 * @return
 	 */
-	public long[] get(NeFieldValue wrapper) {
+	public double[] get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -50,15 +52,18 @@ public class UInt64ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, long[] value) {
+	public void set(NeFieldValue wrapper, double[] value) {
 		((Value) wrapper).setValue(value);
 	}
 	
-
+	
+	
 	@Override
 	public NeFieldValue createValue() {
 		return new Value();
 	}
+
+	
 
 	
 	
@@ -69,13 +74,13 @@ public class UInt64ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 	 */
 	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private long[] value;
+		private double[] value;
 	
 		public Value() {
 			super();
 		}
-
-		public void setValue(long[] value) {
+		
+		public void setValue(double[] value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
@@ -86,7 +91,7 @@ public class UInt64ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 				int length = value.length;
 				outflow.putUInt7x(length);
 				for(int i=0; i<length; i++) {
-					outflow.putUInt64(value[i]);		
+					outflow.putFloat64(value[i]);		
 				}
 			}
 			else {
@@ -98,9 +103,9 @@ public class UInt64ArrayNeFieldComposer extends PrimitiveNeFieldHandler {
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
 			int length = (int) inflow.getUInt7x();
 			if(length >=0 ) {
-				value = new long[length];
+				value = new double[length];
 				for(int i=0; i<length; i++) {
-					value[i] = inflow.getUInt64();
+					value[i] = inflow.getFloat64();
 				}
 			}
 			else {

@@ -5,34 +5,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.s8.io.bohr.atom.BOHR_Keywords;
-import com.s8.io.bohr.neon.fields.NeFieldComposer;
+import com.s8.io.bohr.neon.fields.NeFieldHandler;
 import com.s8.io.bohr.neon.fields.NeFieldValue;
-import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.Float32ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.Float64ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.Int16ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.Int32ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.Int64ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.Int8ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.StringUTF8ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.UInt16ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.UInt32ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.UInt64ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.arrays.UInt8ArrayNeFieldComposer;
-import com.s8.io.bohr.neon.fields.objects.ListNeFieldComposer;
-import com.s8.io.bohr.neon.fields.objects.ObjNeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.Bool8NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.Float32NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.Float64NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.Int16NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.Int32NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.Int64NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.Int8NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.StringUTF8NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.UInt16NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.UInt32NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.UInt64NeFieldComposer;
-import com.s8.io.bohr.neon.fields.primitives.UInt8NeFieldComposer;
+import com.s8.io.bohr.neon.fields.arrays.Bool8ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Float32ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Float64ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Int16ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Int32ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Int64ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.Int8ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.StringUTF8ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.UInt16ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.UInt32ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.UInt64ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.arrays.UInt8ArrayNeFieldHandler;
+import com.s8.io.bohr.neon.fields.objects.ListNeFieldHandler;
+import com.s8.io.bohr.neon.fields.objects.ObjNeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Bool8NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Float32NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Float64NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int16NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int32NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int64NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.Int8NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.StringUTF8NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt16NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt32NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt64NeFieldHandler;
+import com.s8.io.bohr.neon.fields.primitives.UInt8NeFieldHandler;
 import com.s8.io.bohr.neon.methods.NeMethodRunner;
 import com.s8.io.bohr.neon.methods.arrays.Bool8ArrayNeMethodRunner;
 import com.s8.io.bohr.neon.methods.arrays.Float32ArrayNeMethodRunner;
@@ -85,9 +85,9 @@ public class NeObjectTypeHandler {
 
 	private boolean isUnpublished;
 	
-	private NeFieldComposer[] fieldComposers;
+	private NeFieldHandler[] fieldComposers;
 
-	private Map<String, NeFieldComposer> fieldComposersByName;
+	private Map<String, NeFieldHandler> fieldComposersByName;
 
 	
 	/**
@@ -103,7 +103,7 @@ public class NeObjectTypeHandler {
 		super();
 		this.outboundTypeName = name;
 		this.code = code;
-		this.fieldComposers = new NeFieldComposer[2];
+		this.fieldComposers = new NeFieldHandler[2];
 		fieldComposersByName = new HashMap<>();
 
 
@@ -143,14 +143,14 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Bool8NeFieldComposer getBool8Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Bool8NeFieldHandler getBool8Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Bool8NeFieldComposer.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (Bool8NeFieldComposer) field;
+			if(field.getSignature() != Bool8NeFieldHandler.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			return (Bool8NeFieldHandler) field;
 		}
 		else {
-			Bool8NeFieldComposer newField = new Bool8NeFieldComposer(this, name);
+			Bool8NeFieldHandler newField = new Bool8NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -175,14 +175,14 @@ public class NeObjectTypeHandler {
 	}
 
 
-	public Bool8ArrayNeFieldComposer getBool8ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Bool8ArrayNeFieldHandler getBool8ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Bool8ArrayNeFieldComposer.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (Bool8ArrayNeFieldComposer) field;
+			if(field.getSignature() != Bool8ArrayNeFieldHandler.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			return (Bool8ArrayNeFieldHandler) field;
 		}
 		else {
-			Bool8ArrayNeFieldComposer newField = new Bool8ArrayNeFieldComposer(this, name);
+			Bool8ArrayNeFieldHandler newField = new Bool8ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -212,15 +212,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public UInt8NeFieldComposer getUInt8Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt8NeFieldHandler getUInt8Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt8NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != UInt8NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (UInt8NeFieldComposer) field;
+			return (UInt8NeFieldHandler) field;
 		}
 		else {
-			UInt8NeFieldComposer newField = new UInt8NeFieldComposer(this, name);
+			UInt8NeFieldHandler newField = new UInt8NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -248,15 +248,15 @@ public class NeObjectTypeHandler {
 
 
 
-	public UInt8ArrayNeFieldComposer getUInt8ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt8ArrayNeFieldHandler getUInt8ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt8ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != UInt8ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (UInt8ArrayNeFieldComposer) field;
+			return (UInt8ArrayNeFieldHandler) field;
 		}
 		else {
-			UInt8ArrayNeFieldComposer newField = new UInt8ArrayNeFieldComposer(this, name);
+			UInt8ArrayNeFieldHandler newField = new UInt8ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -291,15 +291,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public UInt16NeFieldComposer getUInt16Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt16NeFieldHandler getUInt16Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt16NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != UInt16NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (UInt16NeFieldComposer) field;
+			return (UInt16NeFieldHandler) field;
 		}
 		else {
-			UInt16NeFieldComposer newField = new UInt16NeFieldComposer(this, name);
+			UInt16NeFieldHandler newField = new UInt16NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -335,14 +335,14 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public UInt16ArrayNeFieldComposer getUInt16ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt16ArrayNeFieldHandler getUInt16ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt16ArrayNeFieldComposer.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (UInt16ArrayNeFieldComposer) field;
+			if(field.getSignature() != UInt16ArrayNeFieldHandler.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			return (UInt16ArrayNeFieldHandler) field;
 		}
 		else {
-			UInt16ArrayNeFieldComposer newField = new UInt16ArrayNeFieldComposer(this, name);
+			UInt16ArrayNeFieldHandler newField = new UInt16ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -376,14 +376,14 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public UInt32NeFieldComposer getUInt32Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt32NeFieldHandler getUInt32Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt32NeFieldComposer.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
-			return (UInt32NeFieldComposer) field;
+			if(field.getSignature() != UInt32NeFieldHandler.SIGNATURE) { throw new RuntimeException("Cannot change field signature"); }
+			return (UInt32NeFieldHandler) field;
 		}
 		else {
-			UInt32NeFieldComposer newField = new UInt32NeFieldComposer(this, name);
+			UInt32NeFieldHandler newField = new UInt32NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -417,15 +417,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public UInt32ArrayNeFieldComposer getUInt32ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt32ArrayNeFieldHandler getUInt32ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt32ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != UInt32ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (UInt32ArrayNeFieldComposer) field;
+			return (UInt32ArrayNeFieldHandler) field;
 		}
 		else {
-			UInt32ArrayNeFieldComposer newField = new UInt32ArrayNeFieldComposer(this, name);
+			UInt32ArrayNeFieldHandler newField = new UInt32ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -461,15 +461,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public UInt64NeFieldComposer getUInt64Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt64NeFieldHandler getUInt64Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt64NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != UInt64NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (UInt64NeFieldComposer) field;
+			return (UInt64NeFieldHandler) field;
 		}
 		else {
-			UInt64NeFieldComposer newField = new UInt64NeFieldComposer(this, name);
+			UInt64NeFieldHandler newField = new UInt64NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -503,15 +503,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public UInt64ArrayNeFieldComposer getUInt64ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public UInt64ArrayNeFieldHandler getUInt64ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != UInt64ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != UInt64ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (UInt64ArrayNeFieldComposer) field;
+			return (UInt64ArrayNeFieldHandler) field;
 		}
 		else {
-			UInt64ArrayNeFieldComposer newField = new UInt64ArrayNeFieldComposer(this, name);
+			UInt64ArrayNeFieldHandler newField = new UInt64ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -548,15 +548,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int8NeFieldComposer getInt8Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int8NeFieldHandler getInt8Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int8NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int8NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int8NeFieldComposer) field;
+			return (Int8NeFieldHandler) field;
 		}
 		else {
-			Int8NeFieldComposer newField = new Int8NeFieldComposer(this, name);
+			Int8NeFieldHandler newField = new Int8NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -588,15 +588,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int8ArrayNeFieldComposer getInt8ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int8ArrayNeFieldHandler getInt8ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int8ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int8ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int8ArrayNeFieldComposer) field;
+			return (Int8ArrayNeFieldHandler) field;
 		}
 		else {
-			Int8ArrayNeFieldComposer newField = new Int8ArrayNeFieldComposer(this, name);
+			Int8ArrayNeFieldHandler newField = new Int8ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -629,15 +629,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int16NeFieldComposer getInt16Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int16NeFieldHandler getInt16Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int16NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int16NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int16NeFieldComposer) field;
+			return (Int16NeFieldHandler) field;
 		}
 		else {
-			Int16NeFieldComposer newField = new Int16NeFieldComposer(this, name);
+			Int16NeFieldHandler newField = new Int16NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -669,15 +669,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int16ArrayNeFieldComposer getInt16ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int16ArrayNeFieldHandler getInt16ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int16ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int16ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int16ArrayNeFieldComposer) field;
+			return (Int16ArrayNeFieldHandler) field;
 		}
 		else {
-			Int16ArrayNeFieldComposer newField = new Int16ArrayNeFieldComposer(this, name);
+			Int16ArrayNeFieldHandler newField = new Int16ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -710,15 +710,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int32NeFieldComposer getInt32Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int32NeFieldHandler getInt32Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int32NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int32NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int32NeFieldComposer) field;
+			return (Int32NeFieldHandler) field;
 		}
 		else {
-			Int32NeFieldComposer newField = new Int32NeFieldComposer(this, name);
+			Int32NeFieldHandler newField = new Int32NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -751,15 +751,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int32ArrayNeFieldComposer getInt32ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int32ArrayNeFieldHandler getInt32ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int32ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int32ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int32ArrayNeFieldComposer) field;
+			return (Int32ArrayNeFieldHandler) field;
 		}
 		else {
-			Int32ArrayNeFieldComposer newField = new Int32ArrayNeFieldComposer(this, name);
+			Int32ArrayNeFieldHandler newField = new Int32ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -795,15 +795,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int64NeFieldComposer getInt64Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int64NeFieldHandler getInt64Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int64NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int64NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int64NeFieldComposer) field;
+			return (Int64NeFieldHandler) field;
 		}
 		else {
-			Int64NeFieldComposer newField = new Int64NeFieldComposer(this, name);
+			Int64NeFieldHandler newField = new Int64NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -839,15 +839,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Int64ArrayNeFieldComposer getInt64ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Int64ArrayNeFieldHandler getInt64ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Int64ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Int64ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Int64ArrayNeFieldComposer) field;
+			return (Int64ArrayNeFieldHandler) field;
 		}
 		else {
-			Int64ArrayNeFieldComposer newField = new Int64ArrayNeFieldComposer(this, name);
+			Int64ArrayNeFieldHandler newField = new Int64ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -881,15 +881,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Float32NeFieldComposer getFloat32Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Float32NeFieldHandler getFloat32Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Float32NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Float32NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Float32NeFieldComposer) field;
+			return (Float32NeFieldHandler) field;
 		}
 		else {
-			Float32NeFieldComposer newField = new Float32NeFieldComposer(this, name);
+			Float32NeFieldHandler newField = new Float32NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -918,15 +918,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Float32ArrayNeFieldComposer getFloat32ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Float32ArrayNeFieldHandler getFloat32ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Float32ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Float32ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Float32ArrayNeFieldComposer) field;
+			return (Float32ArrayNeFieldHandler) field;
 		}
 		else {
-			Float32ArrayNeFieldComposer newField = new Float32ArrayNeFieldComposer(this, name);
+			Float32ArrayNeFieldHandler newField = new Float32ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -956,15 +956,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Float64NeFieldComposer getFloat64Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Float64NeFieldHandler getFloat64Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Float64NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Float64NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Float64NeFieldComposer) field;
+			return (Float64NeFieldHandler) field;
 		}
 		else {
-			Float64NeFieldComposer newField = new Float64NeFieldComposer(this, name);
+			Float64NeFieldHandler newField = new Float64NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -994,15 +994,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public Float64ArrayNeFieldComposer getFloat64ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public Float64ArrayNeFieldHandler getFloat64ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != Float64ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != Float64ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (Float64ArrayNeFieldComposer) field;
+			return (Float64ArrayNeFieldHandler) field;
 		}
 		else {
-			Float64ArrayNeFieldComposer newField = new Float64ArrayNeFieldComposer(this, name);
+			Float64ArrayNeFieldHandler newField = new Float64ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -1033,17 +1033,17 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public StringUTF8NeFieldComposer getStringUTF8Field(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public StringUTF8NeFieldHandler getStringUTF8Field(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != StringUTF8NeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != StringUTF8NeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature");
 			}
 
-			return (StringUTF8NeFieldComposer) field;
+			return (StringUTF8NeFieldHandler) field;
 		}
 		else {
-			StringUTF8NeFieldComposer newField = new StringUTF8NeFieldComposer(this, name);
+			StringUTF8NeFieldHandler newField = new StringUTF8NeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -1076,15 +1076,15 @@ public class NeObjectTypeHandler {
 	 * @return
 	 * @throws RuntimeException 
 	 */
-	public StringUTF8ArrayNeFieldComposer getStringUTF8ArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public StringUTF8ArrayNeFieldHandler getStringUTF8ArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != StringUTF8ArrayNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != StringUTF8ArrayNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (StringUTF8ArrayNeFieldComposer) field;
+			return (StringUTF8ArrayNeFieldHandler) field;
 		}
 		else {
-			StringUTF8ArrayNeFieldComposer newField = new StringUTF8ArrayNeFieldComposer(this, name);
+			StringUTF8ArrayNeFieldHandler newField = new StringUTF8ArrayNeFieldHandler(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -1112,15 +1112,15 @@ public class NeObjectTypeHandler {
 
 
 	@SuppressWarnings("unchecked")
-	public <T extends NeObject> ObjNeFieldComposer<T> getObjField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public <T extends NeObject> ObjNeFieldHandler<T> getObjField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != ObjNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != ObjNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (ObjNeFieldComposer<T>) field;
+			return (ObjNeFieldHandler<T>) field;
 		}
 		else {
-			ObjNeFieldComposer<T> newField = new ObjNeFieldComposer<T>(this, name);
+			ObjNeFieldHandler<T> newField = new ObjNeFieldHandler<T>(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -1148,15 +1148,15 @@ public class NeObjectTypeHandler {
 
 
 	@SuppressWarnings("unchecked")
-	public <T extends NeObject> ListNeFieldComposer<T> getObjArrayField(String name) {
-		NeFieldComposer field = fieldComposersByName.get(name);
+	public <T extends NeObject> ListNeFieldHandler<T> getObjArrayField(String name) {
+		NeFieldHandler field = fieldComposersByName.get(name);
 		if(field != null) {
-			if(field.getSignature() != ListNeFieldComposer.SIGNATURE) { 
+			if(field.getSignature() != ListNeFieldHandler.SIGNATURE) { 
 				throw new RuntimeException("Cannot change field signature"); }
-			return (ListNeFieldComposer<T>) field;
+			return (ListNeFieldHandler<T>) field;
 		}
 		else {
-			ListNeFieldComposer<T> newField = new ListNeFieldComposer<T>(this, name);
+			ListNeFieldHandler<T> newField = new ListNeFieldHandler<T>(this, name);
 			appendField(newField);
 			return newField;
 		}
@@ -1183,12 +1183,12 @@ public class NeObjectTypeHandler {
 	 * 
 	 * @param field
 	 */
-	private void appendField(NeFieldComposer field) {
+	private void appendField(NeFieldHandler field) {
 		int position = fieldComposers.length;
 		field.ordinal = position;
 		field.code = position;
 
-		NeFieldComposer[] extended = new NeFieldComposer[position+1];
+		NeFieldHandler[] extended = new NeFieldHandler[position+1];
 		for(int i=0; i<position; i++) {
 			extended[i] = fieldComposers[i];
 		}
@@ -1295,7 +1295,7 @@ public class NeObjectTypeHandler {
 
 			if((value = values[code]) != null) {
 
-				NeFieldComposer field = fieldComposers[code];
+				NeFieldHandler field = fieldComposers[code];
 
 				/* declare field (if not already done) */
 				field.declare(outflow);

@@ -17,23 +17,24 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  * 
  */
-public class UInt16NeFieldComposer extends PrimitiveNeFieldComposer {
+public class StringUTF8NeFieldHandler extends PrimitiveNeFieldHandler {
 
 	
-	public final static long SIGNATURE = BOHR_Types.UINT16;
+	public final static long SIGNATURE = BOHR_Types.STRING_UTF8;
 
 	public @Override long getSignature() { return SIGNATURE; }
 
+	
 
 
-	public UInt16NeFieldComposer(NeObjectTypeHandler prototype, String name) {
+	public StringUTF8NeFieldHandler(NeObjectTypeHandler prototype, String name) {
 		super(prototype, name);
 	}
 
 
 	@Override
 	public void publishEncoding(ByteOutflow outflow) throws IOException {
-		outflow.putUInt8(BOHR_Types.UINT16);
+		outflow.putUInt8(BOHR_Types.STRING_UTF8);
 	}
 
 	/**
@@ -41,7 +42,7 @@ public class UInt16NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @param values
 	 * @return
 	 */
-	public int get(NeFieldValue wrapper) {
+	public String get(NeFieldValue wrapper) {
 		return ((Value) wrapper).value;
 	}
 	
@@ -51,44 +52,45 @@ public class UInt16NeFieldComposer extends PrimitiveNeFieldComposer {
 	 * @param values
 	 * @param value
 	 */
-	public void set(NeFieldValue wrapper, int value) {
+	public void set(NeFieldValue wrapper, String value) {
 		((Value) wrapper).setValue(value);
 	}
 	
-
+	
+	
 	@Override
 	public NeFieldValue createValue() {
 		return new Value();
 	}
 
-	
-	
+
+
 	/**
 	 * 
 	 * @author pierreconvert
 	 *
 	 */
-	private static class Value extends PrimitiveNeFieldComposer.Value {
+	public static class Value extends PrimitiveNeFieldHandler.Value {
 		
-		private int value;
+		private String value;
 	
 		public Value() {
 			super();
 		}
 		
-		public void setValue(int value) {
+		public void setValue(String value) {
 			this.value = value;
 			this.hasDelta = true;
 		}
 
 		@Override
 		public void compose(ByteOutflow outflow) throws IOException {
-			outflow.putUInt16(value);
+			outflow.putStringUTF8(value);
 		}
 
 		@Override
 		public void parse(ByteInflow inflow, BuildScope scope) throws IOException {
-			value = inflow.getUInt16();
+			value = inflow.getStringUTF8();
 		}
 	}
 }
