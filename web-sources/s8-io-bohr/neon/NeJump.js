@@ -14,10 +14,11 @@ import { NeVertex } from "./NeVertex.js";
  * @param {ByteInflow} inflow 
  * @param {Function} onBuilt 
  */
-export const jump = function (branch, inflow, onBuilt) {
+export const jump = function (branch, inflow) {
     let jumpScope = new NeJumpScope(branch);
-    jumpScope.consume(inflow, onBuilt);
+    jumpScope.consume(inflow);
 }
+
 
 class NeJumpScope {
 
@@ -61,12 +62,12 @@ class NeJumpScope {
      * @param {ByteInflow} inflow 
      * @param {Function} onBuilt
      */
-    consume(inflow, onBuilt) {
+    consume(inflow) {
         let code = 0;
         while (!this.isConsumed) {
             switch (code = inflow.getUInt8()) {
 
-                case BOHR_Keywords.DECLARE_TYPE: this.consume_DECLARE_TYPE(inflow, onBuilt); break;
+                case BOHR_Keywords.DECLARE_TYPE: this.consume_DECLARE_TYPE(inflow); break;
 
                 case BOHR_Keywords.CREATE_NODE: this.consume_CREATE_NODE(inflow); break;
 
@@ -81,7 +82,7 @@ class NeJumpScope {
         }
 
         // try to build
-        this.build(onBuilt);
+        this.build();
     }
 
 
@@ -90,7 +91,7 @@ class NeJumpScope {
      * @param {ByteInflow} inflow 
      * @param {Function} onBuilt
      */
-    consume_DECLARE_TYPE(inflow, onBuilt) {
+    consume_DECLARE_TYPE(inflow) {
         let objectType = this.branch.declareType(inflow);
 
         /* append to type loadings */
@@ -98,7 +99,7 @@ class NeJumpScope {
         this.typeLoadings.set(objectType.code, typeLoading);
 
         // immediately trigger loading
-        typeLoading.load(onBuilt);
+        typeLoading.load();
     }
 
 
@@ -175,9 +176,8 @@ class NeJumpScope {
 
 
     /**
-     * @param {Function} onBuilt
      */
-    build(onBuilt) {
+    build() {
         if (!this.isBuilt && this.isConsumed && this.areAllTypesLoadingsTerminated()) {
             let branch = this.branch;
 
@@ -187,12 +187,10 @@ class NeJumpScope {
             /* exposed */
             this.slotHandlers.forEach(handler => handler.setSlot(branch));
 
-            /* render all objects */
-            this.objectHandlers.forEach(handler => handler.render());
+            /* render all objects of the branch (not only this scope) */
+            this.branch.render();
 
             this.isBuilt = true;
-
-            onBuilt();
         }
     }
 }
@@ -238,9 +236,8 @@ class NeObjectTypeHandlerLoading {
     /**
      * Can only be launched by a consume_DECLARE_TYPE statement
      * @param {NeJumpScope} jump 
-     * @param {Function} onBuilt
      */
-    load(onBuilt) {
+    load() {
 
         /* unresolved */
         if (!this.isLoaded && !this.typeHandler.isClassLoaded) {
@@ -266,7 +263,7 @@ class NeObjectTypeHandlerLoading {
                 _this.isTerminated = true;
 
                 /* try to trigger build */
-                _this.jump.build(onBuilt);
+                _this.jump.build();
             }
 
             // trigger loading

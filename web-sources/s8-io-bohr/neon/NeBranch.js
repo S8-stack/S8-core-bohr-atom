@@ -60,7 +60,7 @@ export class NeBranch {
 		}
 
 		// perform jump
-		jump(this, inflow, function () { });
+		jump(this, inflow);
 
 	}
 
@@ -153,6 +153,18 @@ export class NeBranch {
 		this.objectTypes.set(code, objectType);
 
 		return objectType;
+	}
+
+
+
+	render(){
+
+		// render all controlled object
+		this.vertices.forEach(vertex => {
+			if(vertex != null){ // a NULL vertex is defined by default
+				vertex.object.S8_render()
+			}
+		});
 	}
 
 
