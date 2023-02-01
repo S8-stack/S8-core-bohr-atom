@@ -9,6 +9,7 @@ import { BOHR_Keywords, BOHR_Methods } from "/s8-io-bohr/atom/BOHR_Protocol.js";
 import { NeBranch } from "./NeBranch.js";
 import { NeObject } from "./NeObject.js";
 import { NeObjectTypeHandler } from "./NeObjectTypeHandler.js";
+import { NeMethodRunner } from "./NeMethodRunner.js";
 
 /**
  * 
@@ -337,7 +338,7 @@ export class NeVertex {
 
     /**
      * 
-     * @param {*} method 
+     * @param {NeMethodRunner} method 
      * @param {*} arg 
      */
     shoot(method, arg) {
@@ -346,9 +347,15 @@ export class NeVertex {
         let outflow = new ByteOutflow(requestArrayBuffer);
         outflow.putUInt8(BOHR_Methods.WEB_RUN_FUNC);
         
-        // publish method if necessary
+        
+		/* <declare-method> */
+		
+		// publish method if necessary
         method.publish_DECLARE_METHOD(outflow);
+		/* <declare-method> */
     
+		/* <run-method> */
+
         // shoot id
         outflow.putUInt8(BOHR_Keywords.RUN_METHOD);
         
@@ -367,5 +374,7 @@ export class NeVertex {
             let inflow = new ByteInflow(responseArrayBuffer);
             S8.branch.consume(inflow);
         });
+		/* </run-method> */
+
     };
 }
