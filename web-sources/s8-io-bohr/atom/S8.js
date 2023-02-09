@@ -138,7 +138,6 @@ class S8Context {
 	 */
 	sendRequest_HTTP2_POST(requestArrayBuffer, responseCallback) {
 
-		
 		// create request
 		let request = new XMLHttpRequest();
 
@@ -148,15 +147,14 @@ class S8Context {
 		// setup XMLHttpRequest.open(method, url, async)
 		request.open("POST", this.origin, true);
 
-	
-
 		// callback
 		request.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
+
 				let responseArrayBuffer = request.response; // Note: not oReq.responseText
 				if (responseArrayBuffer) {
 					responseCallback(responseArrayBuffer);
-					if(DEBUG_IS_VERBOSE){
+					if (DEBUG_IS_VERBOSE) {
 						console.log("[Helium/system] successfully loaded response");
 					}
 				}
@@ -168,7 +166,7 @@ class S8Context {
 
 		// fire
 		request.send(new Uint8Array(requestArrayBuffer));
-		
+
 
 		/*
 		let requestBody = new Uint8Array(requestArrayBuffer);
@@ -181,11 +179,11 @@ class S8Context {
 				throw new Error(`HTTP error, status = ${response.status}`);
 			}
 			return response.arrayBuffer();
-    	})
+		})
 		.then((arraybuffer) => { 
 			responseCallback(arraybuffer);
 		})
-    	.catch((error) => console.log("[Helium/system] No response array buffer: due to "+error));
+		.catch((error) => console.log("[Helium/system] No response array buffer: due to "+error));
 		*/
 
 	}
