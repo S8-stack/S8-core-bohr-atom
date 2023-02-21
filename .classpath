@@ -8,7 +8,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.s8.io.bytes">
+	<classpathentry kind="lib" path="/com.s8.io.bytes/releases/s8-io-bytes.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

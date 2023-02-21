@@ -74,10 +74,5 @@ module com.s8.io.bohr {
 	/* </beryllium> */
 	
 
-	/**
-	 * 
-	 */
-	exports com.s8.io.bohr.tests.lithium;
-
 	requires transitive com.s8.io.bytes;
 }
