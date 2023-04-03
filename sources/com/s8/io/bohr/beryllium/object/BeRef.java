@@ -1,4 +1,4 @@
-package com.s8.io.bohr.neodymium.object;
+package com.s8.io.bohr.beryllium.object;
 
 import java.io.IOException;
 
@@ -14,7 +14,7 @@ import com.s8.io.bytes.alpha.ByteOutflow;
  *
  * @param <T>
  */
-public final class NdRef<T extends NdObject> {
+public final class BeRef<T extends BeObject> {
 	
 	
 	/**
@@ -43,7 +43,7 @@ public final class NdRef<T extends NdObject> {
 	
 	
 	
-	public NdRef(String address, String branch, long version, int port) {
+	public BeRef(String address, String branch, long version, int port) {
 		super();
 		this.address = address;
 		this.branch = branch;
@@ -57,7 +57,7 @@ public final class NdRef<T extends NdObject> {
 	 * @param right
 	 * @return
 	 */
-	public static boolean areEqual(NdRef<?> left, NdRef<?> right) {
+	public static boolean areEqual(BeRef<?> left, BeRef<?> right) {
 		if(left==null && right==null) {
 			return true;
 		}
@@ -75,13 +75,13 @@ public final class NdRef<T extends NdObject> {
 	
 
 	
-	public static <T extends NdObject> NdRef<T> read(ByteInflow inflow) throws IOException {
+	public static <T extends BeObject> BeRef<T> read(ByteInflow inflow) throws IOException {
 		String address = inflow.getStringUTF8();
 		if(address != null) {
 			String branch = inflow.getStringUTF8();
 			long version = inflow.getUInt7x();
 			int port = inflow.getUInt8();
-			return new NdRef<T>(address, branch, version, port);
+			return new BeRef<T>(address, branch, version, port);
 		}
 		else {
 			return null;
@@ -91,7 +91,7 @@ public final class NdRef<T extends NdObject> {
 	
 
 	
-	public static void write(NdRef<?> ref, ByteOutflow outflow) throws IOException {
+	public static void write(BeRef<?> ref, ByteOutflow outflow) throws IOException {
 		if(ref != null) {
 			outflow.putStringUTF8(ref.address);
 			

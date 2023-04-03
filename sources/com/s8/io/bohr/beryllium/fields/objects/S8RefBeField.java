@@ -5,10 +5,10 @@ import java.io.Writer;
 import java.lang.reflect.Field;
 
 import com.s8.io.bohr.beryllium.fields.MappedBeField;
+import com.s8.io.bohr.beryllium.object.BeRef;
 import com.s8.io.bohr.beryllium.object.BeSerialException;
 import com.s8.io.bohr.beryllium.syntax.BerylliumEncoding;
 import com.s8.io.bohr.beryllium.types.BeTypeBuildException;
-import com.s8.io.bohr.lithium.object.LiS8Ref;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 import com.s8.io.bytes.alpha.MemoryFootprint;
@@ -22,7 +22,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
 public class S8RefBeField extends MappedBeField {
 
 
-	public final static Prototype PROTOTYPE = new MappedBeField.Prototype(LiS8Ref.class) {
+	public final static Prototype PROTOTYPE = new MappedBeField.Prototype(BeRef.class) {
 
 		@Override
 		public S8RefBeField createField(String name, long props, Field field) throws BeTypeBuildException {
@@ -60,7 +60,7 @@ public class S8RefBeField extends MappedBeField {
 				String branch = inflow.getStringUTF8();
 				long release = inflow.getUInt7x();
 				int port = inflow.getUInt8();
-				field.set(object, new LiS8Ref<>(address, branch, release, port));
+				field.set(object, new BeRef<>(address, branch, release, port));
 				break;
 				
 			case BerylliumEncoding.NULL_OBJECT:
@@ -82,7 +82,7 @@ public class S8RefBeField extends MappedBeField {
 	@Override
 	public void writeValue(Object object, ByteOutflow outflow) throws BeSerialException {
 		try {
-			LiS8Ref<?> ref = (LiS8Ref<?>) field.get(object);
+			BeRef<?> ref = (BeRef<?>) field.get(object);
 			if(ref!=null) {
 				outflow.putUInt8(BerylliumEncoding.S8_REFERENCE);
 				outflow.putStringUTF8(ref.address);
