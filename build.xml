@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MyProject" basedir="." default="package-jar">
+	
+	<property name="module" value="com.s8.io.bohr.atom" />
+	<property name="jar-name" value="s8-io-bohr-atom" />
+	<property name="dependencies" value="../com.s8.io.bytes/s8-io-bytes.jar" />
+	<property name="version" value="1.1.1" />
+	<property name="javahome" value="/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home" />
+
+	<target name="clean-up">
+		<delete dir="forge" />
+		<mkdir dir="forge" />
+		<mkdir dir="forge/java" />
+		<mkdir dir="forge/java/${module}" />
+	</target>
+
+	<target name="copy-source" depends="clean-up">
+		<copy todir="forge/java/${module}">
+			<fileset dir="sources">
+				<exclude name="**/*.toto" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="compile" depends="copy-source">
+		<exec executable="${javahome}/bin/javac" dir="${basedir}">
+			<arg value="--module-path" />
+			<arg value="${dependencies}" />
+			<arg value="-d" />
+			<arg value="forge/classes" />
+			<arg value="--module-source-path" />
+			<arg value="forge/java" />
+			<arg value="--module" />
+			<arg value="${module}" />
+		</exec>
+	</target>
+
+	<target name="package-jar" depends="compile">
+		<exec executable="${javahome}/bin/jar" dir="${basedir}">
+			<arg value="-c" />
+			<arg value="--file=${jar-name}.jar" />
+			<arg value="-C" />
+			<arg value="forge/classes/${module}" />
+			<arg value="." />
+		</exec>
+	</target>
+
+</project>
