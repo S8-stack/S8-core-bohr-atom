@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MyProject" basedir="." default="package-jar">
+<project name="MyProject" basedir="." default="add-sources">
 	
 	<property name="module" value="com.s8.io.bohr.atom" />
 	<property name="jar-name" value="s8-io-bohr-atom" />
@@ -41,6 +41,16 @@
 			<arg value="--file=${jar-name}.jar" />
 			<arg value="-C" />
 			<arg value="forge/classes/${module}" />
+			<arg value="." />
+		</exec>
+	</target>
+	
+	<target name="add-sources" depends="package-jar">
+			<exec executable="${javahome}/bin/jar" dir="${basedir}">
+			<arg value="uf" />
+			<arg value="${jar-name}.jar" />
+			<arg value="-C" />
+			<arg value="forge/java/${module}" />
 			<arg value="." />
 		</exec>
 	</target>

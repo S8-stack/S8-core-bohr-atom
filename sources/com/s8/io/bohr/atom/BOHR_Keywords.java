@@ -42,7 +42,7 @@ public class BOHR_Keywords {
 
 	public final static int DEFINE_JUMP_COMMENT = 0x25;
 
-	public final static int DEFINE_JUMP_VERSION = 0x26;
+	//public final static int DEFINE_JUMP_VERSION = 0x26;
 
 	/**
 	 * 
