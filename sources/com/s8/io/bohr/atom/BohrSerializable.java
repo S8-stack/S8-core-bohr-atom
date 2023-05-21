@@ -54,15 +54,12 @@ public interface BohrSerializable {
 	 * restrain encoding to simply the one give by this specific factory.
 	 * </p>
 	 */
-	public static abstract class S8SerialPrototype<S extends BohrSerializable> {
+	public static abstract class BohrSerialPrototype<S extends BohrSerializable> {
 
 		
-		public final String signature;
 		
-		
-		public S8SerialPrototype(String signature) {
+		public BohrSerialPrototype() {
 			super();
-			this.signature = signature;
 		}
 
 
@@ -92,7 +89,7 @@ public interface BohrSerializable {
 	 * @param <S>
 	 * @return
 	 */
-	public abstract S8SerialPrototype<?> getSerialPrototype();
+	public abstract BohrSerialPrototype<?> getSerialPrototype();
 	
 	
 	/**
@@ -110,7 +107,7 @@ public interface BohrSerializable {
 
 	
 	
-	public static S8SerialPrototype<?> getDeserializer(Class<?> c) throws S8Exception{
+	public static BohrSerialPrototype<?> getDeserializer(Class<?> c) throws S8Exception{
 		for(Field field : c.getFields()){
 			
 			if(field.isAnnotationPresent(S8Serial.class)) {
@@ -121,11 +118,11 @@ public interface BohrSerializable {
 				if(!Modifier.isFinal(modifiers)) {
 					throw new S8Exception("S8Serial prototype MUST be a final field");
 				}
-				if(!field.getType().equals(BohrSerializable.S8SerialPrototype.class)) {
+				if(!field.getType().equals(BohrSerializable.BohrSerialPrototype.class)) {
 					throw new S8Exception("S8Serial prototype MUST be of type S8Serializable.SerialPrototype");
 				}
 				try {
-					return (S8SerialPrototype<?>) field.get(null);
+					return (BohrSerialPrototype<?>) field.get(null);
 				} 
 				catch (IllegalArgumentException | IllegalAccessException e) {
 					throw new S8Exception("Failed to retrieve S8Serial prototype due to: "+e.getMessage());
