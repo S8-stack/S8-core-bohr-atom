@@ -35,11 +35,5 @@ public @interface S8Setter {
 	public String name();
 	
 
-	/**
-	 * 
-	 * @return
-	 */
-	public long props() default 0L;
-	
 	
 }

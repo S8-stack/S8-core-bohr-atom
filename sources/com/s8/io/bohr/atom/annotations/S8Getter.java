@@ -34,19 +34,8 @@ public @interface S8Getter {
 	public String name();
 	
 	
-	public String flow() default "(default)";
+	public String export() default "(default)";
 	
 	
-	/**
-	 * 
-	 * @return
-	 */
-	public long mask() default 0L;
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public long flags() default 0L;
 	
 }

@@ -1,10 +1,7 @@
-package com.s8.io.bohr.atom;
+package com.s8.io.bohr.atom.serial;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 
-import com.s8.io.bohr.atom.annotations.S8Serial;
 import com.s8.io.bytes.alpha.ByteInflow;
 import com.s8.io.bytes.alpha.ByteOutflow;
 
@@ -71,6 +68,18 @@ public interface BohrSerializable {
 		 * @throws IOException 
 		 */
 		public abstract S deserialize(ByteInflow inflow) throws IOException;
+		
+		
+		/**
+		 * 
+		 * @param base
+		 * @param object
+		 * @return
+		 */
+		public abstract boolean hasDelta(S left, S right);
+		
+		
+	
 
 	}
 
@@ -107,28 +116,5 @@ public interface BohrSerializable {
 
 	
 	
-	public static BohrSerialPrototype<?> getDeserializer(Class<?> c) throws S8Exception{
-		for(Field field : c.getFields()){
-			
-			if(field.isAnnotationPresent(S8Serial.class)) {
-				int modifiers = field.getModifiers();
-				if(!Modifier.isStatic(modifiers)) {
-					throw new S8Exception("S8Serial prototype MUST be a static field");
-				}
-				if(!Modifier.isFinal(modifiers)) {
-					throw new S8Exception("S8Serial prototype MUST be a final field");
-				}
-				if(!field.getType().equals(BohrSerializable.BohrSerialPrototype.class)) {
-					throw new S8Exception("S8Serial prototype MUST be of type S8Serializable.SerialPrototype");
-				}
-				try {
-					return (BohrSerialPrototype<?>) field.get(null);
-				} 
-				catch (IllegalArgumentException | IllegalAccessException e) {
-					throw new S8Exception("Failed to retrieve S8Serial prototype due to: "+e.getMessage());
-				}
-			}
-		}
-		throw new S8Exception("Failed to dinf the deserializer for class: "+c);
-	}
+	
 }

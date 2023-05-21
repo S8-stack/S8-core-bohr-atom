@@ -30,15 +30,8 @@ public @interface S8Field {
 	 * 
 	 * @return the chosen I/O format for exchanging data
 	 */
-	public String flow() default "(default)";
+	public String export() default "(default)";
 	
 	
-	/**
-	 * 
-	 * @return a Bool64 
-	 */
-	public long props() default 0L;
-	
-	public long mask() default 0x00L;
 
 }
