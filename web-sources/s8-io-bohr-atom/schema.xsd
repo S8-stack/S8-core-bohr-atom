@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema
+ xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ targetNamespace="http://s8.com"
+ xmlns:tns="http://s8.com"
+ elementFormDefault="qualified">
+	<xs:element name="sources" type="tns:com.s8.web.carbon.build.sources.WebSources"/>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.bundles.JS_BundleBuilder">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="item" type="tns:com.s8.web.carbon.build.pointers.basics.JS_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="item_js" type="tns:com.s8.web.carbon.build.pointers.basics.JS_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="js" type="tns:com.s8.web.carbon.build.pointers.basics.JS_Builder" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.sources.WebSources">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="js-filter" type="tns:com.s8.web.carbon.build.filters.basics.JS_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="css" type="tns:com.s8.web.carbon.build.pointers.basics.CSS_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_svg-filter" type="tns:com.s8.web.carbon.build.filters.basics.SVG_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_html-filter" type="tns:com.s8.web.carbon.build.filters.basics.HTML_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="html-filter" type="tns:com.s8.web.carbon.build.filters.basics.HTML_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_json" type="tns:com.s8.web.carbon.build.pointers.basics.JSON_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="js" type="tns:com.s8.web.carbon.build.pointers.basics.JS_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_html" type="tns:com.s8.web.carbon.build.pointers.basics.HTML_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="root-web-path" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_filter" type="tns:com.s8.web.carbon.build.filters.WebAssetFilter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="css-filter" type="tns:com.s8.web.carbon.build.filters.basics.CSS_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_js-filter" type="tns:com.s8.web.carbon.build.filters.basics.JS_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_json-filter" type="tns:com.s8.web.carbon.build.filters.basics.JSON_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_builder" type="tns:com.s8.web.carbon.build.pointers.WebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_js-bundle" type="tns:com.s8.web.carbon.build.pointers.bundles.JS_BundleBuilder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="js-bundle" type="tns:com.s8.web.carbon.build.pointers.bundles.JS_BundleBuilder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_jpg" type="tns:com.s8.web.carbon.build.pointers.basics.JPG_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="jpg-filter" type="tns:com.s8.web.carbon.build.filters.basics.JPG_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_x-filter" type="tns:com.s8.web.carbon.build.filters.basics.X_TextFilter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder" type="tns:com.s8.web.carbon.build.pointers.WebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="json" type="tns:com.s8.web.carbon.build.pointers.basics.JSON_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="html" type="tns:com.s8.web.carbon.build.pointers.basics.HTML_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="jpg" type="tns:com.s8.web.carbon.build.pointers.basics.JPG_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_basic-filter" type="tns:com.s8.web.carbon.build.filters.basics.BasicWebAssetFilter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_png-filter" type="tns:com.s8.web.carbon.build.filters.basics.PNG_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_css-filter" type="tns:com.s8.web.carbon.build.filters.basics.CSS_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="svg-filter" type="tns:com.s8.web.carbon.build.filters.basics.SVG_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="x-filter" type="tns:com.s8.web.carbon.build.filters.basics.X_TextFilter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="json-filter" type="tns:com.s8.web.carbon.build.filters.basics.JSON_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_basic" type="tns:com.s8.web.carbon.build.pointers.basics.BasicWebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_js" type="tns:com.s8.web.carbon.build.pointers.basics.JS_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="svg" type="tns:com.s8.web.carbon.build.pointers.basics.SVG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="png" type="tns:com.s8.web.carbon.build.pointers.basics.PNG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_svg" type="tns:com.s8.web.carbon.build.pointers.basics.SVG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_png" type="tns:com.s8.web.carbon.build.pointers.basics.PNG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter" type="tns:com.s8.web.carbon.build.filters.WebAssetFilter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="folder" type="tns:com.s8.web.carbon.build.pointers.folder.Folder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_css" type="tns:com.s8.web.carbon.build.pointers.basics.CSS_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_folder" type="tns:com.s8.web.carbon.build.pointers.folder.Folder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="filter_jpg-filter" type="tns:com.s8.web.carbon.build.filters.basics.JPG_Filter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="basic-filter" type="tns:com.s8.web.carbon.build.filters.basics.BasicWebAssetFilter" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="basic" type="tns:com.s8.web.carbon.build.pointers.basics.BasicWebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="png-filter" type="tns:com.s8.web.carbon.build.filters.basics.PNG_Filter" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.JPG_Pointer" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.JPG_Filter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.JSON_Filter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.SVG_Filter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.WebAssetFilter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.SVG_Builder" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.JS_Filter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.PNG_Filter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.CSS_Pointer" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.folder.Folder">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="jpg" type="tns:com.s8.web.carbon.build.pointers.basics.JPG_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="css" type="tns:com.s8.web.carbon.build.pointers.basics.CSS_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_basic" type="tns:com.s8.web.carbon.build.pointers.basics.BasicWebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_js" type="tns:com.s8.web.carbon.build.pointers.basics.JS_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="svg" type="tns:com.s8.web.carbon.build.pointers.basics.SVG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="png" type="tns:com.s8.web.carbon.build.pointers.basics.PNG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_svg" type="tns:com.s8.web.carbon.build.pointers.basics.SVG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_json" type="tns:com.s8.web.carbon.build.pointers.basics.JSON_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="js" type="tns:com.s8.web.carbon.build.pointers.basics.JS_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_html" type="tns:com.s8.web.carbon.build.pointers.basics.HTML_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_png" type="tns:com.s8.web.carbon.build.pointers.basics.PNG_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_builder" type="tns:com.s8.web.carbon.build.pointers.WebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_js-bundle" type="tns:com.s8.web.carbon.build.pointers.bundles.JS_BundleBuilder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="js-bundle" type="tns:com.s8.web.carbon.build.pointers.bundles.JS_BundleBuilder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="folder" type="tns:com.s8.web.carbon.build.pointers.folder.Folder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_jpg" type="tns:com.s8.web.carbon.build.pointers.basics.JPG_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_css" type="tns:com.s8.web.carbon.build.pointers.basics.CSS_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder_folder" type="tns:com.s8.web.carbon.build.pointers.folder.Folder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="builder" type="tns:com.s8.web.carbon.build.pointers.WebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="json" type="tns:com.s8.web.carbon.build.pointers.basics.JSON_Builder" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="html" type="tns:com.s8.web.carbon.build.pointers.basics.HTML_Pointer" minOccurs="0" maxOccurs="unbounded" />
+			<xs:element name="basic" type="tns:com.s8.web.carbon.build.pointers.basics.BasicWebAssetPointer" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="path" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.X_TextFilter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.HTML_Filter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.JS_Builder" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.HTML_Pointer" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.WebAssetPointer">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.BasicWebAssetFilter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.JSON_Builder" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.PNG_Builder" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.pointers.basics.BasicWebAssetPointer" mixed="true">
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="com.s8.web.carbon.build.filters.basics.CSS_Filter">
+		<xs:sequence>
+		<xs:choice maxOccurs="unbounded" minOccurs="1">
+			<xs:element name="pattern" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+		</xs:choice>
+		</xs:sequence>
+		<xs:attribute name="frag-length" type="xs:string"/>
+		<xs:attribute name="cache" type="xs:string"/>
+	</xs:complexType>
+</xs:schema>

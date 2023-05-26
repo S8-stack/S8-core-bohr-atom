@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "/s8-io-bohr/*": [ "../../../com.s8.io.bohr.neon/web-sources/s8-io-bohr/*" ],
+      "/s8-io-bytes/*": [ "../../../com.s8.io.bytes/web-sources/s8-io-bytes/*" ]
+    }
+  }
+}

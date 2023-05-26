@@ -1,29 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="MyProject" basedir="." default="add-sources">
-	
+
 	<property name="module" value="com.s8.io.bohr.atom" />
+	<property name="name" value="s8-io-bohr-atom" />
 	<property name="stack" value="/Users/pc/qx/git/com.s8.stack/modules" />
-	<property name="jar-name" value="${stack}/s8-io-bohr-atom" />
+	<property name="java-sources" value="/Users/pc/qx/git/com.s8.stack/mod-sources" />
+	<property name="web-sources" value="/Users/pc/qx/git/com.s8.stack/web-sources" />
+	<property name="jar-name" value="${stack}/${name}.jar" />
 	<property name="dependencies" value="${stack}/s8-io-bytes.jar" />
 	<property name="version" value="1.1.1" />
 	<property name="javahome" value="/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home" />
 
 	<target name="clean-up">
 		<delete dir="forge" />
+		<delete dir="${java-sources}/${module}" />
+		<delete dir="${web-sources}/${name}" />
 		<mkdir dir="forge" />
 		<mkdir dir="forge/java" />
 		<mkdir dir="forge/java/${module}" />
+		<mkdir dir="${java-sources}/${module}" />
+		<mkdir dir="${web-sources}/${name}" />
 	</target>
 
-	<target name="copy-source" depends="clean-up">
+	<target name="copy-sources" depends="clean-up">
 		<copy todir="forge/java/${module}">
 			<fileset dir="sources">
 				<exclude name="**/*.toto" />
 			</fileset>
 		</copy>
+		<copy todir="${java-sources}/${module}">
+			<fileset dir="sources">
+				<exclude name="**/*.toto" />
+			</fileset>
+		</copy>
+		<copy todir="${web-sources}/${name}">
+			<fileset dir="web-sources/${name}">
+			</fileset>
+		</copy>
 	</target>
 
-	<target name="compile" depends="copy-source">
+	<target name="compile" depends="copy-sources">
 		<exec executable="${javahome}/bin/javac" dir="${basedir}">
 			<arg value="--module-path" />
 			<arg value="${dependencies}" />
@@ -45,9 +61,9 @@
 			<arg value="." />
 		</exec>
 	</target>
-	
+
 	<target name="add-sources" depends="package-jar">
-			<exec executable="${javahome}/bin/jar" dir="${basedir}">
+		<exec executable="${javahome}/bin/jar" dir="${basedir}">
 			<arg value="uf" />
 			<arg value="${jar-name}.jar" />
 			<arg value="-C" />
