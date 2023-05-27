@@ -233,27 +233,3 @@ export const BOHR_SerialTypes = {
 }
 
 
-
-export const BOHR_Methods = {
-	
-	/**
-	 * 
-	 */
-	WEB_SIGN_UP : 0x15,
-	
-	/**
-	 * 
-	 */
-	WEB_LOG_IN : 0x16,
-	
-	/**
-	 * 
-	 */
-	WEB_RUN_FUNC : 0x17,
-	
-	/**
-	 * 
-	 */
-	WEB_DEBUG_BOOT : 0x26,
-	
-};
