@@ -31,6 +31,13 @@ class S8Context {
 	branch;
 
 
+	/**
+	 * @type{Object} 
+	 * Previously active object: the last which sends a signal
+	 */
+	previouslyFocussed = null;
+
+
 	constructor() {
 		this.origin = window.location.origin;
 	}
@@ -230,6 +237,24 @@ class S8Context {
 		while (node.firstChild) {
 			node.removeChild(node.lastChild);
 		}
+	}
+
+
+	/**
+	 * 
+	 * @param {Object} object 
+	 */
+	focus(object){
+		let previous = this.previouslyFocussed;
+		if(previous != null){
+			if(previous.S8_unfocus){
+				previous.S8_unfocus();
+			}
+			else{
+				console.error.log("Object missing a S8_unfocus method: " + previous);
+			}
+		}
+		this.previouslyFocussed = object;
 	}
 }
 
