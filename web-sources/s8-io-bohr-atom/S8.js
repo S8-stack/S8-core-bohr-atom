@@ -251,7 +251,7 @@ class S8Context {
 				previous.S8_unfocus();
 			}
 			else{
-				console.error.log("Object missing a S8_unfocus method: " + previous);
+				console.log("Object missing a S8_unfocus method: " + previous);
 			}
 		}
 		this.previouslyFocussed = object;
