@@ -4,6 +4,8 @@ import { NeBranch } from "/s8-io-bohr-neon/NeBranch.js";
 
 const DEBUG_IS_VERBOSE = true;
 
+
+
 class S8Context {
 
 
@@ -11,17 +13,6 @@ class S8Context {
 	 * @type {string} retrieve origin
 	 */
 	origin;
-
-	/**
-	 * @type {Map<string, *>}
-	 * // build stylesheets map
-	 */
-	map_CSS_stylesheets = new Map();
-
-	/**
-	 * @type {Map<string, *> }
-	 */
-	map_SVG_sources = new Map();
 
 
 
@@ -31,58 +22,12 @@ class S8Context {
 	branch;
 
 
-	/**
-	 * @type{Object} 
-	 * Previously active object: the last which sends a signal
-	 */
-	previouslyFocussed = null;
-
-
 	constructor() {
 		this.origin = window.location.origin;
 	}
 
 
-	/**
-	 * 
-	 * @param {*} name 
-	 */
-	import_CSS(name) {
-		if (!this.map_CSS_stylesheets.has(name)) {
-			document.head.innerHTML += `<link type="text/css" rel="stylesheet" href=${name}>`;
-			this.map_CSS_stylesheets.set(name, true);
-		}
-	}
 
-
-	/**
-	 * 
-	 * @param {*} target 
-	 * @param {string} name 
-	 * @param {number} width 
-	 * @param {number} height 
-	 */
-	insert_SVG(target, name, width, height) {
-		let svgSource0 = this.map_SVG_sources.get(name);
-
-		let injector = function (source) {
-			target.innerHTML = source;
-			let svgNode = target.getElementsByTagName("svg")[0];
-			svgNode.setAttribute("width", width);
-			svgNode.setAttribute("height", height);
-		}
-
-		if (svgSource0 != undefined) {
-			injector(svgSource0);
-		}
-		else {
-			let _this = this;
-			this.sendRequest_HTTP2_GET(`${name}.svg`, "text", function (svgSource1) {
-				_this.map_SVG_sources.set(name, svgSource1);
-				injector(svgSource1);
-			});
-		}
-	}
 
 
 
@@ -197,18 +142,6 @@ class S8Context {
 
 
 
-	removeChildren(node) {
-		/* An earlier edit to this answer used firstChild, 
-		but this is updated to use lastChild as in computer-science, 
-		in general, it's significantly faster to remove the last 
-		element of a collection than it is to remove the first element 
-		(depending on how the collection is implemented). */
-		while (node.firstChild) {
-			node.removeChild(node.lastChild);
-		}
-	}
-
-
 	setRoot(node) {
 		/* An earlier edit to this answer used firstChild, 
 		but this is updated to use lastChild as in computer-science, 
@@ -221,6 +154,8 @@ class S8Context {
 
 		this.screenNode.appendChild(node);
 	}
+
+
 
 
 
@@ -237,24 +172,6 @@ class S8Context {
 		while (node.firstChild) {
 			node.removeChild(node.lastChild);
 		}
-	}
-
-
-	/**
-	 * 
-	 * @param {Object} object 
-	 */
-	focus(object){
-		let previous = this.previouslyFocussed;
-		if(previous != null){
-			if(previous.S8_unfocus){
-				previous.S8_unfocus();
-			}
-			else{
-				console.log("Object missing a S8_unfocus method: " + previous);
-			}
-		}
-		this.previouslyFocussed = object;
 	}
 }
 
