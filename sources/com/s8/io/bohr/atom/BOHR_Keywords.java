@@ -60,33 +60,33 @@ public class BOHR_Keywords {
 	public final static int DECLARE_TYPE = 0x32;
 
 	/* </types> */
-	
-	
+
+
 	/* <nodes> */
-	
-	
+
+
 	/**
 	 * (Must be closed)
 	 */
 	public final static int CREATE_NODE = 0x42;
-	
+
 	/**
 	 * (must be closed)
 	 */
 	public final static int UPDATE_NODE = 0x43;
 
-	
+
 	/**
 	 * no-closing required
 	 */
 	public final static int EXPOSE_NODE = 0x44;
 
-	
+
 	/**
 	 * no-closing required
 	 */
 	public final static int REMOVE_NODE = 0x45;
-	
+
 	/**
 	 * 
 	 */
@@ -95,33 +95,41 @@ public class BOHR_Keywords {
 
 
 	/* <fields> */
-	
 
-	
+
+
 	/**
 	 * declare field and set value
 	 */
 	public final static int DECLARE_FIELD = 0x52;
 
 	/* </fields> */
-	
+
 	/* <value> */
-	
+
 	/**
 	 * 
 	 */
 	public final static int SET_VALUE = 0x64;
-	
+
 	/* </value> */
 
 
-	
+
 	public final static int DECLARE_METHOD = 0x72;
-	
-	
-	
-	public final static int RUN_METHOD = 0x84;
-	
-	
-	
+
+
+
+	public final static int RUN_METHOD = 0x74;
+
+
+
+	public final static int DECLARE_PROVIDER = 0x82;
+
+
+
+	public final static int RUN_PROVIDER = 0x84;
+
+
+
 }

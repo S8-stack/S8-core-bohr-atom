@@ -84,7 +84,13 @@ export const BOHR_Keywords = {
 
 
 
-    RUN_METHOD: 0x84,
+    RUN_METHOD: 0x74,
+    
+    
+    DECLARE_PROVIDER: 0x82,
+
+
+    RUN_PROVIDER: 0x84,
 
 };
 
