@@ -2,22 +2,22 @@
 <sources xmlns="http://s8.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://s8.com schema.xsd">
 	<root-web-path>s8-io-bohr-atom/</root-web-path>
-	<html-filter cache="PRODUCTION" frag-length="1024">
+	<html-filter cache="DEBUG" frag-length="1024">
 		<pattern>**.html</pattern>
 	</html-filter>
-	<css-filter cache="PRODUCTION" frag-length="1024">
+	<css-filter cache="DEBUG" frag-length="1024">
 		<pattern>**.css</pattern>
 	</css-filter>
-	<js-filter cache="PRODUCTION" frag-length="1024">
+	<js-filter cache="DEBUG" frag-length="1024">
 		<pattern>**.js</pattern>
 	</js-filter>
-	<png-filter cache="PRODUCTION" frag-length="65536">
+	<png-filter cache="STABLE" frag-length="65536">
 		<pattern>**.png</pattern>
 	</png-filter>
-	<jpg-filter cache="PRODUCTION" frag-length="65536">
+	<jpg-filter cache="STABLE" frag-length="65536">
 		<pattern>**.{jpg,jpeg}</pattern>
 	</jpg-filter>
-	<svg-filter cache="PRODUCTION" frag-length="65536">
+	<svg-filter cache="STABLE" frag-length="65536">
 		<pattern>**.svg</pattern>
 	</svg-filter>
 </sources>
