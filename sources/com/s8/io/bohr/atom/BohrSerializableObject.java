@@ -19,6 +19,7 @@ import com.s8.io.bytes.alpha.MemoryFootprint;
  * Copyright (C) 2022, Pierre Convert. All rights reserved.
  *
  */
+@Deprecated
 public interface BohrSerializableObject {
 	
 	
