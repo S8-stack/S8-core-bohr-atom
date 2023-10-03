@@ -14,7 +14,6 @@ module com.s8.io.bohr.atom {
 
 	
 	exports com.s8.io.bohr.atom;
-	exports com.s8.io.bohr.atom.annotations;
 	exports com.s8.io.bohr.atom.serial;
 
 
@@ -23,4 +22,5 @@ module com.s8.io.bohr.atom {
 	
 
 	requires transitive com.s8.io.bytes;
+	requires transitive com.s8.api;
 }

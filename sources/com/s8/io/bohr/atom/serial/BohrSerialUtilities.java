@@ -3,9 +3,10 @@ package com.s8.io.bohr.atom.serial;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import com.s8.io.bohr.atom.S8Exception;
-import com.s8.io.bohr.atom.annotations.S8Serial;
-import com.s8.io.bohr.atom.serial.BohrSerializable.BohrSerialPrototype;
+import com.s8.api.exceptions.S8IOException;
+import com.s8.api.objects.annotations.S8Serial;
+import com.s8.api.objects.serial.BohrSerializable;
+import com.s8.api.objects.serial.BohrSerializable.BohrSerialPrototype;
 
 public class BohrSerialUtilities {
 
@@ -14,29 +15,29 @@ public class BohrSerialUtilities {
 	
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends BohrSerializable> BohrSerialPrototype<T> getDeserializer(Class<?> c) throws S8Exception{
+	public static <T extends BohrSerializable> BohrSerialPrototype<T> getDeserializer(Class<?> c) throws S8IOException{
 		for(Field field : c.getFields()){
 			
 			if(field.isAnnotationPresent(S8Serial.class)) {
 				int modifiers = field.getModifiers();
 				if(!Modifier.isStatic(modifiers)) {
-					throw new S8Exception("S8Serial prototype MUST be a static field");
+					throw new S8IOException("S8Serial prototype MUST be a static field");
 				}
 				if(!Modifier.isFinal(modifiers)) {
-					throw new S8Exception("S8Serial prototype MUST be a final field");
+					throw new S8IOException("S8Serial prototype MUST be a final field");
 				}
 				if(!field.getType().equals(BohrSerializable.BohrSerialPrototype.class)) {
-					throw new S8Exception("S8Serial prototype MUST be of type S8Serializable.SerialPrototype");
+					throw new S8IOException("S8Serial prototype MUST be of type S8Serializable.SerialPrototype");
 				}
 				try {
 					return (BohrSerialPrototype<T>) field.get(null);
 				} 
 				catch (IllegalArgumentException | IllegalAccessException e) {
-					throw new S8Exception("Failed to retrieve S8Serial prototype due to: "+e.getMessage());
+					throw new S8IOException("Failed to retrieve S8Serial prototype due to: "+e.getMessage());
 				}
 			}
 		}
-		throw new S8Exception("Failed to dinf the deserializer for class: "+c);
+		throw new S8IOException("Failed to dinf the deserializer for class: "+c);
 	}
 	
 	

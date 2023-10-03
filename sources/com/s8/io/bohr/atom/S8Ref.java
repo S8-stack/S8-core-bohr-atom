@@ -2,8 +2,8 @@ package com.s8.io.bohr.atom;
 
 import java.io.IOException;
 
-import com.s8.io.bytes.alpha.ByteInflow;
-import com.s8.io.bytes.alpha.ByteOutflow;
+import com.s8.api.bytes.ByteInflow;
+import com.s8.api.bytes.ByteOutflow;
 
 /**
  * 

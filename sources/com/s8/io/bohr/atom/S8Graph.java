@@ -1,5 +1,6 @@
 package com.s8.io.bohr.atom;
 
+import com.s8.api.exceptions.S8IOException;
 
 /**
  * 
@@ -51,7 +52,7 @@ public interface S8Graph {
 	 * Assign an object within the exposure list
 	 * @param id
 	 * @param object
-	 * @throws S8Exception 
+	 * @throws S8IOException 
 	 */
 	public void expose(int port, S8Object object);
 
@@ -67,9 +68,9 @@ public interface S8Graph {
 	 * Retrieve an exposed object
 	 * @param id
 	 * @return
-	 * @throws S8Exception 
+	 * @throws S8IOException 
 	 */
-	public <T extends S8Object> T access(int port) throws S8Exception;
+	public <T extends S8Object> T access(int port) throws S8IOException;
 
 	
 	
@@ -77,9 +78,9 @@ public interface S8Graph {
 	 * 
 	 * @param object
 	 * @return
-	 * @throws S8Exception 
+	 * @throws S8IOException 
 	 */
-	public void attach(S8Object object) throws S8Exception;
+	public void attach(S8Object object) throws S8IOException;
 
 
 }
