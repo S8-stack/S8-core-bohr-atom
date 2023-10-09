@@ -8,7 +8,7 @@
 	<property name="java-sources" value="/Users/pc/qx/git/com.s8.stack/mod-sources" />
 	<property name="web-sources" value="/Users/pc/qx/git/com.s8.stack/web-sources" />
 	<property name="jar-path" value="${stack}/${name}.jar" />
-	<property name="dependencies" value="${stack}/s8-io-bytes.jar" />
+	<property name="dependencies" value="${stack}/s8-api.jar:${stack}/s8-io-bytes.jar" />
 	<property name="version" value="1.1.1" />
 	<property name="javahome" value="/Library/Java/JavaVirtualMachines/jdk-19.jdk/Contents/Home" />
 
