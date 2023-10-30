@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="MyProject" basedir="." default="add-sources">
 
-	<property name="module" value="com.s8.io.bohr.atom" />
-	<property name="name" value="s8-io-bohr-atom" />
+	<property name="module" value="com.s8.core.io.bohr.atom" />
+	<property name="name" value="s8-core-io-bohr-atom" />
 	
 	<property name="stack" value="/Users/pc/qx/git/com.s8.stack/modules" />
 	<property name="java-sources" value="/Users/pc/qx/git/com.s8.stack/mod-sources" />

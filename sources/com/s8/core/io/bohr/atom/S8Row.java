@@ -1,4 +1,4 @@
-package com.s8.io.bohr.atom;
+package com.s8.core.io.bohr.atom;
 
 
 /**
