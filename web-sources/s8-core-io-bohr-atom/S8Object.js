@@ -1,4 +1,4 @@
-import { NeObjectTypeHandler } from "../neon/NeObjectTypeHandler.js";
+import { NeObjectTypeHandler } from "/s8-core-io-bohr-neon/NeObjectTypeHandler.js";
 
 
 
