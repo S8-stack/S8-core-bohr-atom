@@ -15,6 +15,7 @@ module com.s8.core.io.bohr.atom {
 	
 	exports com.s8.core.io.bohr.atom;
 	exports com.s8.core.io.bohr.atom.serial;
+	exports com.s8.core.io.bohr.atom.protocol;
 
 
 	requires transitive com.s8.api;
