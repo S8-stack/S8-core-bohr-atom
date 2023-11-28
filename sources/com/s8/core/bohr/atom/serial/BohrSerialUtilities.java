@@ -1,4 +1,4 @@
-package com.s8.core.io.bohr.atom.serial;
+package com.s8.core.bohr.atom.serial;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

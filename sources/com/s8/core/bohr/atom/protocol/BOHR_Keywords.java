@@ -1,4 +1,4 @@
-package com.s8.core.io.bohr.atom.protocol;
+package com.s8.core.bohr.atom.protocol;
 
 import java.nio.charset.StandardCharsets;
 
