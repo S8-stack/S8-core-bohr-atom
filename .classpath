@@ -6,12 +6,12 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.s8.core.io.bytes">
+	<classpathentry combineaccessrules="false" kind="src" path="/s8-core-io-bytes">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.s8.api">
+	<classpathentry combineaccessrules="false" kind="src" path="/s8-api">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
