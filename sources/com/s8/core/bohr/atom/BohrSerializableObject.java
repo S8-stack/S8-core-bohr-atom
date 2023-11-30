@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import com.s8.api.annotations.S8Serial;
 import com.s8.api.bytes.ByteInflow;
 import com.s8.api.bytes.ByteOutflow;
 import com.s8.api.bytes.MemoryFootprint;
 import com.s8.api.exceptions.S8IOException;
-import com.s8.api.objects.annotations.S8Serial;
 
 
 

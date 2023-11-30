@@ -3,10 +3,10 @@ package com.s8.core.bohr.atom.serial;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import com.s8.api.annotations.S8Serial;
 import com.s8.api.exceptions.S8IOException;
-import com.s8.api.objects.annotations.S8Serial;
-import com.s8.api.objects.serial.BohrSerializable;
-import com.s8.api.objects.serial.BohrSerializable.BohrSerialPrototype;
+import com.s8.api.serial.BohrSerializable;
+import com.s8.api.serial.BohrSerializable.BohrSerialPrototype;
 
 public class BohrSerialUtilities {
 
