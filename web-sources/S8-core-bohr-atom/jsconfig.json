@@ -2,9 +2,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "/s8-core-io-bohr-atom/*": [ "../../../com.s8.core.io.bohr.atom/web-sources/s8-io-bohr-atom/*" ],
-      "/s8-core-io-bohr-neon/*": [ "../../../com.s8.core.io.bohr.neon/web-sources/s8-io-bohr-neon/*" ],
-      "/s8-core-io-bytes/*": [ "../../../com.s8.core.io.bytes/web-sources/s8-io-bytes/*" ]
+      "/S8-core-bohr-atom/*": [ "../../../S8-core-bohr-atom/web-sources/S8-core-bohr-atom/*" ],
+      "/S8-core-bohr-neon/*": [ "../../../S8-core-bohr-neon/web-sources/S8-core-bohr-neon/*" ],
+      "/S8-core-io-bytes/*": [ "../../../S8-core-io-bytes/web-sources/S8-core-io-bytes/*" ]
     }
   }
 }

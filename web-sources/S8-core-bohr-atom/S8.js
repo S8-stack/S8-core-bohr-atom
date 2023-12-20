@@ -1,5 +1,5 @@
 
-import { NeBranch } from "/s8-core-io-bohr-neon/NeBranch.js";
+import { NeBranch } from "/S8-core-bohr-neon/NeBranch.js";
 
 
 const DEBUG_IS_VERBOSE = true;

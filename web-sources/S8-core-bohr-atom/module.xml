@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sources xmlns="http://s8.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://s8.com schema.xsd">
-	<root-web-path>s8-core-io-bohr-atom/</root-web-path>
+	<root-web-path>S8-core-bohr-atom/</root-web-path>
 	<html-filter cache="DEBUG" frag-length="1024">
 		<pattern>**.html</pattern>
 	</html-filter>
