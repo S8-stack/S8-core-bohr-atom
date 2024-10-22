@@ -37,7 +37,18 @@ public class BOHR_Types {
 	/**
 	 * Open new vista
 	 */
+	
+	/**
+	 * IMPLICIT SERIAL type, with additonal requirement that object owning this field
+	 * is supposed to detect types by itself (open possibility to change type on the fly)
+	 */
 	public final static int SERIAL = 0x24;	
+
+	/**
+	 * SERIAL type, but type MUST be declared explicitely, through 
+	 * <code>S8SerialPrototype.getSignature()</code> method
+	 */
+	public final static int SERIAL_EXPLICIT = 0x26;	
 	/*</byte> */
 	
 	
