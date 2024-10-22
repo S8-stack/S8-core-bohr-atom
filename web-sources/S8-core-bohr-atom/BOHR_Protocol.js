@@ -125,6 +125,8 @@ export const BOHR_Types = {
      */
     SERIAL: 0x24,
 
+    SERIAL_EXPLICIT: 0x26,
+
 
     /*</byte> */
 
